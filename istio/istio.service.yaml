@@ -1,0 +1,73 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+spec:
+  selector:
+    app: webapp
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: webapp
+spec:
+  host: webapp.demo.svc.cluster.local
+  subsets:
+  - name: v1
+    labels:
+      app: webapp
+      version: v1
+  - name: v2
+    labels:
+      app: webapp
+      version: v2
+  - name: v3
+    labels:
+      app: webapp
+      version: v3
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: webapp
+spec:
+  hosts:
+  - webapp.demo.svc.cluster.local
+  http:
+  - match:
+    - uri:
+        prefix: /webapp
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: webapp.demo.svc.cluster.local
+        subset: v1
+        port:
+          number: 80
+      weight: 80
+    - destination:
+        host: webapp.demo.svc.cluster.local
+        subset: v2
+        port:
+          number: 80
+      weight: 10
+    - destination:
+        host: webapp.demo.svc.cluster.local
+        subset: v3
+        port:
+          number: 80
+      weight: 10
+    timeout: 60s
+    retries:
+      attempts: 3
+      perTryTimeout: 5s
+      retryOn: gateway-error,connect-failure,refused-stream

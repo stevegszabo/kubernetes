@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-v2
+  labels:
+    app: webapp
+    version: v2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webapp
+      version: v2
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubernetes.io/change-cause: "001"
+      labels:
+        app: webapp
+        version: v2
+    spec:
+      containers:
+      - name: webapp
+        image: notebook.local:5000/ubuntu:webapp
+        ports:
+        - containerPort: 8080
+          name: webapp
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: webapp
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /
+            port: webapp
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 1
