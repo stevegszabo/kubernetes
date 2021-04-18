@@ -32,7 +32,7 @@ spec:
         image: notebook.local:5000/webapp:latest
         command: ["/bin/bash", "-c", "while true; do curl -s http://webapp.demo.svc.cluster.local/webapp; sleep .5; done"]
       - name: client
-        image: notebook.local:5000/ubuntu:webapp
+        image: notebook.local:5000/webapp:latest
         ports:
         - name: client
           containerPort: 8080
