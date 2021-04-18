@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: notebook.local:5000/ubuntu:webapp
+        image: notebook.local:5000/webapp:latest
         ports:
         - containerPort: 8080
           name: webapp
