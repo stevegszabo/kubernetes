@@ -1,0 +1,5 @@
+FROM notebook.local:5000/ubuntu:base
+MAINTAINER steve.g.szabo@gmail.com
+RUN apt-get install -y python3 python3-pip gunicorn && \
+    apt-get clean
+ENTRYPOINT ["/bin/bash"]
