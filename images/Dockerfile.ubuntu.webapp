@@ -1,8 +1,0 @@
-FROM notebook.local:5000/ubuntu:python
-MAINTAINER steve.g.szabo@gmail.com
-ENV TMPDIR=/app/tmp
-RUN pip3 install flask
-COPY root/app /app
-USER www-data
-EXPOSE 8080
-ENTRYPOINT ["/usr/bin/gunicorn3", "--bind", "0.0.0.0:8080", "app.webapp:GAPPLICATION", "--log-level", "info", "--access-logfile", "-", "--error-logfile", "-"]
