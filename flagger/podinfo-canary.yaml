@@ -3,7 +3,6 @@ apiVersion: flagger.app/v1beta1
 kind: Canary
 metadata:
   name: podinfo
-  namespace: test
 spec:
   # deployment reference
   targetRef:
@@ -70,8 +69,7 @@ spec:
         url: http://flagger-loadtester.test/
         timeout: 30s
         metadata:
-          type: bash
-          cmd: "curl -sd 'test' http://podinfo-canary:9898/token | grep token"
+          cmd: "curl -sd 'test' http://podinfo-canary.test:9898/token | grep token"
       - name: load-test
         url: http://flagger-loadtester.test/
         timeout: 5s
