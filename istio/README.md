@@ -17,6 +17,6 @@ kubectl -n istio-system create secret tls httpbin-credential \
 --key=httpbin.example.com.key --cert=httpbin.example.com.crt
 
 curl -s -HHost:httpbin.example.com \
---resolve "httpbin.example.com:8443:127.0.0.1" \
---cacert example.com.crt "https://httpbin.example.com:8443/webapp"
+--resolve httpbin.example.com:8443:127.0.0.1 \
+--cacert example.com.crt https://httpbin.example.com:8443/webapp
 ```
