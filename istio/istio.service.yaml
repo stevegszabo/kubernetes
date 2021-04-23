@@ -63,6 +63,7 @@ spec:
   - httpbin.example.com
   gateways:
   - webapp
+  - mesh
   http:
   - match:
     - uri:
