@@ -1,5 +1,3 @@
-### Ingress
-
 ```
 kubectl -n istio-system port-forward --address 0.0.0.0 svc/kiali 20001:20001
 kubectl -n istio-system port-forward --address 0.0.0.0 svc/istio-ingressgateway 8443:443
