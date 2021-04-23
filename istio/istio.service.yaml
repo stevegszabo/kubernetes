@@ -1,4 +1,23 @@
 ---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: webapp
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: httpbin-credential
+    hosts:
+    - httpbin.example.com
+
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -41,6 +60,9 @@ metadata:
 spec:
   hosts:
   - webapp.demo.svc.cluster.local
+  - httpbin.example.com
+  gateways:
+  - webapp
   http:
   - match:
     - uri:
