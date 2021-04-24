@@ -1,4 +1,30 @@
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp
+data:
+  example.com.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIC3jCCAcYCAQAwDQYJKoZIhvcNAQELBQAwLTEVMBMGA1UECgwMZXhhbXBsZSBJ
+    bmMuMRQwEgYDVQQDDAtleGFtcGxlLmNvbTAeFw0yMTA0MjMyMjEzMDBaFw0yMjA0
+    MjMyMjEzMDBaMD0xHDAaBgNVBAMME2h0dHBiaW4uZXhhbXBsZS5jb20xHTAbBgNV
+    BAoMFGh0dHBiaW4gb3JnYW5pemF0aW9uMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+    MIIBCgKCAQEA5Gi3jLYgfZZGRPJO4qPmASeOmnt7HW+Dxr7YAumt3oDtlXAxbaE7
+    qKZA4zMiUyYodA2eX9gJD/oTn1BfSXP3ACQ/yGPDfPjLMdUOir6jqzmzn5/YylEu
+    7LfEk3As5OqkWkKd6GlG3wEdEZAW9oog5IVcHysNizVfu/pU8ItZikVCfn6qKojw
+    XbFjtsDAZfziCg2X705+Jv2kQ7PiA9gXKE8KaQfLZ1mmbpL54YDQdhY1UcqBEm9c
+    4ObiszicYCSEuW6rk+QMoLvL7TrI8487gGlfn/8T0GGLYPODeOy5YOQn/EhgQEs0
+    XbzPD480Lr7EEZh61UJgk5vpqZCqtHSs0wIDAQABMA0GCSqGSIb3DQEBCwUAA4IB
+    AQBzj7ex01sLhCamUTTJlegaaY+0jBbTP3asKgvFkqHC2u4BkVyZa3sjHwu9LArR
+    72QMQSdXVqYI33nPmD/WXcTSma/78dMGGakAuKmuzs36cADbuzOxRySgAW9ESXTG
+    l7JuV1hZGwGIn0aBdT7l7MoIUin1z1RMUwyeYf1SQjljHHZ8WAASfq9WjIoXcUzP
+    uRaif9dzb/FxXpJ/Vq+CS8HfkAvR9NdcK8/kjRZl1WknHRrOckSanDilrjbSKZDG
+    1RE7eAouaI1CXIqsPlJOYv6PzZHUDQ5IEUUdCApMQ0/BIzZrfVdKOsUSgKrHg7YH
+    QHV0psEcemQ9zTD+Ut1ZRH6h
+    -----END CERTIFICATE-----
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,13 +53,39 @@ spec:
       annotations:
         kubernetes.io/change-cause: "001"
     spec:
+      volumes:
+      - name: webapp
+        configMap:
+          name: webapp
+          items:
+          - key: example.com.crt
+            path: example.com.crt
       containers:
-      - name: curl-webapp
+      - name: curl-webapp-local
         image: notebook.local:5000/webapp:latest
-        command: ["/bin/bash", "-c", "while true; do curl -s http://webapp.demo.svc.cluster.local/webapp; sleep .5; done"]
+        command: ["/bin/bash", "-c", "while true; do curl -s http://$WEBAPP_HOST/webapp; sleep .5; done"]
+        env:
+        - name: WEBAPP_HOST
+          value: "webapp.demo.svc.cluster.local"
+      - name: curl-webapp-ingress
+        image: notebook.local:5000/webapp:latest
+        command: ["/bin/bash", "-c", "while true; do curl -s -HHost:$WEBAPP_HOST --resolve $WEBAPP_HOST:443:$WEBAPP_ISTIO_INGRESS_SERVICE --cacert $WEBAPP_CERT https://$WEBAPP_HOST/webapp; sleep .5; done"]
+        volumeMounts:
+        - name: webapp
+          mountPath: /webapp
+        env:
+        - name: WEBAPP_HOST
+          value: "httpbin.example.com"
+        - name: WEBAPP_CERT
+          value: "/webapp/example.com.crt"
+        - name: WEBAPP_ISTIO_INGRESS_SERVICE
+          value: "10.103.172.37"
       - name: curl-google
         image: notebook.local:5000/webapp:latest
-        command: ["/bin/bash", "-c", "while true; do curl -s https://www.google.com; sleep .5; done"]
+        command: ["/bin/bash", "-c", "while true; do curl -s https://$WEBAPP_HOST; sleep .5; done"]
+        env:
+        - name: WEBAPP_HOST
+          value: "www.google.com"
       - name: client
         image: notebook.local:5000/webapp:latest
         ports:
