@@ -28,9 +28,12 @@ spec:
         kubernetes.io/change-cause: "001"
     spec:
       containers:
-      - name: curl
+      - name: curl-webapp
         image: notebook.local:5000/webapp:latest
         command: ["/bin/bash", "-c", "while true; do curl -s http://webapp.demo.svc.cluster.local/webapp; sleep .5; done"]
+      - name: curl-google
+        image: notebook.local:5000/webapp:latest
+        command: ["/bin/bash", "-c", "while true; do curl -s https://www.google.com; sleep .5; done"]
       - name: client
         image: notebook.local:5000/webapp:latest
         ports:
