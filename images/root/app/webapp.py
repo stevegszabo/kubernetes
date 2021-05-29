@@ -1,6 +1,7 @@
 """
 Sample python webapp container
 """
+import os
 import socket
 
 from flask import Flask
@@ -14,9 +15,10 @@ def indexpage():
     Sample index page
     :return: String
     """
+    version = os.getenv('WEBAPP_VERSION', 'v0.0.0')
     hostname = socket.gethostname()
     address = socket.gethostbyname(hostname)
-    return "{}:{}\n".format(hostname, address)
+    return "{}:{}:{}\n".format(version, hostname, address)
 
 
 if __name__ == "__main__":
