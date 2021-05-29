@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 MAINTAINER steve.g.szabo@gmail.com
 
-ENV WEBAPP_VERSION=1.0.2
+ENV WEBAPP_VERSION=1.0.3
 
 RUN apt-get update && \
     apt-get upgrade -y && \
