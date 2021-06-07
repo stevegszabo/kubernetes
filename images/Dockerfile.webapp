@@ -1,0 +1,10 @@
+FROM ubuntu-flask:latest
+MAINTAINER steve.g.szabo@gmail.com
+
+ENV WEBAPP_VERSION=1.0.7
+
+COPY root/app /app
+RUN chown -R www-data:www-data /app
+EXPOSE 8080
+USER www-data
+ENTRYPOINT ["/app/entrypoint.sh"]
