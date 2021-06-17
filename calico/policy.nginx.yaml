@@ -1,0 +1,80 @@
+---
+apiVersion: projectcalico.org/v3
+kind: NetworkSet
+metadata:
+  name: on-prem
+  namespace: nginx-ingress
+  labels:
+    zone: on-prem
+spec:
+  nets:
+  - 0.0.0.0/0
+
+---
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: nginx
+  namespace: nginx-ingress
+spec:
+  selector: app == 'nginx-ingress'
+  types:
+  - Egress
+  - Ingress
+  egress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow egress from nginx to backend
+    protocol: TCP
+    destination:
+      selector: app == 'webapp'
+      namespaceSelector: zone == 'webapp'
+      ports:
+      - 80
+      - 8080
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow egress from nginx to nginx
+    protocol: TCP
+    destination:
+      selector: app == 'nginx-ingress'
+      namespaceSelector: zone == 'nginx-ingress'
+      ports:
+      - 80
+      - 8080
+  ingress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow ingress from on-onprem to nginx
+    protocol: TCP
+    source:
+      selector: zone == 'on-prem'
+    destination:
+      ports:
+      - 80
+      - 8080
+
+---
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: dns
+  namespace: nginx-ingress
+spec:
+  selector: all()
+  types:
+  - Egress
+  egress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow egress from all to kube-system for DNS
+    protocol: UDP
+    destination:
+      selector: k8s-app == 'kube-dns'
+      namespaceSelector: zone == 'kube-system'
+      ports:
+      - 53

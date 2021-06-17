@@ -1,0 +1,20 @@
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: worker-nodes
+spec:
+  selector: has(node-role.kubernetes.io/worker)
+  types:
+  - Egress
+  egress:
+  - action: Deny
+    metadata:
+      annotations:
+        desc: Deny egress from worker nodes to port 22
+    protocol: TCP
+    destination:
+      nets:
+      - 0.0.0.0/0
+      ports:
+      - 22
