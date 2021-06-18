@@ -7,6 +7,10 @@ kube-system     Active   537d   kubernetes.io/metadata.name=kube-system,zone=kub
 nginx-ingress   Active   9h     kubernetes.io/metadata.name=nginx-ingress,zone=nginx-ingress
 webapp          Active   9h     kubernetes.io/metadata.name=webapp,zone=webapp
 
+szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl get ippool default-ipv4-ippool -o wide
+NAME                  CIDR            NAT    IPIPMODE   VXLANMODE   DISABLED   SELECTOR
+default-ipv4-ippool   10.244.0.0/16   true   Never      Always      false      all()
+
 szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl ipam show
 +----------+---------------+-----------+------------+--------------+
 | GROUPING |     CIDR      | IPS TOTAL | IPS IN USE |   IPS FREE   |
