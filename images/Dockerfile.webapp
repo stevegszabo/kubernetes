@@ -1,7 +1,7 @@
 FROM 192.168.56.101:5000/ubuntu-flask:latest
 MAINTAINER steve.g.szabo@gmail.com
 
-ENV WEBAPP_VERSION=1.0.10
+ENV WEBAPP_VERSION=1.0.11
 
 COPY root/app /app
 RUN chown -R www-data:www-data /app
