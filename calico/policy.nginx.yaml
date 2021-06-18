@@ -17,7 +17,7 @@ metadata:
   name: nginx
   namespace: nginx-ingress
 spec:
-  selector: app == 'nginx-ingress'
+  selector: app.kubernetes.io/name == 'ingress-nginx'
   types:
   - Egress
   - Ingress
@@ -39,7 +39,7 @@ spec:
         desc: Allow egress from nginx to nginx
     protocol: TCP
     destination:
-      selector: app == 'nginx-ingress'
+      selector: app.kubernetes.io/name == 'ingress-nginx'
       namespaceSelector: zone == 'nginx-ingress'
       ports:
       - 80

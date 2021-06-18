@@ -71,7 +71,7 @@ spec:
         desc: Allow ingress from nginx to backend
     protocol: TCP
     source:
-      selector: app == 'nginx-ingress'
+      selector: app.kubernetes.io/name == 'ingress-nginx'
       namespaceSelector: zone == 'nginx-ingress'
     destination:
       ports:
