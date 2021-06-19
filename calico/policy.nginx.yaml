@@ -31,19 +31,17 @@ spec:
       selector: app == 'webapp'
       namespaceSelector: zone == 'webapp'
       ports:
-      - 80
       - 8080
   - action: Allow
     metadata:
       annotations:
-        desc: Allow egress from nginx to nginx
+        desc: Allow egress from nginx to k8s api
     protocol: TCP
     destination:
-      selector: app.kubernetes.io/name == 'ingress-nginx'
-      namespaceSelector: zone == 'nginx-ingress'
+      nets:
+      - 192.168.56.101/32
       ports:
-      - 80
-      - 8080
+      - 6443
   ingress:
   - action: Allow
     metadata:
@@ -54,8 +52,7 @@ spec:
       selector: zone == 'on-prem'
     destination:
       ports:
-      - 80
-      - 8080
+      - 443
 
 ---
 apiVersion: projectcalico.org/v3
