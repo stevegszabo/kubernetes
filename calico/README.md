@@ -18,6 +18,16 @@ szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json felixconfiguration 
   "vxlanVNI": 1
 }
 
+szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json ippools default-ipv4-ippool | jq -r .spec
+{
+  "blockSize": 26,
+  "cidr": "10.244.0.0/16",
+  "ipipMode": "Never",
+  "natOutgoing": true,
+  "nodeSelector": "all()",
+  "vxlanMode": "Always"
+}
+
 szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl get ippool default-ipv4-ippool -o wide
 NAME                  CIDR            NAT    IPIPMODE   VXLANMODE   DISABLED   SELECTOR
 default-ipv4-ippool   10.244.0.0/16   true   Never      Always      false      all()
