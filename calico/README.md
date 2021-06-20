@@ -7,6 +7,14 @@ kube-system     Active   537d   kubernetes.io/metadata.name=kube-system,zone=kub
 nginx-ingress   Active   9h     kubernetes.io/metadata.name=nginx-ingress,zone=nginx-ingress
 webapp          Active   9h     kubernetes.io/metadata.name=webapp,zone=webapp
 
+szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json clusterinformations default | jq -r .spec
+{
+  "calicoVersion": "v3.19.1",
+  "clusterGUID": "777501f84e7a4fe9b8d55f49be5fc39e",
+  "clusterType": "k8s,kdd,bgp,kubeadm",
+  "datastoreReady": true
+}
+
 szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json felixconfiguration default | jq -r .spec
 {
   "bpfLogLevel": "",
