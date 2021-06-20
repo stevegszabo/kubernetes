@@ -12,6 +12,18 @@ spec:
 
 ---
 apiVersion: projectcalico.org/v3
+kind: NetworkSet
+metadata:
+  name: kubernetes-api
+  namespace: nginx-ingress
+  labels:
+    zone: kubernetes-api
+spec:
+  nets:
+  - 192.168.56.101/32
+
+---
+apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: nginx
@@ -38,8 +50,7 @@ spec:
         desc: Allow egress from nginx to k8s api
     protocol: TCP
     destination:
-      nets:
-      - 192.168.56.101/32
+      selector: zone == 'kubernetes-api'
       ports:
       - 6443
   ingress:
