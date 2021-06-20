@@ -31,6 +31,15 @@ spec:
       namespaceSelector: zone == 'webapp'
       ports:
       - 8080
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow egress from client to on-prem
+    protocol: TCP
+    destination:
+      selector: zone == 'on-prem'
+      ports:
+      - 443
 
 ---
 apiVersion: projectcalico.org/v3
