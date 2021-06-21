@@ -28,7 +28,7 @@ spec:
     protocol: TCP
     destination:
       selector: app == 'webapp'
-      namespaceSelector: zone == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp'
       ports:
       - 8080
   - action: Allow
@@ -70,7 +70,7 @@ spec:
     protocol: TCP
     source:
       selector: app == 'client'
-      namespaceSelector: zone == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp'
     destination:
       ports:
       - 8080
@@ -81,7 +81,7 @@ spec:
     protocol: TCP
     source:
       selector: app.kubernetes.io/name == 'ingress-nginx'
-      namespaceSelector: zone == 'nginx-ingress'
+      namespaceSelector: projectcalico.org/name == 'nginx-ingress'
     destination:
       ports:
       - 8080
@@ -104,6 +104,6 @@ spec:
     protocol: UDP
     destination:
       selector: k8s-app == 'kube-dns'
-      namespaceSelector: zone == 'kube-system'
+      namespaceSelector: projectcalico.org/name == 'kube-system'
       ports:
       - 53

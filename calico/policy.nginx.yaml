@@ -41,7 +41,7 @@ spec:
     protocol: TCP
     destination:
       selector: app == 'webapp'
-      namespaceSelector: zone == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp'
       ports:
       - 8080
   - action: Allow
@@ -83,6 +83,6 @@ spec:
     protocol: UDP
     destination:
       selector: k8s-app == 'kube-dns'
-      namespaceSelector: zone == 'kube-system'
+      namespaceSelector: projectcalico.org/name == 'kube-system'
       ports:
       - 53
