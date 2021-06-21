@@ -47,6 +47,16 @@ spec:
   - action: Allow
     metadata:
       annotations:
+        desc: Allow egress from nginx to rogue
+    protocol: TCP
+    destination:
+      selector: app == 'rogue'
+      namespaceSelector: projectcalico.org/name == 'webapp'
+      ports:
+      - 8080
+  - action: Allow
+    metadata:
+      annotations:
         desc: Allow egress from nginx to k8s api
     protocol: TCP
     destination:

@@ -8,6 +8,7 @@ spec:
   selector: app == 'rogue'
   types:
   - Egress
+  - Ingress
   egress:
   - action: Allow
     metadata:
@@ -17,6 +18,18 @@ spec:
     destination:
       selector: app == 'client'
       namespaceSelector: projectcalico.org/name == 'webapp'
+      ports:
+      - 8080
+  ingress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow ingress from nginx to rogue
+    protocol: TCP
+    source:
+      selector: app.kubernetes.io/name == 'ingress-nginx'
+      namespaceSelector: projectcalico.org/name == 'nginx-ingress'
+    destination:
       ports:
       - 8080
 
