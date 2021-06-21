@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rogue
+  namespace: webapp
+  labels:
+    app: rogue
+spec:
+  type: ClusterIP
+  selector:
+    app: rogue
+  ports:
+  - name: rogue
+    protocol: TCP
+    port: 80
+    targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rogue
+  namespace: webapp
+  labels:
+    app: rogue
+spec:
+  selector:
+    matchLabels:
+      app: rogue
+  replicas: 1
+  minReadySeconds: 15
+  progressDeadlineSeconds: 300
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  template:
+    metadata:
+      name: rogue
+      labels:
+        app: rogue
+    spec:
+      containers:
+      - name: rogue
+        image: 192.168.56.101:5000/webapp:1.0.8
+        ports:
+        - name: rogue
+          protocol: TCP
+          containerPort: 8080
+        readinessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 15
+          httpGet:
+            path: /
+            port: rogue
+        livenessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 15
+          httpGet:
+            path: /
+            port: rogue
