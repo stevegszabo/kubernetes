@@ -1,20 +1,48 @@
 ---
 apiVersion: projectcalico.org/v3
+kind: GlobalNetworkSet
+metadata:
+  name: on-prem
+  labels:
+    zone: on-prem
+spec:
+  nets:
+  - 0.0.0.0/0
+
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkSet
+metadata:
+  name: kubernetes-api
+  labels:
+    zone: kubernetes-api
+spec:
+  nets:
+  - 192.168.56.101/32
+
+---
+apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
-  name: worker-nodes
+  name: default-deny
 spec:
-  selector: has(node-role.kubernetes.io/worker)
+  namespaceSelector: projectcalico.org/name in {'webapp', 'nginx-ingress'}
   types:
   - Egress
+  - Ingress
   egress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow egress from all to kube-system for DNS
+    protocol: UDP
+    destination:
+      selector: k8s-app == 'kube-dns'
+      namespaceSelector: projectcalico.org/name == 'kube-system'
+      ports:
+      - 53
+  ingress:
   - action: Deny
     metadata:
       annotations:
-        desc: Deny egress from worker nodes to port 22
-    protocol: TCP
-    destination:
-      nets:
-      - 0.0.0.0/0
-      ports:
-      - 22
+        desc: Deny all ingress

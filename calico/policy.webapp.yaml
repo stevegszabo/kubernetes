@@ -1,17 +1,5 @@
 ---
 apiVersion: projectcalico.org/v3
-kind: NetworkSet
-metadata:
-  name: on-prem
-  namespace: webapp
-  labels:
-    zone: on-prem
-spec:
-  nets:
-  - 0.0.0.0/0
-
----
-apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: rogue
@@ -20,6 +8,7 @@ spec:
   selector: app == 'rogue'
   types:
   - Egress
+  - Ingress
   egress:
   - action: Allow
     metadata:
@@ -31,6 +20,11 @@ spec:
       namespaceSelector: projectcalico.org/name == 'webapp'
       ports:
       - 9090
+  ingress:
+  - action: Deny
+    metadata:
+      annotations:
+        desc: Deny all ingress
 
 ---
 apiVersion: projectcalico.org/v3
@@ -120,25 +114,3 @@ spec:
     destination:
       ports:
       - 8080
-
----
-apiVersion: projectcalico.org/v3
-kind: NetworkPolicy
-metadata:
-  name: dns
-  namespace: webapp
-spec:
-  selector: all()
-  types:
-  - Egress
-  egress:
-  - action: Allow
-    metadata:
-      annotations:
-        desc: Allow egress from all to kube-system for DNS
-    protocol: UDP
-    destination:
-      selector: k8s-app == 'kube-dns'
-      namespaceSelector: projectcalico.org/name == 'kube-system'
-      ports:
-      - 53

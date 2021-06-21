@@ -1,29 +1,5 @@
 ---
 apiVersion: projectcalico.org/v3
-kind: NetworkSet
-metadata:
-  name: on-prem
-  namespace: nginx-ingress
-  labels:
-    zone: on-prem
-spec:
-  nets:
-  - 0.0.0.0/0
-
----
-apiVersion: projectcalico.org/v3
-kind: NetworkSet
-metadata:
-  name: kubernetes-api
-  namespace: nginx-ingress
-  labels:
-    zone: kubernetes-api
-spec:
-  nets:
-  - 192.168.56.101/32
-
----
-apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: nginx
@@ -64,25 +40,3 @@ spec:
     destination:
       ports:
       - 443
-
----
-apiVersion: projectcalico.org/v3
-kind: NetworkPolicy
-metadata:
-  name: dns
-  namespace: nginx-ingress
-spec:
-  selector: all()
-  types:
-  - Egress
-  egress:
-  - action: Allow
-    metadata:
-      annotations:
-        desc: Allow egress from all to kube-system for DNS
-    protocol: UDP
-    destination:
-      selector: k8s-app == 'kube-dns'
-      namespaceSelector: projectcalico.org/name == 'kube-system'
-      ports:
-      - 53
