@@ -7,6 +7,10 @@ kube-system     Active   537d   kubernetes.io/metadata.name=kube-system,zone=kub
 nginx-ingress   Active   9h     kubernetes.io/metadata.name=nginx-ingress,zone=nginx-ingress
 webapp          Active   9h     kubernetes.io/metadata.name=webapp,zone=webapp
 
+szabos@ubuntu:~/src/github/kubernetes/calico$ kc get tigerastatus calico
+NAME     AVAILABLE   PROGRESSING   DEGRADED   SINCE
+calico   True        False         False      16m
+
 szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json clusterinformations default | jq -r .spec
 {
   "calicoVersion": "v3.19.1",
