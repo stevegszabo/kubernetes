@@ -1,27 +1,5 @@
 ---
 apiVersion: projectcalico.org/v3
-kind: GlobalNetworkSet
-metadata:
-  name: on-prem
-  labels:
-    zone: on-prem
-spec:
-  nets:
-  - 0.0.0.0/0
-
----
-apiVersion: projectcalico.org/v3
-kind: GlobalNetworkSet
-metadata:
-  name: kubernetes-api
-  labels:
-    zone: kubernetes-api
-spec:
-  nets:
-  - 192.168.56.101/32
-
----
-apiVersion: projectcalico.org/v3
 kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
@@ -41,8 +19,3 @@ spec:
       namespaceSelector: projectcalico.org/name == 'kube-system'
       ports:
       - 53
-  ingress:
-  - action: Deny
-    metadata:
-      annotations:
-        desc: Deny all ingress

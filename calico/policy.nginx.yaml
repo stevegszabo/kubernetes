@@ -1,5 +1,29 @@
 ---
 apiVersion: projectcalico.org/v3
+kind: NetworkSet
+metadata:
+  name: kubernetes-api
+  namespace: nginx-ingress
+  labels:
+    zone: kubernetes-api
+spec:
+  nets:
+  - 192.168.56.101/32
+
+---
+apiVersion: projectcalico.org/v3
+kind: NetworkSet
+metadata:
+  name: on-prem
+  namespace: nginx-ingress
+  labels:
+    zone: on-prem
+spec:
+  nets:
+  - 192.168.56.0/24
+
+---
+apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: nginx

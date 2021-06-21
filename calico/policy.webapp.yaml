@@ -8,7 +8,6 @@ spec:
   selector: app == 'rogue'
   types:
   - Egress
-  - Ingress
   egress:
   - action: Allow
     metadata:
@@ -20,11 +19,6 @@ spec:
       namespaceSelector: projectcalico.org/name == 'webapp'
       ports:
       - 8080
-  ingress:
-  - action: Deny
-    metadata:
-      annotations:
-        desc: Deny all ingress
 
 ---
 apiVersion: projectcalico.org/v3
@@ -48,15 +42,6 @@ spec:
       namespaceSelector: projectcalico.org/name == 'webapp'
       ports:
       - 8080
-  - action: Allow
-    metadata:
-      annotations:
-        desc: Allow egress from client to on-prem
-    protocol: TCP
-    destination:
-      selector: zone == 'on-prem'
-      ports:
-      - 443
   ingress:
   - action: Allow
     metadata:
@@ -79,18 +64,7 @@ metadata:
 spec:
   selector: app == 'webapp'
   types:
-  - Egress
   - Ingress
-  egress:
-  - action: Allow
-    metadata:
-      annotations:
-        desc: Allow egress from backend to on-prem
-    protocol: TCP
-    destination:
-      selector: zone == 'on-prem'
-      ports:
-      - 443
   ingress:
   - action: Allow
     metadata:
