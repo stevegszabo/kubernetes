@@ -26,8 +26,8 @@ calico   True        False         False      16m
 szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json clusterinformations default | jq -r .spec
 {
   "calicoVersion": "v3.19.1",
-  "clusterGUID": "777501f84e7a4fe9b8d55f49be5fc39e",
-  "clusterType": "k8s,kdd,bgp,kubeadm",
+  "clusterGUID": "b4a3a4e77e51484da13bd3327714624a",
+  "clusterType": "typha,kdd,k8s,operator,bgp,kubeadm",
   "datastoreReady": true
 }
 
@@ -36,10 +36,7 @@ szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json felixconfiguration 
   "bpfLogLevel": "",
   "logSeverityScreen": "Info",
   "reportingInterval": "0s",
-  "vxlanEnabled": true,
-  "vxlanMTU": 1450,
-  "vxlanPort": 8472,
-  "vxlanVNI": 1
+  "vxlanEnabled": true
 }
 
 szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json ippools default-ipv4-ippool | jq -r .spec
@@ -49,12 +46,12 @@ szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json ippools default-ipv
   "ipipMode": "Never",
   "natOutgoing": true,
   "nodeSelector": "all()",
-  "vxlanMode": "Always"
+  "vxlanMode": "CrossSubnet"
 }
 
 szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl get ippool default-ipv4-ippool -o wide
-NAME                  CIDR            NAT    IPIPMODE   VXLANMODE   DISABLED   SELECTOR
-default-ipv4-ippool   10.244.0.0/16   true   Never      Always      false      all()
+NAME                  CIDR            NAT    IPIPMODE   VXLANMODE     DISABLED   SELECTOR
+default-ipv4-ippool   10.244.0.0/16   true   Never      CrossSubnet   false      all()
 
 szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl ipam show
 +----------+---------------+-----------+------------+--------------+
