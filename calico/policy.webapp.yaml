@@ -19,7 +19,7 @@ spec:
       selector: app == 'client'
       namespaceSelector: projectcalico.org/name == 'webapp'
       ports:
-      - 9090
+      - 8080
   ingress:
   - action: Deny
     metadata:
@@ -68,7 +68,7 @@ spec:
       namespaceSelector: projectcalico.org/name == 'webapp'
     destination:
       ports:
-      - 9090
+      - 8080
 
 ---
 apiVersion: projectcalico.org/v3
