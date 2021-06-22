@@ -6,6 +6,7 @@ metadata:
   labels:
     app: hashi-demo
     tier: application
+    version: v1
 spec:
   selector:
     matchLabels:
@@ -17,6 +18,7 @@ spec:
       labels:
         app: hashi-demo
         tier: application
+        version: v1
       annotations:
         kubernetes.io/change-cause: "001"
     spec:
@@ -72,6 +74,7 @@ spec:
   selector:
     tier: application
   ports:
-  - port: 5000
+  - name: http
+    port: 5000
     targetPort: 5000
     protocol: TCP
