@@ -1,16 +1,18 @@
 # calico
 
+```
+szabos@ubuntu:~/src/github/kubernetes/calico$ kc -n calico-system get po
+NAME                                       READY   STATUS    RESTARTS   AGE
+calico-kube-controllers-7f58dbcbbd-p4jcp   1/1     Running   0          32m
+calico-node-bspjz                          1/1     Running   0          32m
+calico-typha-5fdf48d8c8-xqt2d              1/1     Running   0          32m
+```
+
 * calico-node: Calico-node runs on every Kubernetes cluster node as a DaemonSet. It is responsible for enforcing network policy, setting up routes on the nodes, plus managing any virtual interfaces for IPIP, VXLAN, or WireGuard
 * calico-typha: Typha is as a stateful proxy for the Kubernetes API server. It's used by every calico-node pod to query and watch Kubernetes resources without putting excessive load on the Kubernetes API server.  The Tigera Operator automatically scales the number of Typha instances as the cluster size grows
 * calico-kube-controllers: Runs a variety of Calico specific controllers that automate synchronization of resources. For example, when a Kubernetes node is deleted, it tidies up any IP addresses or other Calico resources associated with the node
 
 ```
-szabos@ubuntu:~/src/github/kubernetes/calico$ kc get ns -l zone --show-labels
-NAME            STATUS   AGE    LABELS
-kube-system     Active   537d   kubernetes.io/metadata.name=kube-system,zone=kube-system
-nginx-ingress   Active   9h     kubernetes.io/metadata.name=nginx-ingress,zone=nginx-ingress
-webapp          Active   9h     kubernetes.io/metadata.name=webapp,zone=webapp
-
 szabos@ubuntu:~/src/github/kubernetes/calico$ kc get tigerastatus calico
 NAME     AVAILABLE   PROGRESSING   DEGRADED   SINCE
 calico   True        False         False      16m
