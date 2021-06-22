@@ -44,6 +44,16 @@ spec:
   - action: Allow
     metadata:
       annotations:
+        desc: Allow egress from nginx to hashi-demo presentation
+    protocol: TCP
+    destination:
+      selector: app == 'hashi-demo' && tier == 'presentation'
+      namespaceSelector: projectcalico.org/name == 'hashi-demo'
+      ports:
+      - 80
+  - action: Allow
+    metadata:
+      annotations:
         desc: Allow egress from nginx to k8s api
     protocol: TCP
     destination:
