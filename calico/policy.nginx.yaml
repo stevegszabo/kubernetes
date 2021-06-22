@@ -12,6 +12,18 @@ spec:
 
 ---
 apiVersion: projectcalico.org/v3
+kind: NetworkSet
+metadata:
+  name: on-prem
+  namespace: nginx-ingress
+  labels:
+    zone: on-prem
+spec:
+  nets:
+  - 192.168.56.0/24
+
+---
+apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: nginx
@@ -20,6 +32,7 @@ spec:
   selector: app.kubernetes.io/name == 'ingress-nginx'
   types:
   - Egress
+  - Ingress
   egress:
   - action: Allow
     metadata:
@@ -60,3 +73,15 @@ spec:
       selector: zone == 'kubernetes-api'
       ports:
       - 6443
+  ingress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow ingress from on-prem to nginx
+    protocol: TCP
+    source:
+      selector: zone == 'on-prem'
+    destination:
+      ports:
+      - 80
+      - 443
