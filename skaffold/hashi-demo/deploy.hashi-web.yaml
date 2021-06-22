@@ -1,0 +1,69 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presentation
+  labels:
+    app: hashi-demo
+    tier: presentation
+spec:
+  selector:
+    matchLabels:
+      tier: presentation
+  replicas: 1
+  template:
+    metadata:
+      name: presentation
+      labels:
+        app: hashi-demo
+        tier: presentation
+      annotations:
+        kubernetes.io/change-cause: "001"
+    spec:
+      containers:
+      - name: presentation
+        image: 192.168.56.101:5000/hashi-demo/hashi-demo-web:latest
+        env:
+        - name: APPLICATION_BACK
+          value: "application.hashi-demo.svc.cluster.local:5000"
+        ports:
+        - containerPort: 80
+          name: presentation
+        resources:
+          requests:
+            cpu: 256m
+            memory: 256M
+          limits:
+            cpu: 256m
+            memory: 256M
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /probe.html
+            port: presentation
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /probe.html
+            port: presentation
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: presentation
+  labels:
+    app: hashi-demo
+    tier: presentation
+spec:
+  type: ClusterIP
+  selector:
+    tier: presentation
+  ports:
+  - port: 8080
+    targetPort: 80
+    protocol: TCP

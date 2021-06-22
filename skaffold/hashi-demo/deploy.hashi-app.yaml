@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+  labels:
+    app: hashi-demo
+    tier: application
+spec:
+  selector:
+    matchLabels:
+      tier: application
+  replicas: 1
+  template:
+    metadata:
+      name: application
+      labels:
+        app: hashi-demo
+        tier: application
+      annotations:
+        kubernetes.io/change-cause: "001"
+    spec:
+      containers:
+      - name: application
+        image: 192.168.56.101:5000/hashi-demo/hashi-demo-app:latest
+        env:
+        - name: POSTGRES_HOST
+          value: "data.hashi-demo.svc.cluster.local"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres_password"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DATABASE
+          value: "posts"
+        ports:
+        - name: application
+          containerPort: 5000
+        resources:
+          requests:
+            cpu: 256m
+            memory: 256M
+          limits:
+            cpu: 256m
+            memory: 256M
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /api/probe
+            port: application
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /api/probe
+            port: application
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: application
+  labels:
+    app: hashi-demo
+    tier: application
+spec:
+  type: ClusterIP
+  selector:
+    tier: application
+  ports:
+  - port: 5000
+    targetPort: 5000
+    protocol: TCP
