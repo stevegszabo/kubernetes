@@ -4,8 +4,7 @@ kind: PersistentVolume
 metadata:
   name: hashi-demo
   labels:
-    app: hashi-demo
-    tier: data
+    app: data
 spec:
   capacity:
     storage: 1Gi
@@ -24,8 +23,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: hashi-demo
   labels:
-    app: hashi-demo
-    tier: data
+    app: data
 spec:
   accessModes:
   - ReadWriteMany
