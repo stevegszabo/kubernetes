@@ -60,7 +60,7 @@ spec:
         desc: Allow egress from nginx to hashi-demo presentation
     protocol: TCP
     destination:
-      selector: app == 'hashi-demo' && tier == 'presentation'
+      selector: app == 'presentation'
       namespaceSelector: projectcalico.org/name == 'hashi-demo'
       ports:
       - 80

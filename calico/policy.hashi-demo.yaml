@@ -5,7 +5,7 @@ metadata:
   name: presentation
   namespace: hashi-demo
 spec:
-  selector: app == 'hashi-demo' && tier == 'presentation'
+  selector: app == 'presentation'
   types:
   - Egress
   - Ingress
@@ -16,7 +16,7 @@ spec:
         desc: Allow egress from presentation to application
     protocol: TCP
     destination:
-      selector: app == 'hashi-demo' && tier == 'application'
+      selector: app == 'application'
       namespaceSelector: projectcalico.org/name == 'hashi-demo'
       ports:
       - 5000
@@ -40,7 +40,7 @@ metadata:
   name: application
   namespace: hashi-demo
 spec:
-  selector: app == 'hashi-demo' && tier == 'application'
+  selector: app == 'application'
   types:
   - Egress
   - Ingress
@@ -51,7 +51,7 @@ spec:
         desc: Allow egress from application to data
     protocol: TCP
     destination:
-      selector: app == 'hashi-demo' && tier == 'data'
+      selector: app == 'data'
       namespaceSelector: projectcalico.org/name == 'hashi-demo'
       ports:
       - 5432
@@ -62,7 +62,7 @@ spec:
         desc: Allow ingress from presentation to application
     protocol: TCP
     source:
-      selector: app == 'hashi-demo' && tier == 'presentation'
+      selector: app == 'presentation'
       namespaceSelector: projectcalico.org/name == 'hashi-demo'
     destination:
       ports:
@@ -75,7 +75,7 @@ metadata:
   name: data
   namespace: hashi-demo
 spec:
-  selector: app == 'hashi-demo' && tier == 'data'
+  selector: app == 'data'
   types:
   - Ingress
   ingress:
@@ -85,7 +85,7 @@ spec:
         desc: Allow ingress from application to data
     protocol: TCP
     source:
-      selector: app == 'hashi-demo' && tier == 'application'
+      selector: app == 'application'
       namespaceSelector: projectcalico.org/name == 'hashi-demo'
     destination:
       ports:

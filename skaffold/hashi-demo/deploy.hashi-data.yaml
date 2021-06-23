@@ -4,20 +4,19 @@ kind: Deployment
 metadata:
   name: data
   labels:
-    app: hashi-demo
-    tier: data
+    app: data
     version: v1
 spec:
   selector:
     matchLabels:
-      tier: data
+      app: data
+      version: v1
   replicas: 1
   template:
     metadata:
       name: data
       labels:
-        app: hashi-demo
-        tier: data
+        app: data
         version: v1
       annotations:
         kubernetes.io/change-cause: "001"
@@ -64,13 +63,11 @@ kind: Service
 metadata:
   name: data
   labels:
-    app: hashi-demo
-    tier: data
+    app: data
 spec:
   type: ClusterIP
   selector:
-    app: hashi-demo
-    tier: data
+    app: data
   ports:
   - name: tcp
     port: 5432
@@ -83,15 +80,13 @@ kind: DestinationRule
 metadata:
   name: data
   labels:
-    app: hashi-demo
-    tier: data
+    app: data
 spec:
   host: data.hashi-demo.svc.cluster.local
   subsets:
   - name: v1
     labels:
-      app: hashi-demo
-      tier: data
+      app: data
       version: v1
 
 ---
@@ -100,8 +95,7 @@ kind: VirtualService
 metadata:
   name: data
   labels:
-    app: hashi-demo
-    tier: data
+    app: data
 spec:
   hosts:
   - data.hashi-demo.svc.cluster.local
