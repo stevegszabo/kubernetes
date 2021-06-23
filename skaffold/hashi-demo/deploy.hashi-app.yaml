@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: application
-        image: 192.168.56.101:5000/hashi-demo/hashi-demo-app:latest
+        image: 192.168.56.101:5000/hashi-demo/hashi-demo-app:dfd2e2b-dirty
         env:
         - name: POSTGRES_HOST
           value: "data.hashi-demo.svc.cluster.local"
@@ -96,3 +96,25 @@ spec:
       app: hashi-demo
       tier: application
       version: v1
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: application
+  labels:
+    app: hashi-demo
+    tier: application
+spec:
+  hosts:
+  - application.hashi-demo.svc.cluster.local
+  gateways:
+  - mesh
+  http:
+  - route:
+    - destination:
+        host: application.hashi-demo.svc.cluster.local
+        subset: v1
+        port:
+          number: 5000
+      weight: 100

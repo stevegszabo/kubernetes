@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: presentation
-        image: 192.168.56.101:5000/hashi-demo/hashi-demo-web:latest
+        image: 192.168.56.101:5000/hashi-demo/hashi-demo-web:dfd2e2b-dirty
         env:
         - name: APPLICATION_BACK
           value: "application.hashi-demo.svc.cluster.local:5000"
@@ -68,7 +68,7 @@ spec:
     tier: presentation
   ports:
   - name: http
-    port: 8080
+    port: 80
     targetPort: 80
     protocol: TCP
 
@@ -88,3 +88,25 @@ spec:
       app: hashi-demo
       tier: presentation
       version: v1
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: presentation
+  labels:
+    app: hashi-demo
+    tier: presentation
+spec:
+  hosts:
+  - presentation.hashi-demo.svc.cluster.local
+  gateways:
+  - mesh
+  http:
+  - route:
+    - destination:
+        host: presentation.hashi-demo.svc.cluster.local
+        subset: v1
+        port:
+          number: 80
+      weight: 100
