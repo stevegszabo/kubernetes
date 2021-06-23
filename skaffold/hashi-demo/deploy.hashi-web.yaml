@@ -64,9 +64,27 @@ metadata:
 spec:
   type: ClusterIP
   selector:
+    app: hashi-demo
     tier: presentation
   ports:
   - name: http
     port: 8080
     targetPort: 80
     protocol: TCP
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: presentation
+  labels:
+    app: hashi-demo
+    tier: presentation
+spec:
+  host: presentation.hashi-demo.svc.cluster.local
+  subsets:
+  - name: v1
+    labels:
+      app: hashi-demo
+      tier: presentation
+      version: v1
