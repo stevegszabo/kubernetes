@@ -15,7 +15,7 @@ spec:
   storageClassName: managed-nfs-storage
   nfs:
     path: /srv/shared/hashi-demo
-    server: 192.168.56.101
+    server: notebook.local
 
 ---
 apiVersion: v1
