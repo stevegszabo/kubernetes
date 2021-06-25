@@ -1,5 +1,5 @@
 FROM notebook.local:5000/ubuntu-flask:latest
-MAINTAINER steve.g.szabo@gmail.com
+MAINTAINER steve.g.szabo
 
 ENV WEBAPP_VERSION=1.0.17
 

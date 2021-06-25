@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-MAINTAINER steve.g.szabo@gmail.com
+MAINTAINER steve.g.szabo
 
 RUN apt-get update && \
     apt-get upgrade -y && \
