@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: application
-        image: 192.168.56.101:5000/hashi-demo/hashi-demo-app:dfd2e2b-dirty
+        image: notebook.local:5000/hashi-demo/hashi-demo-app:dfd2e2b-dirty
         env:
         - name: POSTGRES_HOST
           value: "data.hashi-demo.svc.cluster.local"

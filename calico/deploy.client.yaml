@@ -45,7 +45,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: 192.168.56.101:5000/webapp:1.0.8
+        image: notebook.local:5000/webapp:1.0.8
         ports:
         - name: client
           protocol: TCP
