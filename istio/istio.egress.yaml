@@ -3,6 +3,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: google
+  labels:
+    app: google
 spec:
   selector:
     istio: egressgateway
@@ -21,6 +23,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
 metadata:
   name: google
+  labels:
+    app: google
 spec:
   hosts:
   - www.google.com
@@ -35,6 +39,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: google
+  labels:
+    app: google
 spec:
   host: istio-egressgateway.istio-system.svc.cluster.local
   subsets:
@@ -45,6 +51,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: google
+  labels:
+    app: google
 spec:
   hosts:
   - www.google.com

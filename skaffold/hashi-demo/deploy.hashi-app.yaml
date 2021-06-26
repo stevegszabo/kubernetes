@@ -14,7 +14,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      name: application
       labels:
         app: application
         version: v1
@@ -68,7 +67,6 @@ metadata:
   labels:
     app: application
 spec:
-  type: ClusterIP
   selector:
     app: application
   ports:
@@ -111,4 +109,3 @@ spec:
         subset: v1
         port:
           number: 5000
-      weight: 100

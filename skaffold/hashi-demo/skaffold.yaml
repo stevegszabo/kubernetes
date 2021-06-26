@@ -21,4 +21,3 @@ deploy:
     manifests:
     - deploy.hashi-app.yaml
     - deploy.hashi-data.yaml
-    - deploy.hashi-web.yaml

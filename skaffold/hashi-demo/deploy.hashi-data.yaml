@@ -14,7 +14,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      name: data
       labels:
         app: data
         version: v1
@@ -65,7 +64,6 @@ metadata:
   labels:
     app: data
 spec:
-  type: ClusterIP
   selector:
     app: data
   ports:
@@ -108,4 +106,3 @@ spec:
         subset: v1
         port:
           number: 5432
-      weight: 100
