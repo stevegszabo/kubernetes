@@ -87,7 +87,6 @@ def handle_connect():
         socketio.sleep(3)
         print('connected')
 
-
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')

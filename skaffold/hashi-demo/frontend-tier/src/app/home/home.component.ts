@@ -81,7 +81,6 @@ export class HomeComponent implements OnInit {
     this.dbHealth = false;
   }
 
-
   showAPISuccess() {
     this.toastr.success('API Connectivity Healthy', 'Connection Established');
   }
