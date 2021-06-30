@@ -4,12 +4,12 @@ metadata:
   name: hashi-demo
 build:
   artifacts:
-  - image: notebook.local:5000/hashi-demo/hashi-demo-app
-    context: app-tier
-    docker:
-      dockerfile: Dockerfile
   - image: notebook.local:5000/hashi-demo/hashi-demo-data
     context: db-tier
+    docker:
+      dockerfile: Dockerfile
+  - image: notebook.local:5000/hashi-demo/hashi-demo-app
+    context: app-tier
     docker:
       dockerfile: Dockerfile
   - image: notebook.local:5000/hashi-demo/hashi-demo-web
