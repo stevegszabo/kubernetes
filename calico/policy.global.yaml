@@ -19,3 +19,14 @@ spec:
       namespaceSelector: projectcalico.org/name == 'kube-system'
       ports:
       - 53
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow egress from all to istio-system for istio-proxy
+    protocol: TCP
+    destination:
+      selector: app == 'istiod'
+      namespaceSelector: projectcalico.org/name == 'istio-system'
+      ports:
+      - 15012
+      - 15014
