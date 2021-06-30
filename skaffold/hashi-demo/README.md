@@ -4,6 +4,8 @@
 
 ## Application Description 
 
+![Istio Kiali](images/istio-hashi-demo.png)
+
 # Tier 1 - Frontend Application - User Presentation 
 
 * Angular front end with VMware ClarityUI (https://vmware.github.io/clarity/)
