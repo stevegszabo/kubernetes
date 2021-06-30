@@ -32,6 +32,17 @@ spec:
     destination:
       ports:
       - 80
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow ingress from istio ingress gateway to presentation
+    protocol: TCP
+    source:
+      selector: app == 'istio-ingressgateway'
+      namespaceSelector: projectcalico.org/name == 'istio-system'
+    destination:
+      ports:
+      - 80
 
 ---
 apiVersion: projectcalico.org/v3
