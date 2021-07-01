@@ -14,7 +14,7 @@ spec:
       name: https
       protocol: HTTPS
     tls:
-      mode: MUTUAL
+      mode: SIMPLE
       credentialName: hashi-demo-credential
     hosts:
     - hashi-demo.example.com
