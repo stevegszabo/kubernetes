@@ -4,7 +4,7 @@ kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
 spec:
-  namespaceSelector: projectcalico.org/name in {'webapp', 'nginx-ingress', 'hashi-demo'}
+  namespaceSelector: projectcalico.org/name in {'hashi-demo'}
   types:
   - Egress
   - Ingress
@@ -12,7 +12,7 @@ spec:
   - action: Allow
     metadata:
       annotations:
-        desc: Allow egress from all to kube-system for DNS
+        desc: Allow egress to kube-system for DNS
     protocol: UDP
     destination:
       selector: k8s-app == 'kube-dns'
@@ -22,10 +22,19 @@ spec:
   - action: Allow
     metadata:
       annotations:
-        desc: Allow egress from all to istio-system for istio-proxy
+        desc: Allow egress to istio-system for istio-proxy
     protocol: TCP
     destination:
       selector: app == 'istiod'
       namespaceSelector: projectcalico.org/name == 'istio-system'
       ports:
       - 15012
+  ingress:
+  - action: Allow
+    metadata:
+      annotations:
+        desc: Allow ingress from istio-system for prometheus
+    protocol: TCP
+    source:
+      selector: app == 'prometheus'
+      namespaceSelector: projectcalico.org/name == 'istio-system'
