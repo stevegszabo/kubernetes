@@ -29,4 +29,3 @@ spec:
       namespaceSelector: projectcalico.org/name == 'istio-system'
       ports:
       - 15012
-      - 15014
