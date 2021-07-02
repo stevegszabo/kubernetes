@@ -52,7 +52,7 @@ spec:
   selector:
     matchLabels:
       app: webapp
-  replicas: 3
+  replicas: 1
   minReadySeconds: 15
   progressDeadlineSeconds: 300
   revisionHistoryLimit: 10

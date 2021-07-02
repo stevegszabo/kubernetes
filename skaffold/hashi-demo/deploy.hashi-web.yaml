@@ -11,7 +11,7 @@ spec:
     matchLabels:
       app: presentation
       version: v1
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
