@@ -60,6 +60,10 @@ spec:
     labels:
       app: webapp
       version: v3
+  - name: v4
+    labels:
+      app: webapp
+      version: v4
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -88,7 +92,7 @@ spec:
         subset: v1
         port:
           number: 80
-      weight: 80
+      weight: 70
     - destination:
         host: webapp.demo.svc.cluster.local
         subset: v2
@@ -98,6 +102,12 @@ spec:
     - destination:
         host: webapp.demo.svc.cluster.local
         subset: v3
+        port:
+          number: 80
+      weight: 10
+    - destination:
+        host: webapp.demo.svc.cluster.local
+        subset: v4
         port:
           number: 80
       weight: 10
