@@ -26,7 +26,7 @@ spec:
           claimName: hashi-demo
       containers:
       - name: data
-        image: notebook.local:5000/hashi-demo/hashi-demo-data:dfd2e2b-dirty
+        image: notebook.local:5000/hashi-demo/hashi-demo-data:1.0.0
         volumeMounts:
         - name: hashi-demo
           mountPath: /database

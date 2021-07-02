@@ -28,7 +28,7 @@ spec:
         - name: HASHI_BACK
           value: "application.hashi-demo.svc.cluster.local:5000"
       - name: presentation
-        image: notebook.local:5000/hashi-demo/hashi-demo-web:dfd2e2b-dirty
+        image: notebook.local:5000/hashi-demo/hashi-demo-web:1.0.0
         env:
         - name: APPLICATION_BACK
           value: "application.hashi-demo.svc.cluster.local:5000"
