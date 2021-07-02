@@ -8,10 +8,6 @@ build:
     context: db-tier
     docker:
       dockerfile: Dockerfile
-  - image: notebook.local:5000/hashi-demo/hashi-demo-app
-    context: app-tier
-    docker:
-      dockerfile: Dockerfile
   - image: notebook.local:5000/hashi-demo/hashi-demo-web
     context: frontend-tier
     docker:
@@ -20,5 +16,4 @@ deploy:
   kubectl:
     manifests:
     - deploy.hashi-data.yaml
-    - deploy.hashi-app.yaml
     - deploy.hashi-web.yaml
