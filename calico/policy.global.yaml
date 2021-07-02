@@ -4,7 +4,7 @@ kind: GlobalNetworkPolicy
 metadata:
   name: default-deny
 spec:
-  namespaceSelector: projectcalico.org/name in {'hashi-demo'}
+  namespaceSelector: projectcalico.org/name in {'webapp', 'nginx-ingress', 'hashi-demo'}
   types:
   - Egress
   - Ingress
