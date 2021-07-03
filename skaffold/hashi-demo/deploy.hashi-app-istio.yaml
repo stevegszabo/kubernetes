@@ -23,6 +23,9 @@ metadata:
     app: application
 spec:
   host: application.hashi-demo.svc.cluster.local
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
   subsets:
   - name: v1
     labels:

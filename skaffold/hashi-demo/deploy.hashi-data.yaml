@@ -81,6 +81,14 @@ metadata:
     app: data
 spec:
   host: data.hashi-demo.svc.cluster.local
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 25
+        connectTimeout: 30ms
+        tcpKeepalive:
+          time: 600s
+          interval: 60s
   subsets:
   - name: v1
     labels:
