@@ -1,0 +1,17 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: data
+spec:
+  selector:
+    matchLabels:
+      app: data
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/hashi-demo/sa/application"]
+    to:
+    - operation:
+        ports: ["5432"]

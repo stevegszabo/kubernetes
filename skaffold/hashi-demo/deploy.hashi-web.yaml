@@ -1,4 +1,10 @@
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: presentation
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,6 +26,7 @@ spec:
       annotations:
         kubernetes.io/change-cause: "001"
     spec:
+      serviceAccountName: presentation
       containers:
       - name: curl-backend
         image: notebook.local:5000/webapp:latest
