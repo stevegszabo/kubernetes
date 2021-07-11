@@ -33,6 +33,8 @@ spec:
     to:
     - operation:
         ports: ["5000"]
+        methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+        paths: ["/api/*"]
 
 ---
 apiVersion: security.istio.io/v1beta1
