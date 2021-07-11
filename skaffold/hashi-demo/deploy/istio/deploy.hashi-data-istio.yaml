@@ -26,7 +26,7 @@ spec:
   trafficPolicy:
     connectionPool:
       tcp:
-        maxConnections: 25
+        maxConnections: 24
         connectTimeout: 30ms
         tcpKeepalive:
           time: 600s
