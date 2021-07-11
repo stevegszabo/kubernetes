@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: presentation
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: application
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: data
