@@ -8,6 +8,10 @@ build:
     context: db-tier
     docker:
       dockerfile: Dockerfile
+  - image: notebook.local:5000/hashi-demo/hashi-demo-app
+    context: app-tier
+    docker:
+      dockerfile: Dockerfile
   - image: notebook.local:5000/hashi-demo/hashi-demo-web
     context: frontend-tier
     docker:
@@ -15,5 +19,13 @@ build:
 deploy:
   kubectl:
     manifests:
+    - deploy.hashi-peer-auth-istio.yaml
+    - deploy.hashi-ingress-istio.yaml
+    - deploy.hashi-data-istio.yaml
+    - deploy.hashi-app-istio.yaml
+    - deploy.hashi-web-istio.yaml
+    - deploy.hashi-sa.yaml
     - deploy.hashi-data.yaml
+    - deploy.hashi-app-v1.yaml
+    - deploy.hashi-app-v2.yaml
     - deploy.hashi-web.yaml
