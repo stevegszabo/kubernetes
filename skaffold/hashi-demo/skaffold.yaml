@@ -20,6 +20,7 @@ deploy:
   kubectl:
     manifests:
     - deploy/istio/deploy.hashi-peer-auth-istio.yaml
+    - deploy/istio/deploy.hashi-egress-istio.yaml
     - deploy/istio/deploy.hashi-ingress-istio.yaml
     - deploy/istio/deploy.hashi-data-istio.yaml
     - deploy/istio/deploy.hashi-app-istio.yaml
@@ -30,3 +31,4 @@ deploy:
     - deploy/deploy.hashi-app-v1.yaml
     - deploy/deploy.hashi-app-v2.yaml
     - deploy/deploy.hashi-web.yaml
+    - deploy/deploy.hashi-client.yaml

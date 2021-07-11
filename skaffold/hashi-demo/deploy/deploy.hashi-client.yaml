@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client
+data:
+  example.com.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDOzCCAiOgAwIBAgIUfUFvSg0cImLSgJMTcsBfumdyd0gwDQYJKoZIhvcNAQEL
+    BQAwLTEVMBMGA1UECgwMZXhhbXBsZSBJbmMuMRQwEgYDVQQDDAtleGFtcGxlLmNv
+    bTAeFw0yMTA2MjMwMDEwNTZaFw0yMjA2MjMwMDEwNTZaMC0xFTATBgNVBAoMDGV4
+    YW1wbGUgSW5jLjEUMBIGA1UEAwwLZXhhbXBsZS5jb20wggEiMA0GCSqGSIb3DQEB
+    AQUAA4IBDwAwggEKAoIBAQDJyNV5wqV0P7vBeQc5Ssfljtc/3NMoee5TmxhkJXcm
+    xuu9Nggn5GJ/z8LCJse9EPx9g+n5u1M0z8B6bOXaoh3nGZj/zLfCG61nXh+6meer
+    0gu7Hkes8m0zFeQR+d5zOdZ4AkGgFwSX2VRebU90PvrRy4RxI5i+0IJQCf8kBL69
+    /unOhzxqdgkcMjfP3SSWU0DKWwcQZBLW8aaMjfSrOUePcRaAMz9zNg1KPk7g5gFE
+    mvufQjZbImCckrorqzMmw2LsHjKgp9voKYJFHPKjpB74O54BNZp/Hs+yN2gR+TQ8
+    NrPu5ROi5R7scF+sv8UfmQX+Sl9g0YJr5myCx1IRkZslAgMBAAGjUzBRMB0GA1Ud
+    DgQWBBSo4fV9yuFlcxCKcXM+ybYwIO+BsDAfBgNVHSMEGDAWgBSo4fV9yuFlcxCK
+    cXM+ybYwIO+BsDAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQCq
+    L+vRISnyYMiC40pEWst4wQ/YakzmLDwbhzUrNH3W01M5HiorSbHuL+pwFkDdsHSI
+    WGcI1K3oU5CxKd4ZEpAaMULWr1BxyklVHZ7Th/Dqz60aBQOsR/nA0PTCcWUA1nCd
+    ACpUmsG6TvKkWrdDb9B9CED8cRQ0R6a791mYL+/6FvhcB1XbQx5Yu/0jTbU2QzQ8
+    6RiEQy5dmvD17+ycXA6v/FUtj54oXGQ6Z0YI05Eix0Yz8TjqQ/IPSm8nFuiWYCjc
+    Fmv3AbF6O+vD4HaO4p6ZfyKdAINb8pzjL/jcOqB1TFVbH519imaZOOgTbiaAC6jU
+    MzPJZAaKHoMo98fcTgOx
+    -----END CERTIFICATE-----
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+  labels:
+    app: client
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+      version: v1
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  progressDeadlineSeconds: 120
+  minReadySeconds: 1
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app: client
+        version: v1
+      annotations:
+        kubernetes.io/change-cause: "001"
+    spec:
+      volumes:
+      - name: client
+        configMap:
+          name: client
+          items:
+          - key: example.com.crt
+            path: example.com.crt
+      serviceAccountName: client
+      containers:
+      - name: curl-local
+        image: notebook.local:5000/webapp:latest
+        command: ["/bin/bash", "-c", "while true; do curl -v http://$HASHI_HOST/api/posts; sleep 1; done"]
+        env:
+        - name: HASHI_HOST
+          value: "application.hashi-demo.svc.cluster.local:5000"
+      - name: curl-ingress
+        image: notebook.local:5000/webapp:latest
+        command: ["/bin/bash", "-c", "while true; do curl -v -HHost:$HASHI_HOST --resolve $HASHI_HOST:443:$HASHI_ISTIO_INGRESS_SERVICE --cacert $HASHI_CERT https://$HASHI_HOST/; sleep 1; done"]
+        volumeMounts:
+        - name: client
+          mountPath: /client
+        env:
+        - name: HASHI_HOST
+          value: "hashi-demo.example.com"
+        - name: HASHI_CERT
+          value: "/client/example.com.crt"
+        - name: HASHI_ISTIO_INGRESS_SERVICE
+          value: "10.103.172.37"
+      - name: curl-google
+        image: notebook.local:5000/webapp:latest
+        command: ["/bin/bash", "-c", "while true; do curl -v -L https://$HASHI_HOST/; sleep 1; done"]
+        env:
+        - name: HASHI_HOST
+          value: "www.google.com"
+      - name: client
+        image: notebook.local:5000/webapp:latest
+        ports:
+        - name: client
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: client
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: client
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5

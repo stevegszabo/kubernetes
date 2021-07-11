@@ -70,10 +70,10 @@ spec:
   - action: Allow
     metadata:
       annotations:
-        desc: Allow ingress from presentation to application
+        desc: Allow ingress from client/presentation to application
     protocol: TCP
     source:
-      selector: app == 'presentation'
+      selector: app == 'client' || app == 'presentation'
       namespaceSelector: projectcalico.org/name == 'hashi-demo'
     destination:
       ports:
