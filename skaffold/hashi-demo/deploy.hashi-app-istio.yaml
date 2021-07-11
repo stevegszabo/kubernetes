@@ -23,18 +23,6 @@ metadata:
     app: application
 spec:
   host: application.hashi-demo.svc.cluster.local
-  trafficPolicy:
-    connectionPool:
-      tcp:
-        maxConnections: 1
-      http:
-        http1MaxPendingRequests: 1
-        maxRequestsPerConnection: 1
-    outlierDetection:
-      consecutive5xxErrors: 1
-      interval: 1s
-      baseEjectionTime: 3m
-      maxEjectionPercent: 100
   subsets:
   - name: v1
     labels:
@@ -76,21 +64,3 @@ spec:
       attempts: 3
       perTryTimeout: 5s
       retryOn: gateway-error,connect-failure,refused-stream
-
----
-apiVersion: security.istio.io/v1beta1
-kind: AuthorizationPolicy
-metadata:
-  name: application
-spec:
-  selector:
-    matchLabels:
-      app: application
-  action: ALLOW
-  rules:
-  - from:
-    - source:
-        principals: ["cluster.local/ns/hashi-demo/sa/presentation"]
-    to:
-    - operation:
-        ports: ["5000"]

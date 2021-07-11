@@ -24,6 +24,7 @@ deploy:
     - deploy.hashi-data-istio.yaml
     - deploy.hashi-app-istio.yaml
     - deploy.hashi-web-istio.yaml
+    - deploy.hashi-policy-istio.yaml
     - deploy.hashi-sa.yaml
     - deploy.hashi-data.yaml
     - deploy.hashi-app-v1.yaml

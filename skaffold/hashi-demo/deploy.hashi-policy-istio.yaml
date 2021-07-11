@@ -1,0 +1,53 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: data
+spec:
+  selector:
+    matchLabels:
+      app: data
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/hashi-demo/sa/application"]
+    to:
+    - operation:
+        ports: ["5432"]
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: application
+spec:
+  selector:
+    matchLabels:
+      app: application
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/hashi-demo/sa/presentation"]
+    to:
+    - operation:
+        ports: ["5000"]
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: presentation
+spec:
+  selector:
+    matchLabels:
+      app: presentation
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account"]
+    to:
+    - operation:
+        ports: ["80"]
