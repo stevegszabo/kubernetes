@@ -52,13 +52,13 @@ spec:
         subset: v1
         port:
           number: 5000
-      weight: 75
+      weight: 50
     - destination:
         host: application.hashi-demo.svc.cluster.local
         subset: v2
         port:
           number: 5000
-      weight: 25
+      weight: 50
     timeout: 60s
     retries:
       attempts: 3
