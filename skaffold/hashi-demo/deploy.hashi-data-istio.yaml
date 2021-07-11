@@ -1,0 +1,76 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data
+  labels:
+    app: data
+spec:
+  selector:
+    app: data
+  ports:
+  - name: tcp
+    port: 5432
+    targetPort: 5432
+    protocol: TCP
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: data
+  labels:
+    app: data
+spec:
+  host: data.hashi-demo.svc.cluster.local
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 25
+        connectTimeout: 30ms
+        tcpKeepalive:
+          time: 600s
+          interval: 60s
+  subsets:
+  - name: v1
+    labels:
+      app: data
+      version: v1
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: data
+  labels:
+    app: data
+spec:
+  hosts:
+  - data.hashi-demo.svc.cluster.local
+  gateways:
+  - mesh
+  tcp:
+  - route:
+    - destination:
+        host: data.hashi-demo.svc.cluster.local
+        subset: v1
+        port:
+          number: 5432
+
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: data
+spec:
+  selector:
+    matchLabels:
+      app: data
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/hashi-demo/sa/application"]
+    to:
+    - operation:
+        ports: ["5432"]
