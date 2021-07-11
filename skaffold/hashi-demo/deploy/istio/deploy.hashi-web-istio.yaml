@@ -44,6 +44,14 @@ spec:
   - hashi-demo
   - mesh
   http:
+  - fault:
+      delay:
+        fixedDelay: 10s
+        percentage:
+          value: 50
+    route:
+    - destination:
+        host: presentation.hashi-demo.svc.cluster.local
   - match:
     - uri:
         prefix: /

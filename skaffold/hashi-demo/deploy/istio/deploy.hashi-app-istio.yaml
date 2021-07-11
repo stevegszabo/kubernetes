@@ -46,6 +46,14 @@ spec:
   gateways:
   - mesh
   http:
+  - fault:
+      abort:
+        httpStatus: 500
+        percentage:
+          value: 50
+    route:
+    - destination:
+        host: application.hashi-demo.svc.cluster.local
   - route:
     - destination:
         host: application.hashi-demo.svc.cluster.local
