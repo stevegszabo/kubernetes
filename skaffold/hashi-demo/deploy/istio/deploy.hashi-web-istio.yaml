@@ -48,7 +48,7 @@ spec:
       delay:
         fixedDelay: 10s
         percentage:
-          value: 50
+          value: 10
     route:
     - destination:
         host: presentation.hashi-demo.svc.cluster.local
