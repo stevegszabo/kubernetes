@@ -29,7 +29,7 @@ spec:
   rules:
   - from:
     - source:
-        principals: ["cluster.local/ns/hashi-demo/sa/presentation", "cluster.local/ns/hashi-demo/sa/client"]
+        principals: ["cluster.local/ns/hashi-demo/sa/client", "cluster.local/ns/hashi-demo/sa/presentation"]
     to:
     - operation:
         ports: ["5000"]
