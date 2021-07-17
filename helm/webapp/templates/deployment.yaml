@@ -1,0 +1,94 @@
+{{- $fullName := include "webapp.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "webapp.fullname" . }}
+  labels:
+    {{- include "webapp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.scaling.minReplicas }}
+  {{- with .Values.minReadySeconds }}
+  minReadySeconds: {{ . }}
+  {{- end }}
+  {{- with .Values.progressDeadlineSeconds }}
+  progressDeadlineSeconds: {{ . }}
+  {{- end }}
+  {{- with .Values.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ . }}
+  {{- end }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: {{ .Values.maxSurge | default "25%" }}
+      maxUnavailable: {{ .Values.maxUnavailable | default "25%" }}
+  selector:
+    matchLabels:
+      {{- include "webapp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "webapp.selectorLabels" . | nindent 8 }}
+    {{- with .Values.annotations }}
+      annotations:
+      {{- toYaml . | nindent 8 }}
+    {{- end }}
+    spec:
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      serviceAccount: {{ .Values.serviceAccount | default "default" }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.extraVolumes }}
+      volumes:
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      containers:
+      - name: curl
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 $CURL_HOST; sleep $CURL_SLEEP; done"]
+        env:
+        - name: CURL_HOST
+          value: "http://{{ $fullName }}:{{ .Values.service.port }}/"
+        - name: CURL_SLEEP
+          value: "1.00"
+      - name: {{ .Chart.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- with .Values.resources }}
+        resources:
+        {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.extraVolumeMounts }}
+        volumeMounts:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.environment }}
+        env:
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.target }}
+          protocol: TCP
+        livenessProbe:
+          initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
+          timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
+          periodSeconds: {{ .Values.probes.periodSeconds }}
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
+          timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
+          periodSeconds: {{ .Values.probes.periodSeconds }}
+          httpGet:
+            path: /
+            port: http

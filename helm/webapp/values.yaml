@@ -1,0 +1,102 @@
+# Rollout options
+revisionHistoryLimit: 10
+
+# Minimum number of seconds for which a newly created Pod should
+# be ready without any of its containers crashing, for it to be
+# considered available
+minReadySeconds: 15
+
+# Specifies the number of seconds you want to wait for your Deployment
+# to progress before the system reports back that the Deployment has failed
+# If specified, this field needs to be greater than minReadySeconds
+progressDeadlineSeconds: 120
+
+# Specifies the maximum number of Pods that can be created
+# over the desired number of Pods
+maxSurge: 50%
+
+# Specifies the maximum number of Pods that can be unavailable
+# during the update process
+maxUnavailable: 50%
+
+annotations:
+  kubernetes.io/change-cause: "deployment-000"
+
+image:
+  repository: notebook.local:5000/webapp
+  tag: latest
+  pullPolicy: IfNotPresent
+
+serviceAccount: default
+podSecurityContext:
+  runAsUser: 33
+
+scaling:
+  minReplicas: 3
+  maxReplicas: 6
+  targetAverageUtilization: 75
+
+service:
+  type: ClusterIP
+  port: 80
+  target: 8080
+
+extraVolumes:
+- name: webapp
+  hostPath:
+    path: /var/tmp
+    type: Directory
+
+extraVolumeMounts:
+- name: webapp
+  mountPath: /webapp
+
+probes:
+  initialDelaySeconds: 5
+  timeoutSeconds: 10
+  periodSeconds: 15
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128M
+  limits:
+    cpu: 200m
+    memory: 256M
+
+environment:
+- name: POD_JIRA_TICKET
+  value: "00000000"
+- name: POD_NAMESPACE
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.namespace
+- name: POD_WORKER_IP
+  valueFrom:
+    fieldRef:
+      fieldPath: status.hostIP
+
+tolerations:
+- key: "sgs-node-tainted"
+  operator: "Equal"
+  value: "true"
+  effect: "NoSchedule"
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/os
+          operator: In
+          values:
+          - linux
+
+ingress:
+  enabled: true
+  tls:
+  - secretName: webapp
+    hosts:
+    - webapp.domain.com
+  hosts:
+  - host: webapp.domain.com
