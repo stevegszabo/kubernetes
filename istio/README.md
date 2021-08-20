@@ -1,6 +1,11 @@
 ![Istio Kiali](images/istio.kiali.png)
 
 ```
+curl -sL https://istio.io/downloadIstioctl | sh -
+
+istioctl operator init
+
+
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
 -subj '/O=example Inc./CN=example.com' -keyout example.com.key -out example.com.crt
 
