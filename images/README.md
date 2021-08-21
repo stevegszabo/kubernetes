@@ -1,9 +1,35 @@
 # docker images
 
 ```
-curl -s http://notebook.local:5000/v2/_catalog | jq -r .
-curl -s http://notebook.local:5000/v2/webapp/tags/list | jq -r .
+DOCKER_REGISTRY=notebook.local:5000
+DOCKER_IMAGE=webapp
+DOCKER_TAG=latest
+DOCKER_FILE=Dockerfile.webapp
+DOCKER_URL=http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG
+DOCKER_LAYER=$(curl -s $DOCKER_URL | jq -r .fsLayers[0].blobSum)
 
-docker build -t notebook.local:5000/webapp:1.0.18 -f Dockerfile.webapp .
-docker push notebook.local:5000/webapp:1.0.18
+docker build -t $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG -f $DOCKER_FILE .
+docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG
+
+curl -s http://$DOCKER_REGISTRY/v2/_catalog | jq -r .
+curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/tags/list | jq -r .
+curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | jq -r .
+curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | jq -r .fsLayers[].blobSum
+curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | jq -r .signatures[].signature
+
+curl -s -I http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG
+curl -s -I http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | grep Content-Type
+curl -s -I http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | grep Content-Length
+curl -s -I http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | grep Docker-Content-Digest
+
+# Download image layer
+curl -O http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/blobs/$DOCKER_LAYER
+
+# Pull image by digest
+DOCKER_PULL_IMAGE=$DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG
+DOCKER_DIGEST=$(docker image inspect $DOCKER_PULL_IMAGE | jq -r .[0].RepoDigests[0] | awk -F@ '{print $2}')
+
+docker image inspect $DOCKER_PULL_IMAGE | jq -r .
+
+docker pull $DOCKER_REGISTRY/$DOCKER_IMAGE@$DOCKER_DIGEST
 ```
