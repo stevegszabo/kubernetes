@@ -5,6 +5,15 @@ curl -sL https://istio.io/downloadIstioctl | sh -
 
 istioctl operator init
 
+helm repo add kiali-server https://kiali.org/helm-charts
+helm repo update
+helm search repo kiali
+helm -n istio-system template kiali-server kiali-server/kiali-server
+helm -n istio-system install kiali-server kiali-server/kiali-server
+
+kubectl label namespace hashi-demo istio-injection=enabled
+kubectl -n istio-system get -o json secret kiali-token-bckk6 | jq -r .data.token | base64 -d
+
 
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 \
 -subj '/O=example Inc./CN=example.com' -keyout example.com.key -out example.com.crt
