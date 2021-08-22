@@ -46,8 +46,6 @@ metadata:
     app: google
 spec:
   host: istio-egressgateway.istio-system.svc.cluster.local
-  subsets:
-  - name: google
 
 ---
 apiVersion: networking.istio.io/v1alpha3
