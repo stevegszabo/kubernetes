@@ -4,6 +4,7 @@
 curl -sL https://istio.io/downloadIstioctl | sh -
 
 istioctl operator init
+istioctl profile dump demo > vendor.install.yaml
 
 helm repo add kiali-server https://kiali.org/helm-charts
 helm repo update
