@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: client
+  namespace: hashi-demo
 data:
   example.com.crt: |
     -----BEGIN CERTIFICATE-----
@@ -31,6 +32,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: client
+  namespace: hashi-demo
   labels:
     app: client
     version: v1

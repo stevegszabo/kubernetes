@@ -3,21 +3,25 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: client
+  namespace: hashi-demo
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: presentation
+  namespace: hashi-demo
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: application
+  namespace: hashi-demo
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: data
+  namespace: hashi-demo

@@ -3,6 +3,7 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   name: data
+  namespace: hashi-demo
 spec:
   selector:
     matchLabels:
@@ -21,6 +22,7 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   name: application
+  namespace: hashi-demo
 spec:
   selector:
     matchLabels:
@@ -41,6 +43,7 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   name: presentation
+  namespace: hashi-demo
 spec:
   selector:
     matchLabels:

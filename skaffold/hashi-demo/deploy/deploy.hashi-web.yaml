@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: presentation
+  namespace: hashi-demo
   labels:
     app: presentation
     version: v1
