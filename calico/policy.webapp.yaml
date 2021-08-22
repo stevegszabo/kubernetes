@@ -3,7 +3,7 @@ apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: rogue
-  namespace: webapp
+  namespace: webapp-demo
 spec:
   selector: app == 'rogue'
   types:
@@ -38,7 +38,7 @@ apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: client
-  namespace: webapp
+  namespace: webapp-demo
 spec:
   selector: app == 'client'
   types:
@@ -73,7 +73,7 @@ apiVersion: projectcalico.org/v3
 kind: NetworkPolicy
 metadata:
   name: backend
-  namespace: webapp
+  namespace: webapp-demo
 spec:
   selector: app == 'webapp'
   types:
