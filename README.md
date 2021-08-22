@@ -8,6 +8,9 @@ kubeadm certs renew all
 kubeadm config images list
 kubeadm config images pull
 
+kubeadm token list
+kubeadm token create --print-join-command
+
 kubeadm upgrade plan
 kubeadm upgrade apply v1.22.1 --dry-run --yes
 ```
