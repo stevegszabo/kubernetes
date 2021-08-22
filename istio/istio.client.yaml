@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: webapp
-  namespace: demo
+  namespace: webapp-demo
 data:
   example.com.crt: |
     -----BEGIN CERTIFICATE-----
@@ -30,7 +30,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: client
-  namespace: demo
+  namespace: webapp-demo
   labels:
     app: client
     version: v1
