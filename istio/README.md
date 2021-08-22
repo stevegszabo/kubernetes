@@ -1,5 +1,7 @@
 # istio
 
+![Istio Kiali](images/istio-webapp-demo.png)
+
 ```
 curl -sL https://istio.io/downloadIstioctl | sh -
 
