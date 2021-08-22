@@ -81,7 +81,7 @@ spec:
         - name: WEBAPP_CERT
           value: "/webapp/example.com.crt"
         - name: WEBAPP_ISTIO_INGRESS_SERVICE
-          value: "10.96.144.103"
+          value: "10.96.239.202"
       - name: curl-google
         image: notebook.local:5000/webapp:latest
         command: ["/bin/bash", "-c", "while true; do curl -v -L https://$WEBAPP_HOST; sleep 1; done"]
