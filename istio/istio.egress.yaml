@@ -71,7 +71,6 @@ spec:
     route:
     - destination:
         host: istio-egressgateway.istio-system.svc.cluster.local
-        subset: google
         port:
           number: 443
       weight: 100
