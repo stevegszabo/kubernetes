@@ -17,7 +17,7 @@ spec:
     protocol: TCP
     destination:
       selector: app == 'client'
-      namespaceSelector: projectcalico.org/name == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp-demo'
       ports:
       - 8080
   ingress:
@@ -52,7 +52,7 @@ spec:
     protocol: TCP
     destination:
       selector: app == 'webapp'
-      namespaceSelector: projectcalico.org/name == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp-demo'
       ports:
       - 8080
   ingress:
@@ -63,7 +63,7 @@ spec:
     protocol: TCP
     source:
       selector: app == 'rogue'
-      namespaceSelector: projectcalico.org/name == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp-demo'
     destination:
       ports:
       - 8080
@@ -86,7 +86,7 @@ spec:
     protocol: TCP
     source:
       selector: app == 'client'
-      namespaceSelector: projectcalico.org/name == 'webapp'
+      namespaceSelector: projectcalico.org/name == 'webapp-demo'
     destination:
       ports:
       - 8080
