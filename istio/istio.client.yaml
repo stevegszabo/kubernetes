@@ -65,13 +65,13 @@ spec:
       containers:
       - name: curl-webapp-local
         image: notebook.local:5000/webapp:latest
-        command: ["/bin/bash", "-c", "while true; do curl -s http://$WEBAPP_HOST/webapp; sleep .5; done"]
+        command: ["/bin/bash", "-c", "while true; do curl -s http://$WEBAPP_HOST/webapp; sleep 1; done"]
         env:
         - name: WEBAPP_HOST
-          value: "webapp.demo.svc.cluster.local"
+          value: "webapp.webapp-demo.svc.cluster.local"
       - name: curl-webapp-ingress
         image: notebook.local:5000/webapp:latest
-        command: ["/bin/bash", "-c", "while true; do curl -s -HHost:$WEBAPP_HOST --resolve $WEBAPP_HOST:443:$WEBAPP_ISTIO_INGRESS_SERVICE --cacert $WEBAPP_CERT https://$WEBAPP_HOST/webapp; sleep .5; done"]
+        command: ["/bin/bash", "-c", "while true; do curl -s -HHost:$WEBAPP_HOST --resolve $WEBAPP_HOST:443:$WEBAPP_ISTIO_INGRESS_SERVICE --cacert $WEBAPP_CERT https://$WEBAPP_HOST/webapp; sleep 1; done"]
         volumeMounts:
         - name: webapp
           mountPath: /webapp
@@ -81,10 +81,10 @@ spec:
         - name: WEBAPP_CERT
           value: "/webapp/example.com.crt"
         - name: WEBAPP_ISTIO_INGRESS_SERVICE
-          value: "10.103.172.37"
+          value: "istio-ingressgateway.istio-system.svc.cluster.local"
       - name: curl-google
         image: notebook.local:5000/webapp:latest
-        command: ["/bin/bash", "-c", "while true; do curl -s https://$WEBAPP_HOST; sleep .5; done"]
+        command: ["/bin/bash", "-c", "while true; do curl -s https://$WEBAPP_HOST; sleep 1; done"]
         env:
         - name: WEBAPP_HOST
           value: "www.google.com"

@@ -46,7 +46,7 @@ metadata:
   labels:
     app: webapp
 spec:
-  host: webapp.demo.svc.cluster.local
+  host: webapp.webapp-demo.svc.cluster.local
   subsets:
   - name: v1
     labels:
@@ -75,7 +75,7 @@ metadata:
     app: webapp
 spec:
   hosts:
-  - webapp.demo.svc.cluster.local
+  - webapp.webapp-demo.svc.cluster.local
   - httpbin.example.com
   gateways:
   - webapp
@@ -88,25 +88,25 @@ spec:
       uri: /
     route:
     - destination:
-        host: webapp.demo.svc.cluster.local
+        host: webapp.webapp-demo.svc.cluster.local
         subset: v1
         port:
           number: 80
       weight: 70
     - destination:
-        host: webapp.demo.svc.cluster.local
+        host: webapp.webapp-demo.svc.cluster.local
         subset: v2
         port:
           number: 80
       weight: 10
     - destination:
-        host: webapp.demo.svc.cluster.local
+        host: webapp.webapp-demo.svc.cluster.local
         subset: v3
         port:
           number: 80
       weight: 10
     - destination:
-        host: webapp.demo.svc.cluster.local
+        host: webapp.webapp-demo.svc.cluster.local
         subset: v4
         port:
           number: 80
