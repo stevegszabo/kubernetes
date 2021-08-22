@@ -1,10 +1,6 @@
 # calico
 
 ```
-kubeadm init --pod-network-cidr=192.168.0.0/16
-```
-
-```
 szabos@ubuntu:~/src/github/kubernetes/calico$ kc -n calico-system get po
 NAME                                       READY   STATUS    RESTARTS   AGE
 calico-kube-controllers-7f58dbcbbd-p4jcp   1/1     Running   0          32m
