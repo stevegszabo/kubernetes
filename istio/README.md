@@ -42,8 +42,8 @@ kubectl -n istio-system create secret tls httpbin-credential \
 kubectl -n istio-system create secret tls hashi-demo-credential \
 --key=hashi-demo.example.com.key --cert=hashi-demo.example.com.crt
 
-
 kubectl -n istio-system port-forward --address 0.0.0.0 svc/grafana 3000:3000
+kubectl -n istio-system port-forward --address 0.0.0.0 svc/tracing 8080:80
 kubectl -n istio-system port-forward --address 0.0.0.0 svc/kiali 20001:20001
 kubectl -n istio-system port-forward --address 0.0.0.0 svc/istio-ingressgateway 8443:443
 
