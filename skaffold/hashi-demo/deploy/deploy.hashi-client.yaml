@@ -90,7 +90,7 @@ spec:
         command: ["/bin/bash", "-c", "while true; do curl -v -L https://$HASHI_HOST/; sleep 1; done"]
         env:
         - name: HASHI_HOST
-          value: "www.google.com"
+          value: "www.google.ca"
       - name: client
         image: notebook.local:5000/webapp:latest
         ports:

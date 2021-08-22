@@ -17,7 +17,7 @@ spec:
     tls:
       mode: PASSTHROUGH
     hosts:
-    - www.google.com
+    - www.google.ca
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -29,7 +29,7 @@ metadata:
     app: google
 spec:
   hosts:
-  - www.google.com
+  - www.google.ca
   resolution: DNS
   ports:
   - name: tls
@@ -57,7 +57,7 @@ metadata:
     app: google
 spec:
   hosts:
-  - www.google.com
+  - www.google.ca
   gateways:
   - google
   - mesh
@@ -67,7 +67,7 @@ spec:
       - mesh
       port: 443
       sniHosts:
-      - www.google.com
+      - www.google.ca
     route:
     - destination:
         host: istio-egressgateway.istio-system.svc.cluster.local
@@ -79,10 +79,10 @@ spec:
       - google
       port: 443
       sniHosts:
-      - www.google.com
+      - www.google.ca
     route:
     - destination:
-        host: www.google.com
+        host: www.google.ca
         port:
           number: 443
       weight: 100
