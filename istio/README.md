@@ -11,7 +11,9 @@ helm search repo kiali
 helm -n istio-system template kiali-server kiali-server/kiali-server
 helm -n istio-system install kiali-server kiali-server/kiali-server
 
-kubectl label namespace hashi-demo istio-injection=enabled
+kubectl label ns hashi-demo istio-injection=enabled
+kubectl label ns webapp-demo istio-injection=enabled
+
 kubectl -n istio-system get -o json secret kiali-token-bckk6 | jq -r .data.token | base64 -d
 ```
 
