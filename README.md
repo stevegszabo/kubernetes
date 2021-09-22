@@ -13,8 +13,6 @@ kubeadm token create --print-join-command
 
 kubeadm upgrade plan
 kubeadm upgrade apply v1.22.1 --dry-run --yes
-
-kc get -o json po -A | jq -r '.items[].metadata|"kubectl -n " + .namespace + " delete po " + .name'
 ```
 
 ![External control plane](images/kube-control-external.png)
