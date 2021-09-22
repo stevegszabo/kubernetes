@@ -21,3 +21,5 @@ argocd app get guestbook
 argocd app sync guestbook
 argocd app delete guestbook
 ```
+
+![ArgoCD](images/argo-demo.png)
