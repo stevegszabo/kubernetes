@@ -10,5 +10,14 @@ argocd account update-password
 argocd cluster list
 argocd cluster add kubernetes-admin@kubernetes
 
-argocd admin dashboard --port 9090
+argocd app create guestbook \
+--repo https://github.com/argoproj/argocd-example-apps.git \
+--path guestbook \
+--dest-server https://kubernetes.default.svc \
+--dest-namespace argo-demo
+
+argocd app list
+argocd app get guestbook
+argocd app sync guestbook
+argocd app delete guestbook
 ```
