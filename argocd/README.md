@@ -19,7 +19,7 @@ argocd app create guestbook \
 argocd app list
 argocd app get guestbook
 argocd app sync guestbook
-argocd app delete guestbook
+argocd app delete -y guestbook
 ```
 
 ![ArgoCD](images/argo-demo.png)
