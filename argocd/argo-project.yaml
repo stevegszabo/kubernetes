@@ -1,0 +1,15 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argo-demo
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Argo demo project
+  sourceRepos:
+  - https://github.com/argoproj/argocd-example-apps.git
+  destinations:
+  - namespace: argo-demo
+    server: https://kubernetes.default.svc
