@@ -13,7 +13,7 @@ argocd cluster add kubernetes-admin@kubernetes
 argocd proj create argo-demo \
 --description "Argo demo project" \
 --src https://github.com/argoproj/argocd-example-apps.git \
---dest "https://kubernetes.default.svc,argo-demo" \
+--dest https://kubernetes.default.svc,argo-demo \
 --allow-cluster-resource "*/*"
 
 argocd proj list
