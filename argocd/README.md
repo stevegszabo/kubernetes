@@ -34,4 +34,24 @@ argocd app sync guestbook
 argocd app delete -y guestbook
 ```
 
+```
+szabos@ubuntu:~$ argocd app get guestbook
+Name:               guestbook
+Project:            argo-demo
+Server:             https://kubernetes.default.svc
+Namespace:          argo-demo
+URL:                https://localhost:8080/applications/guestbook
+Repo:               https://github.com/argoproj/argocd-example-apps.git
+Target:
+Path:               guestbook
+SyncWindow:         Sync Allowed
+Sync Policy:        <none>
+Sync Status:        Synced to  (53e28ff)
+Health Status:      Healthy
+
+GROUP  KIND        NAMESPACE  NAME          STATUS  HEALTH   HOOK  MESSAGE
+       Service     argo-demo  guestbook-ui  Synced  Healthy        service/guestbook-ui unchanged
+apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.apps/guestbook-ui unchanged
+```
+
 ![ArgoCD](images/argo-demo.png)
