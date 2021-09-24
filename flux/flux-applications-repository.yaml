@@ -1,0 +1,9 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha2
+kind: ImageRepository
+metadata:
+  name: flux-applications
+  namespace: flux-system
+spec:
+  image: 192.168.56.101:5000/webapp
+  interval: 1m0s

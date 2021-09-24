@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-applications
+  namespace: flux-system
+type: Opaque
+data:
+  identity: AAA
+  identity.pub: AAA
+  known_hosts: AAA
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: flux-applications
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: master
+  secretRef:
+    name: flux-applications
+  url: ssh://git@github.com/stevegszabo/flux-applications

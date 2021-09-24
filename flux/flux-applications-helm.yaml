@@ -1,0 +1,31 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: flux-applications
+  namespace: flux-system
+spec:
+  targetNamespace: flux-applications
+  releaseName: r4
+  interval: 1m0s
+  chart:
+    spec:
+      chart: helm/webapp
+      version: ">=1.0.0"
+      interval: 1m0s
+      sourceRef:
+        kind: GitRepository
+        name: flux-applications
+        namespace: flux-system
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+  values:
+    ingress:
+      enabled: false
+    annotations:
+      kubernetes.io/change-cause: "deployment-102"
+    scaling:
+      minReplicas: 1
+      maxReplicas: 6
+      targetAverageUtilization: 75
