@@ -17,6 +17,8 @@ spec:
         value: "notebook.local:5000/webapp"
       - name: image.tag
         value: "6.0.1"
+      - name: scaling.minReplicas
+        value: "1"
       - name: ingress.enabled
         value: "false"
       - name: hpa.enabled
