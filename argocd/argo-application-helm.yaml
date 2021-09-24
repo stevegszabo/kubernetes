@@ -19,6 +19,8 @@ spec:
         value: "6.0.1"
       - name: ingress.enabled
         value: "false"
+      - name: hpa.enabled
+        value: "false"
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-demo
