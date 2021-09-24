@@ -9,7 +9,7 @@ metadata:
 spec:
   description: Argo demo project
   sourceRepos:
-  - https://github.com/argoproj/argocd-example-apps.git
+  - git@github.com:stevegszabo/argocd-example-apps.git
   destinations:
   - namespace: argo-demo
     server: https://kubernetes.default.svc
