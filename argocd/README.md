@@ -35,6 +35,20 @@ argocd app delete -y guestbook
 ```
 
 ```
+szabos@ubuntu:~$ argocd cluster list
+SERVER                          NAME        VERSION  STATUS      MESSAGE
+https://kubernetes.default.svc  in-cluster  1.22     Successful
+
+szabos@ubuntu:~$ argocd proj get argo-demo
+Name:                        argo-demo
+Description:                 Argo demo project
+Destinations:                https://kubernetes.default.svc,argo-demo
+Repositories:                git@github.com:stevegszabo/argocd-example-apps.git
+Allowed Cluster Resources:   <none>
+Denied Namespaced Resources: <none>
+Signature keys:              <none>
+Orphaned Resources:          disabled
+
 szabos@ubuntu:~$ argocd app get guestbook
 Name:               guestbook
 Project:            argo-demo
@@ -52,16 +66,6 @@ Health Status:      Healthy
 GROUP  KIND        NAMESPACE  NAME          STATUS  HEALTH   HOOK  MESSAGE
        Service     argo-demo  guestbook-ui  Synced  Healthy        service/guestbook-ui unchanged
 apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.apps/guestbook-ui unchanged
-
-szabos@ubuntu:~$ argocd proj get argo-demo
-Name:                        argo-demo
-Description:                 Argo demo project
-Destinations:                https://kubernetes.default.svc,argo-demo
-Repositories:                git@github.com:stevegszabo/argocd-example-apps.git
-Allowed Cluster Resources:   <none>
-Denied Namespaced Resources: <none>
-Signature keys:              <none>
-Orphaned Resources:          disabled
 ```
 
 ![ArgoCD](images/argo-demo.png)
