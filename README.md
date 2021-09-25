@@ -15,6 +15,5 @@ kubeadm upgrade plan
 kubeadm upgrade apply v1.22.1 --dry-run --yes
 ```
 
-![External control plane](images/kube-control-external.png)
 ![Stacked control plane](images/kube-control-stacked.png)
 ![Control plane certificates](images/kube-certs.png)
