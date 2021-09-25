@@ -6,6 +6,7 @@ kc -n argocd port-forward --address 0.0.0.0 svc/argocd-server 8080:443
 
 kc -n argocd get cm argocd-image-updater-config
 kc -n argocd patch cm argocd-image-updater-config --patch "$(cat argo-image-updater-config-map.yaml)"
+
 kc -n argocd get po -o name -l app.kubernetes.io/name=argocd-image-updater
 kc -n argocd delete pod/argocd-image-updater-8fdb94b77-rmxxh
 
