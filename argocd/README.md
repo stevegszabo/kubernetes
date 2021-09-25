@@ -3,7 +3,17 @@
 ```
 kc -n argocd get secret -o json argocd-initial-admin-secret | jq -r .data.password | base64 -d
 kc -n argocd port-forward --address 0.0.0.0 svc/argocd-server 8080:443
+kc -n argocd edit cm argocd-image-updater-config
 kc config get-contexts -o name
+
+# patch argocd-image-updater-config
+data:
+  registries.conf: |
+    registries:
+    - name: notebook
+      prefix: notebook.local:5000
+      api_url: http://192.168.56.101:5000
+      ping: yes
 
 argocd login --insecure --username admin localhost:8080
 argocd account update-password
