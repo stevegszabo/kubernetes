@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: webapp
+  name: guestbook
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -11,20 +11,7 @@ spec:
   source:
     repoURL: git@github.com:stevegszabo/argocd-example-apps.git
     targetRevision: HEAD
-    path: webapp
-    helm:
-      releaseName: webapp
-      parameters:
-      - name: image.repository
-        value: "notebook.local:5000/webapp"
-      - name: image.tag
-        value: "6.0.1"
-      - name: scaling.minReplicas
-        value: "1"
-      - name: ingress.enabled
-        value: "false"
-      - name: hpa.enabled
-        value: "false"
+    path: guestbook
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-demo
