@@ -52,6 +52,16 @@ Health Status:      Healthy
 GROUP  KIND        NAMESPACE  NAME          STATUS  HEALTH   HOOK  MESSAGE
        Service     argo-demo  guestbook-ui  Synced  Healthy        service/guestbook-ui unchanged
 apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.apps/guestbook-ui unchanged
+
+szabos@ubuntu:~$ argocd proj get argo-demo
+Name:                        argo-demo
+Description:                 Argo demo project
+Destinations:                https://kubernetes.default.svc,argo-demo
+Repositories:                git@github.com:stevegszabo/argocd-example-apps.git
+Allowed Cluster Resources:   <none>
+Denied Namespaced Resources: <none>
+Signature keys:              <none>
+Orphaned Resources:          disabled
 ```
 
 ![ArgoCD](images/argo-demo.png)
