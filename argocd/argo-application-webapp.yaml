@@ -25,13 +25,21 @@ spec:
       - name: image.repository
         value: "notebook.local:5000/webapp"
       - name: image.tag
-        value: "6.0.4"
+        value: "6.1.8"
       - name: scaling.minReplicas
         value: "1"
       - name: ingress.enabled
         value: "false"
       - name: hpa.enabled
         value: "false"
+      - name: resources.requests.cpu
+        value: "100m"
+      - name: resources.requests.memory
+        value: "64M"
+      - name: resources.limits.cpu
+        value: "200m"
+      - name: resources.limits.memory
+        value: "128M"
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-demo

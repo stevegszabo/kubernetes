@@ -1,7 +1,7 @@
 FROM notebook.local:5000/ubuntu-flask:latest
 MAINTAINER steve.g.szabo
 
-ENV WEBAPP_VERSION=6.0.7
+ENV WEBAPP_VERSION=6.1.9
 
 COPY root/app /app
 RUN chown -R www-data:www-data /app
