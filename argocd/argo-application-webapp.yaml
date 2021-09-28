@@ -24,9 +24,9 @@ spec:
       values: |
         image:
           repository: notebook.local:5000/webapp
-          tag: 6.2.3
+          tag: 6.2.6
         annotations:
-          kubernetes.io/change-cause: "recluse-003"
+          kubernetes.io/change-cause: "recluse-001"
         scaling:
           minReplicas: 4
         ingress:
@@ -35,7 +35,7 @@ spec:
           enabled: false
         resources:
           requests:
-            cpu: 103m
+            cpu: 101m
             memory: 64M
           limits:
             cpu: 200m

@@ -15,6 +15,7 @@ docker push $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG
 # registry catalog
 curl -s http://$DOCKER_REGISTRY/v2/_catalog | jq -r .
 curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/tags/list | jq -r .
+curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/tags/list | jq -r .tags[] | sort
 
 # image manifest
 curl -s http://$DOCKER_REGISTRY/v2/$DOCKER_IMAGE/manifests/$DOCKER_TAG | jq -r .
