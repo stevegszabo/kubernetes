@@ -9,4 +9,4 @@ metadata:
     app.kubernetes.io/part-of: argocd
 stringData:
   .dockerconfigjson: |
-    {"auths": {"https://index.docker.io/v1/": {"auth": "XXXXXXXXXXXXXXXX"}}}
+    {"auths": {"https://index.docker.io/v1/": {"auth": "XXXXXXXXXXXXXXX"}}}
