@@ -15,7 +15,7 @@ printf "DOCKER_REGISTRY: [%s]\n" $DOCKER_REGISTRY
 printf "DOCKER_USERNAME: [%s]\n" $DOCKER_USERNAME
 printf "DOCKER_IMAGE: [%s]\n" $DOCKER_IMAGE
 
-echo docker build -t $DOCKER_IMAGE -f $DOCKER_FILE .
-echo docker push $DOCKER_IMAGE
+docker build -t $DOCKER_IMAGE -f $DOCKER_FILE .
+docker push $DOCKER_IMAGE
 
 exit 0
