@@ -1,7 +1,7 @@
-name: docker-build
+name: webapp
 on: [push]
 jobs:
-  image-build-and-push:
+  webapp-image-build-and-push:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -15,4 +15,4 @@ jobs:
         DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKER_REGISTRY: ${{ secrets.DOCKERHUB_REGISTRY }}
         DOCKER_REPOSITORY: webapp
-      run: pushd docker && ./build.sh $(date +%s)
+      run: pushd docker && ./build.sh
