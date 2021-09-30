@@ -3,7 +3,7 @@
 set -o errexit
 
 DOCKER_VERSION=${1-1.0.0}
-DOCKER_FILE=Dockerfile.webapp
+DOCKER_FILE=Dockerfile
 
 DOCKER_REGISTRY=docker.io
 DOCKER_USERNAME=steveszabo
@@ -13,6 +13,6 @@ sed -i "s/WEBAPP_VERSION=.*/WEBAPP_VERSION=$DOCKER_VERSION/g" $DOCKER_FILE
 
 #docker login -u $DOCKER_USERNAME $DOCKER_REGISTRY
 docker build -t $DOCKER_IMAGE -f $DOCKER_FILE .
-docker push $DOCKER_IMAGE
+#docker push $DOCKER_IMAGE
 
 exit 0
