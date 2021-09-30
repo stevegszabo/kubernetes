@@ -5,7 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: uname -a
+    - run: pushd docker
+    - run: ./build.sh $(date +%s)
   image-push:
     runs-on: ubuntu-latest
     steps:
@@ -13,3 +14,4 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        registry: ${{ secrets.DOCKERHUB_REGISTRY }}
