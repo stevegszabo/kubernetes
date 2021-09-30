@@ -5,3 +5,9 @@ data:
       prefix: notebook.local:5000
       api_url: http://192.168.56.101:5000
       ping: yes
+    - name: docker
+      prefix: docker.io
+      api_url: https://index.docker.io
+      ping: yes
+      credentials: pullsecret:argocd/repo-docker-token
+      defaultns: library

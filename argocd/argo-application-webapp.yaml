@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: recluse
+  name: intense
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: recluse=notebook.local:5000/webapp
-    argocd-image-updater.argoproj.io/recluse.update-strategy: latest
-    argocd-image-updater.argoproj.io/recluse.helm.image-name: image.repository
-    argocd-image-updater.argoproj.io/recluse.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/image-list: intense=docker.io/steveszabo/webapp
+    argocd-image-updater.argoproj.io/intense.update-strategy: latest
+    argocd-image-updater.argoproj.io/intense.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/intense.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/repo-private-ssh
     argocd-image-updater.argoproj.io/git-branch: master
   finalizers:
@@ -20,13 +20,13 @@ spec:
     targetRevision: HEAD
     path: webapp
     helm:
-      releaseName: recluse
+      releaseName: intense
       values: |
         image:
-          repository: notebook.local:5000/webapp
-          tag: 6.2.6
+          repository: docker.io/steveszabo/webapp
+          tag: 2ce1ab7
         annotations:
-          kubernetes.io/change-cause: "recluse-001"
+          kubernetes.io/change-cause: "intense-001"
         scaling:
           minReplicas: 4
         ingress:
@@ -35,7 +35,7 @@ spec:
           enabled: false
         resources:
           requests:
-            cpu: 101m
+            cpu: 100m
             memory: 64M
           limits:
             cpu: 200m
