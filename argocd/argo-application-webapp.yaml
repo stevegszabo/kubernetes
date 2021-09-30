@@ -26,7 +26,7 @@ spec:
           repository: docker.io/steveszabo/webapp
           tag: 2ce1ab7
         annotations:
-          kubernetes.io/change-cause: "intense-001"
+          kubernetes.io/change-cause: "intense-002"
         scaling:
           minReplicas: 4
         ingress:
@@ -35,7 +35,7 @@ spec:
           enabled: false
         resources:
           requests:
-            cpu: 100m
+            cpu: 102m
             memory: 64M
           limits:
             cpu: 200m
