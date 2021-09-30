@@ -14,4 +14,5 @@ jobs:
       env:
         DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         DOCKERHUB_REGISTRY: ${{ secrets.DOCKERHUB_REGISTRY }}
+        DOCKERHUB_REPOSITORY: webapp
       run: pushd docker && ./build.sh $(date +%s)
