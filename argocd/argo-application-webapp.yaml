@@ -2,13 +2,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: intense
+  name: argo-demo
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: intense=docker.io/steveszabo/webapp
-    argocd-image-updater.argoproj.io/intense.update-strategy: latest
-    argocd-image-updater.argoproj.io/intense.helm.image-name: image.repository
-    argocd-image-updater.argoproj.io/intense.helm.image-tag: image.tag
+    argocd-image-updater.argoproj.io/image-list: argo-demo=docker.io/steveszabo/webapp
+    argocd-image-updater.argoproj.io/argo-demo.update-strategy: latest
+    argocd-image-updater.argoproj.io/argo-demo.helm.image-name: image.repository
+    argocd-image-updater.argoproj.io/argo-demo.helm.image-tag: image.tag
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/repo-private-ssh
     argocd-image-updater.argoproj.io/git-branch: master
   finalizers:
@@ -20,13 +20,13 @@ spec:
     targetRevision: HEAD
     path: webapp
     helm:
-      releaseName: intense
+      releaseName: argo-demo
       values: |
         image:
           repository: docker.io/steveszabo/webapp
-          tag: 2ce1ab7
+          tag: ea5400a
         annotations:
-          kubernetes.io/change-cause: "intense-002"
+          kubernetes.io/change-cause: "argo-demo-001"
         scaling:
           minReplicas: 4
         ingress:
@@ -35,7 +35,7 @@ spec:
           enabled: false
         resources:
           requests:
-            cpu: 102m
+            cpu: 100m
             memory: 64M
           limits:
             cpu: 200m
