@@ -5,8 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: pushd docker
-    - run: ./build.sh $(date +%s)
+    - run: pushd docker && ./build.sh $(date +%s)
   image-push:
     runs-on: ubuntu-latest
     steps:
