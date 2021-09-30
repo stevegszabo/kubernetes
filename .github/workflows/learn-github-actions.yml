@@ -10,4 +10,8 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         registry: ${{ secrets.DOCKERHUB_REGISTRY }}
-    - run: pushd docker && ./build.sh $(date +%s)
+    - shell: bash
+      env:
+        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKERHUB_REGISTRY: ${{ secrets.DOCKERHUB_REGISTRY }}
+      run: pushd docker && ./build.sh $(date +%s)
