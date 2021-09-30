@@ -12,7 +12,7 @@ jobs:
         registry: ${{ secrets.DOCKERHUB_REGISTRY }}
     - shell: bash
       env:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKERHUB_REGISTRY: ${{ secrets.DOCKERHUB_REGISTRY }}
-        DOCKERHUB_REPOSITORY: webapp
+        DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKER_REGISTRY: ${{ secrets.DOCKERHUB_REGISTRY }}
+        DOCKER_REPOSITORY: webapp
       run: pushd docker && ./build.sh $(date +%s)
