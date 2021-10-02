@@ -4,8 +4,8 @@ kind: Rollout
 metadata:
   name: webapp
 spec:
-  replicas: 4
-  revisionHistoryLimit: 5
+  replicas: 1
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
       app: webapp
@@ -13,49 +13,28 @@ spec:
     metadata:
       labels:
         app: webapp
+        istio-injection: enabled
     spec:
       containers:
       - name: webapp
         image: docker.io/steveszabo/webapp:ea5400a
         ports:
-        - containerPort: 8080
+        - name: http
+          containerPort: 8080
+          protocol: TCP
   strategy:
-    blueGreen: 
-      # activeService specifies the service to update with the new template hash at time of promotion.
-      # This field is mandatory for the blueGreen update strategy.
-      activeService: webapp-active
-      # previewService specifies the service to update with the new template hash before promotion.
-      # This allows the preview stack to be reachable without serving production traffic.
-      # This field is optional.
-      previewService: webapp-preview
-      # autoPromotionEnabled disables automated promotion of the new stack by pausing the rollout
-      # immediately before the promotion. If omitted, the default behavior is to promote the new
-      # stack as soon as the ReplicaSet are completely ready/available.
-      # Rollouts can be resumed using: `kubectl argo rollouts promote ROLLOUT`
-      autoPromotionEnabled: false
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp-active
-spec:
-  selector:
-    app: webapp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp-preview
-spec:
-  selector:
-    app: webapp
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 8080
+    canary:
+      canaryService: webapp-canary
+      stableService: webapp-stable
+      steps:
+      - setWeight: 5
+      - pause: {}
+      trafficRouting:
+        istio:
+          virtualServices:
+          - name: webapp-primary
+            routes:
+            - http-primary
+          - name: webapp-secondary
+            routes:
+            - http-secondary
