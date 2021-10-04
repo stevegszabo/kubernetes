@@ -1,4 +1,45 @@
 ---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: webapp
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+        istio-injection: enabled
+    spec:
+      containers:
+      - name: webapp
+        image: docker.io/steveszabo/webapp:ea5400a
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+  strategy:
+    canary:
+      canaryService: webapp-canary
+      stableService: webapp-stable
+      steps:
+      - setWeight: 5
+      - pause: {}
+      trafficRouting:
+        istio:
+          virtualServices:
+          - name: webapp-primary
+            routes:
+            - http-primary
+          - name: webapp-secondary
+            routes:
+            - http-secondary
+
+---
 apiVersion: v1
 kind: Service
 metadata:

@@ -4,7 +4,7 @@ kind: Rollout
 metadata:
   name: webapp
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -13,28 +13,44 @@ spec:
     metadata:
       labels:
         app: webapp
-        istio-injection: enabled
     spec:
       containers:
       - name: webapp
         image: docker.io/steveszabo/webapp:ea5400a
         ports:
-        - name: http
+        - name: webapp
           containerPort: 8080
           protocol: TCP
   strategy:
-    canary:
-      canaryService: webapp-canary
-      stableService: webapp-stable
-      steps:
-      - setWeight: 5
-      - pause: {}
-      trafficRouting:
-        istio:
-          virtualServices:
-          - name: webapp-primary
-            routes:
-            - http-primary
-          - name: webapp-secondary
-            routes:
-            - http-secondary
+    blueGreen: 
+      activeService: webapp-active
+      previewService: webapp-preview
+      autoPromotionEnabled: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-active
+spec:
+  selector:
+    app: webapp
+  ports:
+  - name: webapp
+    port: 80
+    targetPort: webapp
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-preview
+spec:
+  selector:
+    app: webapp
+  ports:
+  - name: webapp
+    port: 80
+    targetPort: webapp
+    protocol: TCP
