@@ -84,26 +84,4 @@ GROUP  KIND        NAMESPACE  NAME          STATUS  HEALTH   HOOK  MESSAGE
 apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.apps/guestbook-ui unchanged
 ```
 
-```
-szabos@ubuntu:~/src/kubernetes/argocd$ kc argo rollouts list rollouts
-NAME               STRATEGY   STATUS        STEP  SET-WEIGHT  READY  DESIRED  UP-TO-DATE  AVAILABLE
-rollout-bluegreen  BlueGreen  Progressing   -     -           0/0    2        0           0
-
-szabos@ubuntu:~/src/kubernetes/argocd$ kc argo rollouts get rollouts rollout-bluegreen
-Name:            rollout-bluegreen
-Namespace:       argo-demo
-Status:          Progressing
-Message:         more replicas need to be updated
-Strategy:        BlueGreen
-Replicas:
-  Desired:       2
-  Current:       0
-  Updated:       0
-  Ready:         0
-  Available:     0
-
-NAME                 KIND     STATUS         AGE  INFO
-rollout-bluegreen  Rollout    Progressing  13m
-```
-
 ![ArgoCD](images/argo-demo.png)
