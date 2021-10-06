@@ -28,11 +28,11 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 ```
 
 ```
-kc -n default create sa vault-auth
-kc -n default apply -f vault-cluster-role-binding.yaml
+kc -n argo-demo create sa vault-auth
+kc -n argo-demo apply -f vault-cluster-role-binding.yaml
 
-VAULT_SA_NAME=$(kc -n default get -o json sa vault-auth | jq -r .secrets[].name)
-VAULT_SA_JWT_TOKEN=$(kc -n default get -o json secret $VAULT_SA_NAME | jq -r .data.token | base64 -d)
+VAULT_SA_NAME=$(kc -n argo-demo get -o json sa vault-auth | jq -r .secrets[].name)
+VAULT_SA_JWT_TOKEN=$(kc -n argo-demo get -o json secret $VAULT_SA_NAME | jq -r .data.token | base64 -d)
 
 VAULT_SA_CA_CRT=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
 VAULT_K8S_HOST=$(kc config view --raw --minify --flatten -o json | jq -r .clusters[0].cluster.server)
@@ -67,7 +67,7 @@ vault list auth/kubernetes/role
 vault read auth/kubernetes/role/webapp
 vault write auth/kubernetes/role/webapp \
       bound_service_account_names=vault-auth \
-      bound_service_account_namespaces=default \
+      bound_service_account_namespaces=argo-demo \
       policies=webapp \
       ttl=24h
 ```
