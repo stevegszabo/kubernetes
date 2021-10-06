@@ -37,6 +37,8 @@ VAULT_SA_JWT_TOKEN=$(kc -n default get -o json secret $VAULT_SA_NAME | jq -r .da
 VAULT_SA_CA_CRT=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
 VAULT_K8S_HOST=$(kc config view --raw --minify --flatten -o json | jq -r .clusters[0].cluster.server)
 
+vault login
+
 vault auth list
 vault auth enable kubernetes
 vault write auth/kubernetes/config \
@@ -44,4 +46,28 @@ vault write auth/kubernetes/config \
       kubernetes_host="$VAULT_K8S_HOST" \
       kubernetes_ca_cert="$VAULT_SA_CA_CRT" \
       issuer="https://kubernetes.default.svc.cluster.local"
+
+vault secrets list
+vault secrets enable -path=secret kv-v2
+
+vault kv list secret
+vault kv list secret/webapp
+vault kv get secret/webapp/config
+vault kv put secret/webapp/config username="szabo" password="p@ssw0rd" ttl="30s"
+
+vault policy list
+vault policy read webapp
+vault policy write webapp - <<EOF
+path "secret/data/webapp/config" {
+    capabilities = ["read", "list"]
+}
+EOF
+
+vault list auth/kubernetes/role
+vault read auth/kubernetes/role/webapp
+vault write auth/kubernetes/role/webapp \
+      bound_service_account_names=vault-auth \
+      bound_service_account_namespaces=default \
+      policies=webapp \
+      ttl=24h
 ```
