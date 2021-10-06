@@ -13149,7 +13149,7 @@ spec:
         runAsNonRoot: true
       serviceAccountName: argo-rollouts
       containers:
-      - image: quay.io/argoproj/argo-rollouts:v1.1.0-rc1
+      - image: quay.io/argoproj/argo-rollouts:v1.1.0-rc2
         imagePullPolicy: Always
         name: argo-rollouts
         ports:
