@@ -1,5 +1,7 @@
 # vault
 
+![VaultAgent](images/vault-agent.png)
+
 ```
 Unseal Key 1: BVBM0zdWs2MUX8+Vw+DPFmmcYU5PBtD14DO2CndNfTXQ
 Unseal Key 2: UBO28nH2KZrZriWRmZUIhraWnaMKbYKzMEOjnM2Swtwq
