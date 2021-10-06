@@ -165,15 +165,15 @@ injector:
   # This can either be multi-line string or YAML matching the PodSpec's affinity field.
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment of multiple replicas to single node services such as Minikube.
-  affinity: |
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: {{ template "vault.name" . }}-agent-injector
-              app.kubernetes.io/instance: "{{ .Release.Name }}"
-              component: webhook
-          topologyKey: kubernetes.io/hostname
+#  affinity: |
+#    podAntiAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        - labelSelector:
+#            matchLabels:
+#              app.kubernetes.io/name: {{ template "vault.name" . }}-agent-injector
+#              app.kubernetes.io/instance: "{{ .Release.Name }}"
+#              component: webhook
+#          topologyKey: kubernetes.io/hostname
 
   # Toleration Settings for injector pods
   # This should be either a multi-line string or YAML matching the Toleration array
@@ -420,15 +420,15 @@ server:
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment to single node services such as Minikube
   # This should be either a multi-line string or YAML matching the PodSpec's affinity field.
-  affinity: |
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: {{ template "vault.name" . }}
-              app.kubernetes.io/instance: "{{ .Release.Name }}"
-              component: server
-          topologyKey: kubernetes.io/hostname
+#  affinity: |
+#    podAntiAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        - labelSelector:
+#            matchLabels:
+#              app.kubernetes.io/name: {{ template "vault.name" . }}
+#              app.kubernetes.io/instance: "{{ .Release.Name }}"
+#              component: server
+#          topologyKey: kubernetes.io/hostname
 
   # Toleration Settings for server pods
   # This should be either a multi-line string or YAML matching the Toleration array
@@ -505,7 +505,7 @@ server:
     mountPath: "/vault/data"
     # Name of the storage class to use.  If null it will use the
     # configured default Storage Class.
-    storageClass: null
+    storageClass: managed-nfs-storage
     # Access Mode of the storage device being used for the PVC
     accessMode: ReadWriteOnce
     # Annotations to apply to the PVC
@@ -517,14 +517,14 @@ server:
   # /vault/audit
   # See https://www.vaultproject.io/docs/audit/index.html to know more
   auditStorage:
-    enabled: false
+    enabled: true
     # Size of the PVC created
     size: 10Gi
     # Location where the PVC will be mounted.
     mountPath: "/vault/audit"
     # Name of the storage class to use.  If null it will use the
     # configured default Storage Class.
-    storageClass: null
+    storageClass: managed-nfs-storage
     # Access Mode of the storage device being used for the PVC
     accessMode: ReadWriteOnce
     # Annotations to apply to the PVC
