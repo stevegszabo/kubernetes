@@ -26,3 +26,22 @@ kc -n vault exec -it vault-0 -- vault operator unseal BVBM0zdWs2MUX8+Vw+DPFmmcYU
 kc -n vault exec -it vault-0 -- vault operator unseal UBO28nH2KZrZriWRmZUIhraWnaMKbYKzMEOjnM2Swtwq
 kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcwx1Apog3mN0Wj86zrZ5
 ```
+
+```
+kc -n default create sa vault-auth
+kc -n default apply -f vault-cluster-role-binding.yaml
+
+VAULT_SA_NAME=$(kc -n default get -o json sa vault-auth | jq -r .secrets[].name)
+VAULT_SA_JWT_TOKEN=$(kc -n default get -o json secret $VAULT_SA_NAME | jq -r .data.token | base64 -d)
+
+VAULT_SA_CA_CRT=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
+VAULT_K8S_HOST=$(kc config view --raw --minify --flatten -o json | jq -r .clusters[0].cluster.server)
+
+vault auth list
+vault auth enable kubernetes
+vault write auth/kubernetes/config \
+      token_reviewer_jwt="$VAULT_SA_JWT_TOKEN" \
+      kubernetes_host="$VAULT_K8S_HOST" \
+      kubernetes_ca_cert="$VAULT_SA_CA_CRT" \
+      issuer="https://kubernetes.default.svc.cluster.local"
+```
