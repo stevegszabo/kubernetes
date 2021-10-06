@@ -33,7 +33,7 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 kc -n argo-demo create sa vault-auth
 kc -n argo-demo apply -f vault-cluster-role-binding.yaml
 
-VAULT_SA_NAME=$(kc -n argo-demo get -o json sa vault-auth | jq -r .secrets[].name)
+VAULT_SA_NAME=$(kc -n argo-demo get -o json sa vault-auth | jq -r .secrets[0].name)
 VAULT_SA_JWT_TOKEN=$(kc -n argo-demo get -o json secret $VAULT_SA_NAME | jq -r .data.token | base64 -d)
 
 VAULT_SA_CA_CRT=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
