@@ -77,13 +77,13 @@ vault write auth/kubernetes/role/webapp \
 ```
 annotations:
   vault.hashicorp.com/agent-inject: "true"
-  vault.hashicorp.com/agent-inject-secret-webapp: secret/webapp/config
+  vault.hashicorp.com/agent-inject-secret-webapp: "secret/webapp/config"
   vault.hashicorp.com/agent-inject-template-webapp: |
     {{- with secret "secret/webapp/config" -}}
     MYSQL_USERNAME={{ .Data.data.username }}
     MYSQL_PASSWORD={{ .Data.data.password }}
     export MYSQL_USERNAME MYSQL_PASSWORD
     {{- end }}
-  vault.hashicorp.com/role: webapp
+  vault.hashicorp.com/role: "webapp"
   vault.hashicorp.com/tls-skip-verify: "false"
 ```
