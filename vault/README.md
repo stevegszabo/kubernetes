@@ -30,16 +30,19 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 ```
 
 ```
-VAULT_APP_NS=argo-demo
-VAULT_APP_SA=vault-auth
+kc apply -f vault.yaml
 
-kc -n $VAULT_APP_NS apply -f vault.argo-demo.yaml
+VAULT_CLUSTER_NS=default
+VAULT_CLUSTER_SA=vault-cluster-auth
 
-VAULT_APP_SA_TOKEN=$(kc -n $VAULT_APP_NS get -o json sa $VAULT_APP_SA | jq -r .secrets[0].name)
-VAULT_APP_SA_JWT_TOKEN=$(kc -n $VAULT_APP_NS get -o json secret $VAULT_APP_SA_TOKEN | jq -r .data.token | base64 -d)
+VAULT_APPLICATION_NS=argo-demo
+VAULT_APPLICATION_SA=vault-auth
 
-VAULT_CLUSTER_CA=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
+VAULT_CLUSTER_SA_TOKEN=$(kc -n $VAULT_CLUSTER_NS get -o json sa $VAULT_CLUSTER_SA | jq -r .secrets[0].name)
+VAULT_CLUSTER_SA_JWT_TOKEN=$(kc -n $VAULT_CLUSTER_NS get -o json secret $VAULT_CLUSTER_SA_TOKEN | jq -r .data.token | base64 -d)
+
 VAULT_CLUSTER_HOST=$(kc config view --raw --minify --flatten -o json | jq -r .clusters[0].cluster.server)
+VAULT_CLUSTER_CA=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
 
 vault login
 
@@ -53,7 +56,7 @@ vault auth disable prd-cluster
 
 vault read auth/dev-cluster/config
 vault write auth/dev-cluster/config \
-      token_reviewer_jwt="$VAULT_APP_SA_JWT_TOKEN" \
+      token_reviewer_jwt="$VAULT_CLUSTER_SA_JWT_TOKEN" \
       kubernetes_host="$VAULT_CLUSTER_HOST" \
       kubernetes_ca_cert="$VAULT_CLUSTER_CA" \
       issuer="https://kubernetes.default.svc.cluster.local"
@@ -81,8 +84,8 @@ vault list auth/dev-cluster/role
 vault read auth/dev-cluster/role/webapp
 vault delete auth/dev-cluster/role/webapp
 vault write auth/dev-cluster/role/webapp \
-      bound_service_account_names=$VAULT_APP_SA \
-      bound_service_account_namespaces=$VAULT_APP_NS \
+      bound_service_account_names=$VAULT_APPLICATION_SA \
+      bound_service_account_namespaces=$VAULT_APPLICATION_NS \
       policies=webapp \
       ttl=24h
 ```
