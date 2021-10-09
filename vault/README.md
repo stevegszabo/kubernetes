@@ -30,7 +30,7 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 ```
 
 ```
-kc apply -f vault.yaml
+kc apply -f vault.config.yaml
 
 VAULT_CLUSTER_NS=default
 VAULT_CLUSTER_SA=vault-cluster-auth
