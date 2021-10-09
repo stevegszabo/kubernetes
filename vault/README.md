@@ -30,23 +30,32 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 ```
 
 ```
-kc -n argo-demo create sa vault-auth
-kc -n argo-demo apply -f vault-cluster-role-binding.yaml
+VAULT_APP_NS=argo-demo
+VAULT_APP_SA=vault-auth
 
-VAULT_SA_NAME=$(kc -n argo-demo get -o json sa vault-auth | jq -r .secrets[0].name)
-VAULT_SA_JWT_TOKEN=$(kc -n argo-demo get -o json secret $VAULT_SA_NAME | jq -r .data.token | base64 -d)
+kc -n $VAULT_APP_NS apply -f vault.argo-demo.yaml
 
-VAULT_SA_CA_CRT=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
-VAULT_K8S_HOST=$(kc config view --raw --minify --flatten -o json | jq -r .clusters[0].cluster.server)
+VAULT_APP_SA_TOKEN=$(kc -n $VAULT_APP_NS get -o json sa $VAULT_APP_SA | jq -r .secrets[0].name)
+VAULT_APP_SA_JWT_TOKEN=$(kc -n $VAULT_APP_NS get -o json secret $VAULT_APP_SA_TOKEN | jq -r .data.token | base64 -d)
+
+VAULT_CLUSTER_CA=$(kc config view --raw --minify --flatten -o json | jq -r '.clusters[0].cluster["certificate-authority-data"]' | base64 -d)
+VAULT_CLUSTER_HOST=$(kc config view --raw --minify --flatten -o json | jq -r .clusters[0].cluster.server)
 
 vault login
 
 vault auth list
-vault auth enable kubernetes
-vault write auth/kubernetes/config \
-      token_reviewer_jwt="$VAULT_SA_JWT_TOKEN" \
-      kubernetes_host="$VAULT_K8S_HOST" \
-      kubernetes_ca_cert="$VAULT_SA_CA_CRT" \
+vault auth enable -path=dev-cluster -description "dev k8s" kubernetes
+vault auth enable -path=pat-cluster -description "pat k8s" kubernetes
+vault auth enable -path=prd-cluster -description "prd k8s" kubernetes
+vault auth disable dev-cluster
+vault auth disable pat-cluster
+vault auth disable prd-cluster
+
+vault read auth/dev-cluster/config
+vault write auth/dev-cluster/config \
+      token_reviewer_jwt="$VAULT_APP_SA_JWT_TOKEN" \
+      kubernetes_host="$VAULT_CLUSTER_HOST" \
+      kubernetes_ca_cert="$VAULT_CLUSTER_CA" \
       issuer="https://kubernetes.default.svc.cluster.local"
 
 vault secrets list
@@ -55,21 +64,25 @@ vault secrets enable -path=secret kv-v2
 vault kv list secret
 vault kv list secret/webapp
 vault kv get secret/webapp/config
-vault kv put secret/webapp/config username="szabo" password="p@ssw0rd" ttl="30s"
+vault kv put secret/webapp/config username="myuser" password="mypass101" ttl="30s"
+vault kv metadata get secret/webapp/config
+vault kv metadata delete secret/webapp/config
 
 vault policy list
 vault policy read webapp
+vault policy delete webapp
 vault policy write webapp - <<EOF
 path "secret/data/webapp/config" {
     capabilities = ["read", "list"]
 }
 EOF
 
-vault list auth/kubernetes/role
-vault read auth/kubernetes/role/webapp
-vault write auth/kubernetes/role/webapp \
-      bound_service_account_names=vault-auth \
-      bound_service_account_namespaces=argo-demo \
+vault list auth/dev-cluster/role
+vault read auth/dev-cluster/role/webapp
+vault delete auth/dev-cluster/role/webapp
+vault write auth/dev-cluster/role/webapp \
+      bound_service_account_names=$VAULT_APP_SA \
+      bound_service_account_namespaces=$VAULT_APP_NS \
       policies=webapp \
       ttl=24h
 ```
@@ -84,6 +97,7 @@ annotations:
     MYSQL_PASSWORD={{ .Data.data.password }}
     export MYSQL_USERNAME MYSQL_PASSWORD
     {{- end }}
+  vault.hashicorp.com/auth-path: "auth/dev-cluster"
   vault.hashicorp.com/role: "webapp"
   vault.hashicorp.com/tls-skip-verify: "false"
 ```
