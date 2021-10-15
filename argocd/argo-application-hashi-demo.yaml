@@ -7,14 +7,14 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  project: argo-demo
+  project: hashi-demo
   source:
     repoURL: git@github.com:stevegszabo/argocd-example-apps.git
     targetRevision: HEAD
     path: hashi-demo
   destination:
     server: https://kubernetes.default.svc
-    namespace: argo-demo
+    namespace: hashi-demo
   syncPolicy:
     automated:
       prune: false
