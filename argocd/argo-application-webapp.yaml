@@ -28,7 +28,7 @@ spec:
         annotations:
           kubernetes.io/change-cause: "argo-demo-001"
         scaling:
-          minReplicas: 4
+          minReplicas: 6
         ingress:
           enabled: false
         hpa:
