@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hashi-demo
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: argo-demo
+  source:
+    repoURL: git@github.com:stevegszabo/argocd-example-apps.git
+    targetRevision: HEAD
+    path: hashi-demo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-demo
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+      allowEmpty: false
