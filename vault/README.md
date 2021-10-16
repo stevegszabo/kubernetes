@@ -93,9 +93,9 @@ vault write auth/dev-cluster/role/webapp \
 ```
 annotations:
   vault.hashicorp.com/agent-inject: "true"
-  vault.hashicorp.com/agent-inject-secret-webapp: "secret/webapp/config"
-  vault.hashicorp.com/agent-inject-command-webapp: "id"
-  vault.hashicorp.com/agent-inject-template-webapp: |
+  vault.hashicorp.com/agent-inject-secret-config: "secret/webapp/config"
+  vault.hashicorp.com/agent-inject-command-config: "id"
+  vault.hashicorp.com/agent-inject-template-config: |
     {{- with secret "secret/webapp/config" -}}
     MYSQL_USERNAME={{ .Data.data.username }}
     MYSQL_PASSWORD={{ .Data.data.password }}
