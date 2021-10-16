@@ -27,6 +27,18 @@ spec:
           tag: ea5400a
         annotations:
           kubernetes.io/change-cause: "argo-demo-001"
+          vault.hashicorp.com/agent-inject: "true"
+          vault.hashicorp.com/agent-inject-secret-webapp: "secret/webapp/config"
+          vault.hashicorp.com/agent-inject-command-webapp: "id"
+          vault.hashicorp.com/agent-inject-template-webapp: |
+            {{- with secret "secret/webapp/config" -}}
+            MYSQL_USERNAME={{ .Data.data.username }}
+            MYSQL_PASSWORD={{ .Data.data.password }}
+            export MYSQL_USERNAME MYSQL_PASSWORD
+            {{- end }}
+          vault.hashicorp.com/auth-path: "auth/dev-cluster"
+          vault.hashicorp.com/role: "webapp"
+          vault.hashicorp.com/tls-skip-verify: "false"
         scaling:
           minReplicas: 4
         ingress:
