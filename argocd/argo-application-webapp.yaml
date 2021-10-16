@@ -28,9 +28,9 @@ spec:
         annotations:
           kubernetes.io/change-cause: "argo-demo-001"
           vault.hashicorp.com/agent-inject: "true"
-          vault.hashicorp.com/agent-inject-secret-webapp: "secret/webapp/config"
-          vault.hashicorp.com/agent-inject-command-webapp: "id"
-          vault.hashicorp.com/agent-inject-template-webapp: |
+          vault.hashicorp.com/agent-inject-secret-config: "secret/webapp/config"
+          vault.hashicorp.com/agent-inject-command-config: "id"
+          vault.hashicorp.com/agent-inject-template-config: |
             {{- with secret "secret/webapp/config" -}}
             POSTGRES_USER={{ .Data.data.POSTGRES_USER }}
             POSTGRES_PASSWORD={{ .Data.data.POSTGRES_PASSWORD }}
