@@ -11,9 +11,7 @@ spec:
   sourceRepos:
   - git@github.com:stevegszabo/argocd-example-apps.git
   destinations:
-  - namespace: argo-demo
-    server: https://kubernetes.default.svc
-  - namespace: hashi-demo
+  - namespace: argocd
     server: https://kubernetes.default.svc
 
 ---
