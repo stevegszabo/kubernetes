@@ -2,6 +2,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
+  name: argo-boot
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Argo demo project
+  sourceRepos:
+  - git@github.com:stevegszabo/argocd-example-apps.git
+  destinations:
+  - namespace: argo-demo
+    server: https://kubernetes.default.svc
+  - namespace: hashi-demo
+    server: https://kubernetes.default.svc
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
   name: argo-demo
   namespace: argocd
   finalizers:
