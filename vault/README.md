@@ -32,11 +32,11 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 ```
 kc apply -f vault.config.yaml
 
-VAULT_CLUSTER_NS=default
-VAULT_CLUSTER_SA=vault-cluster-auth
-
 VAULT_APPLICATION_NS=argo-demo
 VAULT_APPLICATION_SA=vault-auth
+
+VAULT_CLUSTER_NS=default
+VAULT_CLUSTER_SA=vault-cluster-auth
 
 VAULT_CLUSTER_SA_TOKEN=$(kc -n $VAULT_CLUSTER_NS get -o json sa $VAULT_CLUSTER_SA | jq -r .secrets[0].name)
 VAULT_CLUSTER_SA_JWT_TOKEN=$(kc -n $VAULT_CLUSTER_NS get -o json secret $VAULT_CLUSTER_SA_TOKEN | jq -r .data.token | base64 -d)
