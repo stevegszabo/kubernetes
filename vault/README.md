@@ -93,8 +93,8 @@ vault write auth/dev-cluster/role/webapp \
 ```
 annotations:
   traffic.sidecar.istio.io/excludeOutboundPorts: "8200"
-  vault.hashicorp.com/agent-inject: "true"
   vault.hashicorp.com/agent-init-first: "true"
+  vault.hashicorp.com/agent-inject: "true"
   vault.hashicorp.com/agent-inject-secret-config: "secret/webapp/config"
   vault.hashicorp.com/agent-inject-command-config: "id"
   vault.hashicorp.com/agent-inject-template-config: |
