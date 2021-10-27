@@ -91,6 +91,7 @@ apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.ap
 ```
 kc argo rollouts dashboard
 kc argo rollouts list rollouts
+
 kc argo rollouts status rollouts-demo
 kc argo rollouts get rollout rollouts-demo
 kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow
@@ -98,32 +99,10 @@ kc argo rollouts promote rollouts-demo
 kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:red
 kc argo rollouts abort rollouts-demo
 kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow
-```
 
-```
-szabos@ubuntu:~$ kc argo rollouts get rollout rollouts-demo
-Name:            rollouts-demo
-Namespace:       argo-demo
-Status:          ✔ Healthy
-Strategy:        Canary
-  Step:          8/8
-  SetWeight:     100
-  ActualWeight:  100
-Images:          argoproj/rollouts-demo:blue (stable)
-Replicas:
-  Desired:       5
-  Current:       5
-  Updated:       5
-  Ready:         5
-  Available:     5
-
-NAME                                       KIND        STATUS     AGE    INFO
-⟳ rollouts-demo                            Rollout     ✔ Healthy  11m
-└──# revision:1
-   └──⧉ rollouts-demo-6668595956           ReplicaSet  ✔ Healthy  4m36s  stable
-      ├──□ rollouts-demo-6668595956-cprlc  Pod         ✔ Running  4m36s  ready:1/1
-      ├──□ rollouts-demo-6668595956-hbfv9  Pod         ✔ Running  4m36s  ready:1/1
-      ├──□ rollouts-demo-6668595956-n4sms  Pod         ✔ Running  4m36s  ready:1/1
-      ├──□ rollouts-demo-6668595956-psw8c  Pod         ✔ Running  4m36s  ready:1/1
-      └──□ rollouts-demo-6668595956-s8b8m  Pod         ✔ Running  4m36s  ready:1/1
+kc argo rollouts status webapp
+kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:5580d93
+kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:377936d
+kc argo rollouts promote webapp
+kc argo rollouts undo webapp
 ```
