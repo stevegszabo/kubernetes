@@ -86,11 +86,18 @@ apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.ap
 
 ![ArgoCD](images/argo-demo.png)
 
-```
-szabos@ubuntu:~$ kc argo rollouts list rollouts
-NAME           STRATEGY   STATUS        STEP  SET-WEIGHT  READY  DESIRED  UP-TO-DATE  AVAILABLE
-rollouts-demo  Canary     Healthy       8/8   100         5/5    5        5           5
 
+```
+kc argo rollouts list rollouts
+kc argo rollouts get rollout rollouts-demo
+kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow
+kc argo rollouts promote rollouts-demo
+kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:red
+kc argo rollouts abort rollouts-demo
+kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow
+```
+
+```
 szabos@ubuntu:~$ kc argo rollouts get rollout rollouts-demo
 Name:            rollouts-demo
 Namespace:       argo-demo
