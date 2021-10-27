@@ -86,6 +86,7 @@ apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.ap
 
 ![ArgoCD](images/argo-demo.png)
 
+# argo rollouts
 
 ```
 kc argo rollouts list rollouts
