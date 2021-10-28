@@ -91,6 +91,7 @@ apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.ap
 ```
 kc argo rollouts dashboard
 kc argo rollouts list rollouts
+kc argo rollouts get rollout webapp
 
 # blue-green
 kc argo rollouts status webapp
