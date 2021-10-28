@@ -1,4 +1,32 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-green
+spec:
+  selector:
+    app: webapp
+  ports:
+  - name: webapp
+    port: 80
+    targetPort: webapp
+    protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-blue
+spec:
+  selector:
+    app: webapp
+  ports:
+  - name: webapp
+    port: 80
+    targetPort: webapp
+    protocol: TCP
+
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -26,31 +54,3 @@ spec:
       activeService: webapp-green
       previewService: webapp-blue
       autoPromotionEnabled: false
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp-green
-spec:
-  selector:
-    app: webapp
-  ports:
-  - name: webapp
-    port: 80
-    targetPort: webapp
-    protocol: TCP
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp-blue
-spec:
-  selector:
-    app: webapp
-  ports:
-  - name: webapp
-    port: 80
-    targetPort: webapp
-    protocol: TCP
