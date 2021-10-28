@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rollouts-demo
+  name: webapp
 spec:
   ports:
   - port: 80
@@ -10,13 +10,13 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: rollouts-demo
+    app: webapp
 
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: rollouts-demo
+  name: webapp
 spec:
   replicas: 5
   strategy:
@@ -30,17 +30,17 @@ spec:
       - pause: {duration: 10}
       - setWeight: 80
       - pause: {duration: 10}
-  revisionHistoryLimit: 2
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: rollouts-demo
+      app: webapp
   template:
     metadata:
       labels:
-        app: rollouts-demo
+        app: webapp
     spec:
       containers:
-      - name: rollouts-demo
+      - name: webapp
         image: argoproj/rollouts-demo:blue
         ports:
         - name: http
