@@ -102,7 +102,8 @@ kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:ye
 
 kc argo rollouts status webapp
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:5580d93
-kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:377936d
+kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:c8656fe
+kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:7bd0c31
 kc argo rollouts promote webapp
 kc argo rollouts undo webapp
 ```
