@@ -23,15 +23,15 @@ spec:
           protocol: TCP
   strategy:
     blueGreen: 
-      activeService: webapp-active
-      previewService: webapp-preview
+      activeService: webapp-green
+      previewService: webapp-blue
       autoPromotionEnabled: false
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: webapp-active
+  name: webapp-green
 spec:
   selector:
     app: webapp
@@ -45,7 +45,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: webapp-preview
+  name: webapp-blue
 spec:
   selector:
     app: webapp
