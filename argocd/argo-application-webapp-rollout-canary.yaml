@@ -18,7 +18,6 @@ kind: Rollout
 metadata:
   name: webapp
 spec:
-  replicas: 5
   strategy:
     canary:
       steps:
@@ -30,6 +29,7 @@ spec:
       - pause: {duration: 10}
       - setWeight: 80
       - pause: {duration: 10}
+  replicas: 5
   revisionHistoryLimit: 10
   selector:
     matchLabels:

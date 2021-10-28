@@ -32,6 +32,11 @@ kind: Rollout
 metadata:
   name: webapp
 spec:
+  strategy:
+    blueGreen:
+      activeService: webapp-green
+      previewService: webapp-blue
+      autoPromotionEnabled: false
   replicas: 1
   revisionHistoryLimit: 10
   selector:
@@ -49,8 +54,3 @@ spec:
         - name: webapp
           containerPort: 8080
           protocol: TCP
-  strategy:
-    blueGreen: 
-      activeService: webapp-green
-      previewService: webapp-blue
-      autoPromotionEnabled: false
