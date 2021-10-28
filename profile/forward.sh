@@ -3,6 +3,7 @@
 LOG_FILE=/tmp/kubectl.stdout.log
 
 (cat <<EOF
+istio-system svc/prometheus           9090:9090
 istio-system svc/grafana              3000:3000
 istio-system svc/kiali                20001:20001
 istio-system svc/istio-ingressgateway 8443:443
