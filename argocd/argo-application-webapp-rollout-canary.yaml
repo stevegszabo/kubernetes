@@ -29,12 +29,8 @@ spec:
       prometheus:
         address: http://prometheus.istio-system.svc.cluster.local:9090
         query: |
-          sum(irate(
-            istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}",response_code!~"5.*"}[5m]
-          )) /
-          sum(irate(
-            istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]
-          ))
+          sum(irate(istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}",response_code!~"5.*"}[5m])) /
+          sum(irate(istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]))
 
 ---
 apiVersion: argoproj.io/v1alpha1
