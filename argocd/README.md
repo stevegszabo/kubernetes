@@ -92,14 +92,6 @@ apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.ap
 kc argo rollouts dashboard
 kc argo rollouts list rollouts
 
-kc argo rollouts status rollouts-demo
-kc argo rollouts get rollout rollouts-demo
-kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow
-kc argo rollouts promote rollouts-demo
-kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:red
-kc argo rollouts abort rollouts-demo
-kc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow
-
 kc argo rollouts status webapp
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:377936d
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:5580d93
@@ -107,4 +99,6 @@ kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:c8656fe
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:7bd0c31
 kc argo rollouts promote webapp
 kc argo rollouts undo webapp
+kc argo rollouts abort webapp
+kc argo rollouts retry rollout webapp
 ```
