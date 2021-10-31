@@ -114,3 +114,7 @@ kc argo rollouts abort webapp
 kc argo rollouts set image webapp webapp=argoproj/rollouts-demo:yellow
 kc argo rollouts promote webapp
 ```
+
+```
+istio_requests_total{reporter="source",destination_service=~"application.hashi-demo.svc.cluster.local"}
+```
