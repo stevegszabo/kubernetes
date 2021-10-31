@@ -116,8 +116,8 @@ kc argo rollouts promote webapp
 ```
 
 ```
-kc argo rollouts get rollout application-v1 -w
-kc argo rollouts set image application-v1 application=docker.io/steveszabo/hashi-demo-app:7cd4f66
-kc argo rollouts set image application-v1 application=docker.io/steveszabo/hashi-demo-app:24a33af
-kc argo rollouts promote application-v1
+kc argo rollouts get rollout application -w
+kc argo rollouts set image application application=docker.io/steveszabo/hashi-demo-app:7cd4f66
+kc argo rollouts set image application application=docker.io/steveszabo/hashi-demo-app:24a33af
+kc argo rollouts promote application
 ```
