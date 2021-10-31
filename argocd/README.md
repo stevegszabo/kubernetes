@@ -114,10 +114,3 @@ kc argo rollouts abort webapp
 kc argo rollouts set image webapp webapp=argoproj/rollouts-demo:yellow
 kc argo rollouts promote webapp
 ```
-
-```
-kc argo rollouts get rollout application -w
-kc argo rollouts set image application application=docker.io/steveszabo/hashi-demo-app:7cd4f66
-kc argo rollouts set image application application=docker.io/steveszabo/hashi-demo-app:24a33af
-kc argo rollouts promote application
-```
