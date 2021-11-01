@@ -25,7 +25,7 @@ argocd login --insecure --username admin localhost:8080
 argocd account update-password
 
 argocd cluster list
-argocd cluster add kubernetes-admin@kubernetes
+argocd cluster add --name local kubernetes-admin@kubernetes
 
 argocd proj create argo-demo \
 --description "Argo demo project" \
