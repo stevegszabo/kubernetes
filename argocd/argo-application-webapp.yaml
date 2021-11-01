@@ -53,7 +53,7 @@ spec:
             cpu: 200m
             memory: 128M
   destination:
-    server: https://kubernetes.default.svc
+    server: https://10.0.2.15:6443
     namespace: argo-demo
   syncPolicy:
     automated:

@@ -12,7 +12,7 @@ spec:
   - git@github.com:stevegszabo/argocd-example-apps.git
   destinations:
   - namespace: argocd
-    server: https://kubernetes.default.svc
+    server: https://10.0.2.15:6443
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -28,7 +28,7 @@ spec:
   - git@github.com:stevegszabo/argocd-example-apps.git
   destinations:
   - namespace: argo-demo
-    server: https://kubernetes.default.svc
+    server: https://10.0.2.15:6443
 
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -44,7 +44,7 @@ spec:
   - git@github.com:stevegszabo/argocd-example-apps.git
   destinations:
   - namespace: hashi-demo
-    server: https://kubernetes.default.svc
+    server: https://10.0.2.15:6443
   clusterResourceWhitelist:
   - group: ''
     kind: PersistentVolume

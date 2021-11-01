@@ -9,7 +9,7 @@ VAULT_ADDR=http://127.0.0.1:8200/
 VAULT_TOKEN=s.Ni4R8qIv87976TU816bRbzTe
 export VAULT_ADDR VAULT_TOKEN
 
-SOPS_AGE_KEY_FILE=$HOME/.age/age.key
+SOPS_AGE_KEY_FILE=/home/szabos/.age/age.key
 SOPS_AGE_RECIPIENTS=age18affr3vq66ehdmp49qhlpv9lclw2rjl4w4qdxwasz8szdvyqwczsqfjkca
 export SOPS_AGE_KEY_FILE SOPS_AGE_RECIPIENTS
 
@@ -25,3 +25,4 @@ alias kc='kubectl'
 alias kps='watch -n 1 kubectl get po,svc,ep,deploy,no'
 
 alias cdk='cd ~/src/kubernetes/'
+alias cda='cd ~/src/argocd-example-apps/'

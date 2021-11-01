@@ -13,7 +13,7 @@ spec:
     targetRevision: HEAD
     path: hashi-demo
   destination:
-    server: https://kubernetes.default.svc
+    server: https://10.0.2.15:6443
     namespace: hashi-demo
   syncPolicy:
     automated:
