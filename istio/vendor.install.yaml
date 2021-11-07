@@ -1,8 +1,7 @@
----
 apiVersion: install.istio.io/v1alpha1
 kind: IstioOperator
 metadata:
-  name: notebook
+  name: mediapc
   namespace: istio-system
 spec:
   components:
@@ -62,7 +61,7 @@ spec:
       proxyMetadata: {}
     enablePrometheusMerge: true
   profile: demo
-  tag: 1.11.0
+  tag: 1.11.4
   values:
     base:
       enableCRDTemplates: false
@@ -198,3 +197,4 @@ spec:
           logging: false
           monitoring: false
           topology: false
+
