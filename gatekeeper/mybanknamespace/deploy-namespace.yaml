@@ -4,5 +4,5 @@ kind: Namespace
 metadata:
   name: sample
   labels:
-    environment: eng
-    application: sample
+    bad-environment: eng
+    bad-application: sample
