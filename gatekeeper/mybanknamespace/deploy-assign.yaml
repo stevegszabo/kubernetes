@@ -7,10 +7,8 @@ metadata:
 spec:
   match:
     scope: Namespaced
-    excludedNamespaces:
-    - kube-system
-    - kube-public
-    - kube-node-lease
+    namespaces:
+    - mybanknamespace
     kinds:
     - apiGroups: ["*"]
       kinds: ["Pod"]
