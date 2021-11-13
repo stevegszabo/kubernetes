@@ -20,3 +20,56 @@ spec:
   parameters:
     assign:
       value: Always
+
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: mybank-pod-volumes
+  namespace: gatekeeper
+spec:
+  match:
+    scope: Namespaced
+    namespaces:
+    - mybanknamespace
+    kinds:
+    - apiGroups: ["*"]
+      kinds: ["Pod"]
+  applyTo:
+  - groups: [""]
+    kinds: ["Pod"]
+    versions: ["v1"]
+  location: "spec.volumes"
+  parameters:
+    assign:
+      value:
+        volumes:
+        - name: webapp
+          hostPath:
+            path: /etc/ssl/certs/ca-certificates.crt
+
+---
+apiVersion: mutations.gatekeeper.sh/v1alpha1
+kind: Assign
+metadata:
+  name: mybank-pod-mounts
+  namespace: gatekeeper
+spec:
+  match:
+    scope: Namespaced
+    namespaces:
+    - mybanknamespace
+    kinds:
+    - apiGroups: ["*"]
+      kinds: ["Pod"]
+  applyTo:
+  - groups: [""]
+    kinds: ["Pod"]
+    versions: ["v1"]
+  location: "spec.containers[name:*].volumeMounts"
+  parameters:
+    assign:
+      value:
+        volumeMounts:
+        - name: webapp
+          mountPath: /host/etc/ssl/certs/ca-certificates.crt
