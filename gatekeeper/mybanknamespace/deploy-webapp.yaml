@@ -14,7 +14,14 @@ spec:
       labels:
         app: webapp
     spec:
+      volumes:
+      - name: webapp
+        hostPath:
+          path: /etc/os-release
       containers:
       - name: webapp
         image: docker.io/steveszabo/webapp:289cf46
         imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: webapp
+          mountPath: /host/os-release

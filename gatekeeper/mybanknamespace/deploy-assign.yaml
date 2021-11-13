@@ -43,7 +43,7 @@ spec:
   parameters:
     assign:
       value:
-      - name: webapp
+      - name: ca-bundle
         hostPath:
           path: /etc/ssl/certs/ca-certificates.crt
 
@@ -69,5 +69,5 @@ spec:
   parameters:
     assign:
       value:
-      - name: webapp
-        mountPath: /host/etc/ssl/certs/ca-certificates.crt
+      - name: ca-bundle
+        mountPath: /host/ca-certificates.crt
