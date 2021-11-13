@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mybank
+  namespace: mybanknamespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mybank
+  template:
+    metadata:
+      labels:
+        app: mybank
+    spec:
+      containers:
+      - name: nginx
+        image: docker.io/steveszabo/webapp:289cf46
+        imagePullPolicy: IfNotPresent
