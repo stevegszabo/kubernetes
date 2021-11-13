@@ -15,6 +15,6 @@ spec:
         app: mybank
     spec:
       containers:
-      - name: nginx
+      - name: webapp
         image: docker.io/steveszabo/webapp:289cf46
         imagePullPolicy: IfNotPresent
