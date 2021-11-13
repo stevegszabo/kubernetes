@@ -43,10 +43,9 @@ spec:
   parameters:
     assign:
       value:
-        volumes:
-        - name: webapp
-          hostPath:
-            path: /etc/ssl/certs/ca-certificates.crt
+      - name: webapp
+        hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
 
 ---
 apiVersion: mutations.gatekeeper.sh/v1alpha1
@@ -70,6 +69,5 @@ spec:
   parameters:
     assign:
       value:
-        volumeMounts:
-        - name: webapp
-          mountPath: /host/etc/ssl/certs/ca-certificates.crt
+      - name: webapp
+        mountPath: /host/etc/ssl/certs/ca-certificates.crt
