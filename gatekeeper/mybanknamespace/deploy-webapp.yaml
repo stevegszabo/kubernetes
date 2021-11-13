@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: mybanknamespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      volumes:
+      - name: webapp
+        hostPath:
+          path: /etc/ssl/certs/ca-certificates.crt
+      containers:
+      - name: webapp
+        image: docker.io/steveszabo/webapp:289cf46
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: webapp
+          mountPath: /host/etc/ssl/certs/ca-certificates.crt

@@ -2,7 +2,7 @@
 apiVersion: mutations.gatekeeper.sh/v1alpha1
 kind: Assign
 metadata:
-  name: mybankpod
+  name: mybank-pod-policy
   namespace: gatekeeper
 spec:
   match:
