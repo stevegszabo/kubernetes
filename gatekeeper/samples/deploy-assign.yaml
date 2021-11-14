@@ -8,10 +8,7 @@ spec:
   match:
     scope: Namespaced
     namespaces:
-    - mybanknamespace
-    kinds:
-    - apiGroups: ["*"]
-      kinds: ["Pod"]
+    - mybank
   applyTo:
   - groups: [""]
     kinds: ["Pod"]
@@ -34,10 +31,7 @@ spec:
   match:
     scope: Namespaced
     namespaces:
-    - mybanknamespace
-    kinds:
-    - apiGroups: ["*"]
-      kinds: ["Pod"]
+    - mybank
   applyTo:
   - groups: [""]
     kinds: ["Pod"]
