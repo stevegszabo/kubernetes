@@ -2,13 +2,13 @@
 apiVersion: templates.gatekeeper.sh/v1beta1
 kind: ConstraintTemplate
 metadata:
-  name: mybanknamespace
+  name: mybanklabels
   namespace: gatekeeper
 spec:
   crd:
     spec:
       names:
-        kind: MybankNamespace
+        kind: MybankLabels
       validation:
         openAPIV3Schema:
           properties:
@@ -18,12 +18,12 @@ spec:
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
-        package mybanknamespace
+        package mybanklabels
 
         violation[{"msg": msg, "details": {"missing_labels": missing}}] {
           provided := {label | input.review.object.metadata.labels[label]}
           required := {label | label := input.parameters.labels[_]}
           missing := required - provided
           count(missing) > 0
-          msg := sprintf("Namespace resources must include labels: %v", [missing])
+          msg := sprintf("Resource must include labels: %v", [missing])
         }

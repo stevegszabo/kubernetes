@@ -2,7 +2,7 @@
 apiVersion: mutations.gatekeeper.sh/v1alpha1
 kind: AssignMetadata
 metadata:
-  name: mybank-namespace-label
+  name: mybank-namespace-labels
   namespace: gatekeeper
 spec:
   match:

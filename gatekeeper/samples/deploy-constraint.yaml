@@ -1,8 +1,8 @@
 ---
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: MybankNamespace
+kind: MybankLabels
 metadata:
-  name: mybanknamespace
+  name: mybanklabels
   namespace: gatekeeper
 spec:
   match:
