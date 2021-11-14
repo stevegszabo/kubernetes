@@ -24,3 +24,6 @@ spec:
         volumeMounts:
         - name: webapp
           mountPath: /host/os-release
+      - name: client
+        image: docker.io/steveszabo/webapp:289cf46
+        command: ["/bin/bash", "-c", "sleep 3600"]
