@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit
+
 LOG_FILE=/tmp/kubectl.stdout.log
 
 (cat <<EOF
