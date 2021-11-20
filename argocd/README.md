@@ -28,6 +28,10 @@ argocd cluster list
 argocd cluster rm eng-cluster
 argocd cluster add --name eng-cluster kubernetes-admin@kubernetes
 
+argocd repo add git@github.com:stevegszabo/argocd-example-apps.git \
+--insecure-ignore-host-key \
+--ssh-private-key-path ~/.ssh/argo.id_rsa
+
 argocd proj create argo-demo \
 --description "Argo demo project" \
 --src https://github.com/argoproj/argocd-example-apps.git \
