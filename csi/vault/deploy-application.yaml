@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: application
+  namespace: hashi-demo
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+  namespace: hashi-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application
+  template:
+    metadata:
+      labels:
+        app: application
+    spec:
+      volumes:
+      - name: secrets
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: hashi-demo
+      serviceAccountName: application
+      containers:
+      - name: application
+        image: docker.io/steveszabo/hashi-demo-app:24a33af
+        volumeMounts:
+        - name: secrets
+          mountPath: /csi/secrets
+          readOnly: true
