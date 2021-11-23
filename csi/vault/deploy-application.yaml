@@ -32,6 +32,17 @@ spec:
       containers:
       - name: application
         image: docker.io/steveszabo/hashi-demo-app:24a33af
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: application
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: application
+              key: POSTGRES_PASSWORD
         volumeMounts:
         - name: secrets
           mountPath: /csi/secrets
