@@ -31,7 +31,7 @@ spec:
       serviceAccountName: application
       containers:
       - name: application
-        image: docker.io/steveszabo/hashi-demo-app:24a33af
+        image: docker.io/steveszabo/webapp:289cf46
         env:
         - name: POSTGRES_USER
           valueFrom:
