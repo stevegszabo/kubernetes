@@ -35,7 +35,21 @@ podLabels: {}
 podCountLimit: 100
 secretAnnotations: {}
 controllerManager:
-  exemptNamespaces: []
+  exemptNamespaces:
+  - argo-rollouts
+  - argocd
+  - calico-apiserver
+  - calico-system
+  - default
+  - gatekeeper
+  - hashi-demo
+  - istio-operator
+  - istio-system
+  - kube-node-lease
+  - kube-public
+  - kube-system
+  - tigera-operator
+  - vault
   hostNetwork: false
   port: 8443
   metricsPort: 8888
