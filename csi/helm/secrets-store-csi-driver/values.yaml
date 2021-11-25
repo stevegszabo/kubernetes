@@ -195,7 +195,7 @@ syncSecret:
   enabled: true
 
 ## Enable secret rotation feature [alpha]
-enableSecretRotation: false
+enableSecretRotation: true
 
 ## Secret rotation poll interval duration
 rotationPollInterval:
