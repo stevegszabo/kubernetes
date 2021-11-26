@@ -12,7 +12,7 @@ metadata:
   name: application
   namespace: hashi-demo
   annotations:
-    reloader.stakater.com/auto: "true"
+    secret.reloader.stakater.com/reload: "application"
 spec:
   replicas: 1
   selector:
@@ -38,12 +38,12 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: application-secret
+              name: application
               key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: application-secret
+              name: application
               key: POSTGRES_PASSWORD
         volumeMounts:
         - name: secrets
