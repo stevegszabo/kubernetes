@@ -26,7 +26,7 @@ global:
 
 injector:
   # True if you want to enable vault agent injection.
-  enabled: false
+  enabled: true
 
   replicas: 1
 
@@ -723,7 +723,7 @@ csi:
   # With the driver and provider installed, you can mount Vault secrets into volumes
   # similar to the Vault Agent injector, and you can also sync those secrets into
   # Kubernetes secrets.
-  enabled: true
+  enabled: false
 
   image:
     repository: "hashicorp/vault-csi-provider"
