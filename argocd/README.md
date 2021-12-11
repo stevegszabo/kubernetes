@@ -110,6 +110,7 @@ kc argo rollouts promote webapp
 kc argo rollouts undo webapp
 kc argo rollouts abort webapp
 kc argo rollouts retry rollout webapp
+kc argo rollouts retry rollout application
 
 # canary
 kc argo rollouts set image webapp webapp=argoproj/rollouts-demo:yellow
