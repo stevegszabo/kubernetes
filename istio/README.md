@@ -23,7 +23,7 @@ kubectl label ns webapp-demo istio-injection=enabled
 kubectl label ns hashi-demo istio-injection-
 kubectl label ns webapp-demo istio-injection-
 
-kubectl -n istio-system get -o json secret kiali-token-cq7ml | jq -r .data.token | base64 -d
+kubectl -n istio-system get -o json secret -l istio-token=kiali | jq -r .items[].data.token | base64 -d
 ```
 
 ```

@@ -34,6 +34,22 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
+  name: webapp-demo
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Argo demo project
+  sourceRepos:
+  - git@github.com:stevegszabo/argocd-example-apps.git
+  destinations:
+  - namespace: webapp-demo
+    server: https://192.168.56.101:6443
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
   name: hashi-demo
   namespace: argocd
   finalizers:
