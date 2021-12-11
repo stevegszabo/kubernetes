@@ -1,4 +1,4 @@
-# kubernetes
+# kubernetes playground
 
 ```
 kubeadm init --apiserver-advertise-address=192.168.56.101 --pod-network-cidr=10.0.0.0/16
