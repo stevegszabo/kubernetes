@@ -101,10 +101,10 @@ kc argo rollouts list rollouts
 kc argo rollouts get rollout application
 kc argo rollouts status application
 
-kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:377936d
-kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:5580d93
-kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:c8656fe
-kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:7bd0c31
+kc argo rollouts set image application webapp=docker.io/steveszabo/webapp:377936d
+kc argo rollouts set image application webapp=docker.io/steveszabo/webapp:5580d93
+kc argo rollouts set image application webapp=docker.io/steveszabo/webapp:c8656fe
+kc argo rollouts set image application webapp=docker.io/steveszabo/webapp:7bd0c31
 
 kc argo rollouts promote application
 kc argo rollouts undo application
