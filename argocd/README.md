@@ -102,6 +102,7 @@ kc argo rollouts get rollout webapp
 
 # blue-green
 kc argo rollouts status webapp
+kc argo rollouts status application
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:377936d
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:5580d93
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:c8656fe
