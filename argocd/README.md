@@ -100,7 +100,6 @@ kc argo rollouts dashboard
 kc argo rollouts list rollouts
 kc argo rollouts get rollout webapp
 
-# blue-green
 kc argo rollouts status webapp
 kc argo rollouts status application
 kc argo rollouts set image webapp webapp=docker.io/steveszabo/webapp:377936d
@@ -112,16 +111,6 @@ kc argo rollouts undo webapp
 kc argo rollouts abort webapp
 kc argo rollouts retry rollout webapp
 kc argo rollouts retry rollout application
-
-# canary
-kc argo rollouts set image webapp webapp=argoproj/rollouts-demo:yellow
-kc argo rollouts promote webapp
-
-kc argo rollouts set image webapp webapp=argoproj/rollouts-demo:red
-kc argo rollouts abort webapp
-
-kc argo rollouts set image webapp webapp=argoproj/rollouts-demo:yellow
-kc argo rollouts promote webapp
 ```
 
 ```
