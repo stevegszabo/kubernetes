@@ -98,7 +98,7 @@ apps   Deployment  argo-demo  guestbook-ui  Synced  Healthy        deployment.ap
 ```
 kc argo rollouts dashboard
 kc argo rollouts list rollouts
-kc argo rollouts get rollout application
+kc argo rollouts get rollout application -w
 kc argo rollouts status application
 
 kc argo rollouts set image application webapp=docker.io/steveszabo/webapp:377936d
@@ -114,4 +114,5 @@ kc argo rollouts retry rollout application
 
 ```
 istio_requests_total{reporter="source",destination_service=~"application.hashi-demo.svc.cluster.local"}
+sum(irate(istio_requests_total{reporter="source",destination_service=~"application.hashi-demo.svc.cluster.local"}[15m]))
 ```
