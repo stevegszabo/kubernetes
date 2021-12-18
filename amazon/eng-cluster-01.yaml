@@ -1,0 +1,39 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: eng-cluster-01
+  region: ca-central-1
+privateCluster:
+  enabled: false
+  additionalEndpointServices:
+  - autoscaling
+vpc:
+  id: vpc-xxxxxxxxxxxx
+  sharedNodeSecurityGroup: sg-xxxxxxxxxxxxxx
+  manageSharedNodeSecurityGroupRules: false
+  clusterEndpoints:
+    publicAccess:  false
+    privateAccess: true
+  nat:
+    gateway: Disabled
+  subnets:
+    private:
+      ca-central-1a:
+        id: subnet-xxxxxxxxxxxxxxxxx
+      ca-central-1b:
+        id: subnet-xxxxxxxxxxxxxxxxx
+      ca-central-1d:
+        id: subnet-xxxxxxxxxxxxxxxxx
+managedNodeGroups:
+- name: eng-group-01
+  amiFamily: AmazonLinux2
+  instanceType: t3.medium
+  volumeSize: 25
+  privateNetworking: true
+  minSize: 1
+  maxSize: 3
+  desiredCapacity: 1
+  maxPodsPerNode: 35
+  ssh:
+    allow: false

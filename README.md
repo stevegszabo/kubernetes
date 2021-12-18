@@ -11,7 +11,7 @@ eksctl get nodegroup --cluster=eng-cluster-01 --name=eng-group-01
 eksctl get nodegroup --cluster=eng-cluster-01 --name=eng-group-01 -o json | jq -r .
 
 eksctl create cluster --dry-run -f eng-cluster-01.yaml
-eksctl delete cluster --region=ca-central-1 --name=eng-cluster-01
+eksctl delete cluster --force --region=ca-central-1 --name=eng-cluster-01
 
 eksctl utils describe-stacks --region=ca-central-1 --cluster=eng-cluster-01
 ```
