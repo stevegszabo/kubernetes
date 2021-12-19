@@ -3,7 +3,11 @@
 ```
 aws eks list-clusters | jq -r .
 aws eks list-nodegroups --cluster-name=eng-cluster-01 | jq -r .
+
 aws eks update-kubeconfig --region ca-central-1 --name eng-cluster-01
+
+NODE_GROUP=$(aws eks list-nodegroups --cluster-name=eng-cluster-01 | jq -r .nodegroups[0])
+aws eks describe-nodegroup --cluster-name eng-cluster-01 --nodegroup-name $NODE_GROUP
 
 eksctl get cluster --name=eng-cluster-01
 eksctl get cluster --name=eng-cluster-01 -o json | jq -r .
