@@ -95,6 +95,7 @@ spec:
         - /usr/local/bin/argocd-image-updater
         - run
         - --interval=1m
+        - --loglevel=debug
         env:
         - name: APPLICATIONS_API
           valueFrom:
