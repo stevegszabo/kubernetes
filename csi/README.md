@@ -1,1 +1,1 @@
-# secret store container storage interface
+# container storage interface
