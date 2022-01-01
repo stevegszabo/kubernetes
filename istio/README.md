@@ -1,4 +1,4 @@
-# istio
+# istio service mesh
 
 ![Istio Kiali](images/istio-webapp-demo.png)
 
