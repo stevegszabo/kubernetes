@@ -23,6 +23,8 @@ eksctl utils describe-stacks --region=ca-central-1 --cluster=eng-cluster-01
 
 ```
 kubeadm init --apiserver-advertise-address=192.168.56.101 --pod-network-cidr=10.0.0.0/16
+kubeadm init --apiserver-advertise-address=192.168.56.201 --pod-network-cidr=10.0.0.0/16
+
 kubeadm certs check-expiration
 kubeadm certs renew all
 
