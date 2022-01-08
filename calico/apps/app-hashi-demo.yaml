@@ -162,6 +162,12 @@ spec:
         env:
         - name: HASHI_HOST
           value: "application.app-hashi-demo.svc.cluster.local:5000"
+      - name: curl-webapp
+        image: docker.io/steveszabo/webapp:289cf46
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 http://$HASHI_HOST/; sleep 1; done"]
+        env:
+        - name: HASHI_HOST
+          value: "releasev1-webapp.app-webapp-demo.svc.cluster.local:8080"
       - name: curl-google
         image: docker.io/steveszabo/webapp:289cf46
         command: ["/bin/bash", "-c", "while true; do curl -v -m 5 -L https://$HASHI_HOST/; sleep 1; done"]
