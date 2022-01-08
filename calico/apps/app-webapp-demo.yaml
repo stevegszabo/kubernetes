@@ -1,0 +1,134 @@
+---
+# Source: webapp/templates/deployment.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-auth
+  labels:
+    helm.sh/chart: webapp-1.0.0
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/instance: releasev1
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: webapp/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: releasev1-webapp
+  labels:
+    helm.sh/chart: webapp-1.0.0
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/instance: releasev1
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  selector:
+    app: releasev1-webapp
+    version: v1
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+---
+# Source: webapp/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: releasev1-webapp
+  labels:
+    helm.sh/chart: webapp-1.0.0
+    app.kubernetes.io/name: webapp
+    app.kubernetes.io/instance: releasev1
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 3
+  minReadySeconds: 15
+  progressDeadlineSeconds: 120
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: releasev1-webapp
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: releasev1-webapp
+        version: v1
+      annotations:
+        kubernetes.io/change-cause: "001"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "8200"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-command-config: id
+        vault.hashicorp.com/agent-inject-secret-config: secret/webapp/config
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{- with secret "secret/webapp/config" -}}
+          POSTGRES_USER={{ .Data.data.POSTGRES_USER }}
+          POSTGRES_PASSWORD={{ .Data.data.POSTGRES_PASSWORD }}
+          export POSTGRES_USER
+          {{- end }}
+        vault.hashicorp.com/auth-path: auth/eng-cluster
+        vault.hashicorp.com/role: webapp
+        vault.hashicorp.com/tls-skip-verify: "false"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/os
+                operator: In
+                values:
+                - linux
+      tolerations:
+      - effect: NoSchedule
+        key: sgs-node-tainted
+        operator: Equal
+        value: "true"
+      serviceAccount: vault-auth
+      securityContext:
+        runAsUser: 33
+      containers:
+      - name: curl-webapp
+        image: docker.io/steveszabo/webapp:ea5400a
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 $CURL_HOST; sleep $CURL_SLEEP; done"]
+        env:
+        - name: CURL_HOST
+          value: "http://releasev1-webapp:8080/"
+        - name: CURL_SLEEP
+          value: "1.0"
+      - name: webapp
+        image: docker.io/steveszabo/webapp:ea5400a
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: POD_JIRA_TICKET
+          value: "00000000"
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_WORKER_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe:
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+          periodSeconds: 15
+          httpGet:
+            path: /
+            port: http
+        readinessProbe:
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+          periodSeconds: 15
+          httpGet:
+            path: /
+            port: http

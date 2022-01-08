@@ -1,0 +1,388 @@
+---
+# Source: hashi-demo/templates/hashi-app.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: application
+---
+# Source: hashi-demo/templates/hashi-client.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: client
+---
+# Source: hashi-demo/templates/hashi-data.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: data
+---
+# Source: hashi-demo/templates/hashi-web.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: presentation
+---
+# Source: hashi-demo/templates/hashi-client.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: client
+data:
+  example.com.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIC5DCCAcwCAQAwDQYJKoZIhvcNAQELBQAwLTEVMBMGA1UECgwMZXhhbXBsZSBJ
+    bmMuMRQwEgYDVQQDDAtleGFtcGxlLmNvbTAeFw0yMTA2MjMwMDExMDRaFw0yMjA2
+    MjMwMDExMDRaMEMxHzAdBgNVBAMMFmhhc2hpLWRlbW8uZXhhbXBsZS5jb20xIDAe
+    BgNVBAoMF2hhc2hpLWRlbW8gb3JnYW5pemF0aW9uMIIBIjANBgkqhkiG9w0BAQEF
+    AAOCAQ8AMIIBCgKCAQEA+6OBARAWlhxeLM5w7kkU2aXRcR/ZZW5XL+MHPbuXvOev
+    lS72WAAk0vQ5h2Mei9fC269FIJnYmbwAqW3Rmw05gMDECAOaL7jZxbwDj1waZzyQ
+    qbXGQrMkHN0slzPYFybHek8Lejhv5VlHXMRDgkp+UUHOmq45MJWVkhA5jox1T96b
+    gdgvhfXmUYdRB3vBUlxke+DfCvjPTubgDpTVN6jyE5MIMYPm7dTOM1m+U9BxmeRp
+    Lt5eV53GWs/echQrgEhtA1q3s/wyLMi9Pli03e6ASK4UlXf74ETh0uKvUrHZSWCn
+    gf+zgciX9X63VY/155NfgY8a5geaYqtOWozEBIhJ/wIDAQABMA0GCSqGSIb3DQEB
+    CwUAA4IBAQBDa7sJqwfdNzzxFVwYbOpdJv9i79exUBPHNv1QX8422zg6lWN9LhdD
+    02FsfE1LsJedDPMnfEa1vCB5stRRUtfu502+n0v8HzqL0fR/iyPogcVimlJCpbpW
+    rfCHgMpVY6daooUNoiYOW7hYubXVhd6JwrQfjcLaTQ0TEpKZEtmwbd2CrcIcuQ94
+    wLa01+PcZa6M4xQHMEmJg/QmOJqcQpYRy/+XED9qxJnTuaf2BM/rQn4Bbt0zH72a
+    p5JSySuqUux1oAyJPNUs9X73vVioQ2FOE/uXloVOrfROwjqeG2yOJwAjwPNsuDkW
+    zC4Eq90hWw2Pn96aAXgcakvWdRFRVp8O
+    -----END CERTIFICATE-----
+---
+# Source: hashi-demo/templates/hashi-data-vol.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-hashi-demo
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: managed-nfs-storage
+  nfs:
+    path: /srv/shared/app-hashi-demo
+    server: 192.168.56.201
+---
+# Source: hashi-demo/templates/hashi-data-vol.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-hashi-demo
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Source: hashi-demo/templates/hashi-app-istio.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: application
+spec:
+  selector:
+    app: application
+  ports:
+  - name: http
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
+---
+# Source: hashi-demo/templates/hashi-data-istio.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: data
+spec:
+  selector:
+    app: data
+  ports:
+  - name: tcp
+    port: 5432
+    targetPort: 5432
+    protocol: TCP
+---
+# Source: hashi-demo/templates/hashi-web-istio.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: presentation
+spec:
+  selector:
+    app: presentation
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+---
+# Source: hashi-demo/templates/hashi-client.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+      version: v1
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+  progressDeadlineSeconds: 120
+  minReadySeconds: 1
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app: client
+        version: v1
+      annotations:
+        kubernetes.io/change-cause: "001"
+    spec:
+      volumes:
+      - name: client
+        configMap:
+          name: client
+          items:
+          - key: example.com.crt
+            path: example.com.crt
+      serviceAccountName: client
+      containers:
+      - name: curl-local
+        image: docker.io/steveszabo/webapp:289cf46
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 http://$HASHI_HOST/api/posts; sleep 1; done"]
+        env:
+        - name: HASHI_HOST
+          value: "application.app-hashi-demo.svc.cluster.local:5000"
+      - name: curl-google
+        image: docker.io/steveszabo/webapp:289cf46
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 -L https://$HASHI_HOST/; sleep 1; done"]
+        env:
+        - name: HASHI_HOST
+          value: "www.google.ca"
+      - name: client
+        image: docker.io/steveszabo/webapp:289cf46
+        ports:
+        - name: client
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: client
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: client
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 5
+---
+# Source: hashi-demo/templates/hashi-data.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data
+spec:
+  selector:
+    matchLabels:
+      app: data
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data
+        version: v1
+      annotations:
+        kubernetes.io/change-cause: "001"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "8200"
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-config: secret/webapp/config
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{- with secret "secret/webapp/config" -}}
+          POSTGRES_USER={{ .Data.data.POSTGRES_USER }}
+          POSTGRES_PASSWORD={{ .Data.data.POSTGRES_PASSWORD }}
+          export POSTGRES_USER POSTGRES_PASSWORD
+          {{- end }}
+        vault.hashicorp.com/auth-path: auth/eng-cluster
+        vault.hashicorp.com/log-level: debug
+        vault.hashicorp.com/role: webapp
+        vault.hashicorp.com/tls-skip-verify: "false"
+    spec:
+      serviceAccountName: data
+      volumes:
+      - name: app-hashi-demo
+        persistentVolumeClaim:
+          claimName: app-hashi-demo
+      containers:
+      - name: data
+        image: docker.io/steveszabo/hashi-demo-data:89eae53
+        volumeMounts:
+        - name: app-hashi-demo
+          mountPath: /database
+        env:
+        - name: PGDATA
+          value: "/database/data"
+        ports:
+        - name: data
+          containerPort: 5432
+        resources:
+          requests:
+            cpu: 256m
+            memory: 256M
+          limits:
+            cpu: 256m
+            memory: 256M
+        readinessProbe:
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 15
+          exec:
+            command: ["psql", "-w", "-U", "user", "-d", "posts", "-c", "SELECT 1"]
+        livenessProbe:
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 15
+          exec:
+            command: ["psql", "-w", "-U", "user", "-d", "posts", "-c", "SELECT 1"]
+---
+# Source: hashi-demo/templates/hashi-web.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presentation
+spec:
+  selector:
+    matchLabels:
+      app: presentation
+      version: v1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: presentation
+        version: v1
+      annotations:
+        kubernetes.io/change-cause: "001"
+    spec:
+      serviceAccountName: presentation
+      containers:
+      - name: curl-backend
+        image: docker.io/steveszabo/webapp:289cf46
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 http://$HASHI_BACK/api/posts; sleep 1; done"]
+        env:
+        - name: HASHI_BACK
+          value: "application.app-hashi-demo.svc.cluster.local:5000"
+      - name: presentation
+        image: docker.io/steveszabo/hashi-demo-web:f199eb5
+        env:
+        - name: APPLICATION_BACK
+          value: "application.app-hashi-demo.svc.cluster.local:5000"
+        ports:
+        - containerPort: 80
+          name: presentation
+        resources:
+          requests:
+            cpu: 256m
+            memory: 256M
+          limits:
+            cpu: 256m
+            memory: 256M
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /probe.html
+            port: presentation
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /probe.html
+            port: presentation
+---
+# Source: hashi-demo/templates/hashi-app.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application
+spec:
+  selector:
+    matchLabels:
+      app: application
+      version: v1
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: application
+        version: v1
+      annotations:
+        kubernetes.io/change-cause: "001"
+        traffic.sidecar.istio.io/excludeOutboundPorts: "8200"
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-secret-config: secret/webapp/config
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{- with secret "secret/webapp/config" -}}
+          POSTGRES_USER={{ .Data.data.POSTGRES_USER }}
+          POSTGRES_PASSWORD={{ .Data.data.POSTGRES_PASSWORD }}
+          export POSTGRES_USER POSTGRES_PASSWORD
+          {{- end }}
+        vault.hashicorp.com/auth-path: auth/eng-cluster
+        vault.hashicorp.com/log-level: debug
+        vault.hashicorp.com/role: webapp
+        vault.hashicorp.com/tls-skip-verify: "false"
+    spec:
+      serviceAccountName: application
+      containers:
+      - name: curl-backend
+        image: docker.io/steveszabo/webapp:289cf46
+        command: ["/bin/bash", "-c", "while true; do curl -v -m 5 http://$HASHI_BACK/api/posts; sleep 1; done"]
+        env:
+        - name: HASHI_BACK
+          value: "application.app-hashi-demo.svc.cluster.local:5000"
+      - name: application
+        image: docker.io/steveszabo/hashi-demo-app:6eedd5d
+        env:
+        - name: POSTGRES_HOST
+          value: "data.app-hashi-demo.svc.cluster.local"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_DATABASE
+          value: "posts"
+        ports:
+        - name: application
+          containerPort: 5000
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /api/probe
+            port: application
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 15
+          httpGet:
+            path: /api/probe
+            port: application
