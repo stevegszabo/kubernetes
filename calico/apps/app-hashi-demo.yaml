@@ -173,7 +173,7 @@ spec:
         command: ["/bin/bash", "-c", "while true; do curl -v -m 5 -L https://$HASHI_HOST/; sleep 1; done"]
         env:
         - name: HASHI_HOST
-          value: "www.google.com"
+          value: "www.google.ca"
       - name: client
         image: docker.io/steveszabo/webapp:289cf46
         ports:
