@@ -1,0 +1,17 @@
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalReport
+metadata:
+  name: cis-benchmark
+  labels:
+    deployment: eng-cluster
+spec:
+  reportType: cis-benchmark
+  schedule: 0 * * * *
+  cis:
+    highThreshold: 100
+    medThreshold: 50
+    includeUnscoredTests: true
+    numFailedTests: 5
+    resultsFilters:
+    - benchmarkSelection: { kubernetesVersion: "1.22.5" }
