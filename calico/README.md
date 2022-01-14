@@ -13,59 +13,70 @@ calico-typha-5fdf48d8c8-xqt2d              1/1     Running   0          32m
 * calico-kube-controllers: Runs a variety of Calico specific controllers that automate synchronization of resources. For example, when a Kubernetes node is deleted, it tidies up any IP addresses or other Calico resources associated with the node
 
 ```
-szabos@ubuntu:~/src/github/kubernetes/calico$ kc get tigerastatus calico
-NAME     AVAILABLE   PROGRESSING   DEGRADED   SINCE
-calico   True        False         False      16m
+szabos@calico:~$ kc get tigerastatus
+NAME                            AVAILABLE   PROGRESSING   DEGRADED   SINCE
+apiserver                       True        False         False      9h
+calico                          True        False         False      9h
+compliance                      True        False         False      5d7h
+intrusion-detection             True        False         False      2d22h
+log-collector                   True        False         False      9h
+management-cluster-connection   True        False         False      5d7h
+monitor                         True        False         False      5d7h
 
-szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json clusterinformations default | jq -r .spec
+szabos@calico:~$ kc get -o json clusterinformations default | jq -r .spec
 {
-  "calicoVersion": "v3.19.1",
-  "clusterGUID": "b4a3a4e77e51484da13bd3327714624a",
+  "calicoVersion": "v3.21.0",
+  "clusterGUID": "c74d861cec9e4726a7f0a742af02384b",
   "clusterType": "typha,kdd,k8s,operator,bgp,kubeadm",
+  "cnxVersion": "v3.11.1",
   "datastoreReady": true
 }
 
-szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json felixconfiguration default | jq -r .spec
+szabos@calico:~$ kc get -o json felixconfiguration default | jq -r .spec
 {
-  "bpfLogLevel": "",
   "logSeverityScreen": "Info",
   "reportingInterval": "0s",
+  "tproxyMode": "Disabled",
   "vxlanEnabled": true
 }
 
-szabos@ubuntu:~/src/github/kubernetes/calico$ kc get -o json ippools default-ipv4-ippool | jq -r .spec
+szabos@calico:~$ kc get -o json ippools default-ipv4-ippool | jq -r .spec
 {
+  "allowedUses": [
+    "Workload",
+    "Tunnel"
+  ],
   "blockSize": 26,
-  "cidr": "10.244.0.0/16",
+  "cidr": "10.0.0.0/16",
   "ipipMode": "Never",
   "natOutgoing": true,
   "nodeSelector": "all()",
   "vxlanMode": "CrossSubnet"
 }
 
-szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl get ippool default-ipv4-ippool -o wide
-NAME                  CIDR            NAT    IPIPMODE   VXLANMODE     DISABLED   SELECTOR
-default-ipv4-ippool   10.244.0.0/16   true   Never      CrossSubnet   false      all()
+szabos@calico:~$ kc get globalreporttype
+NAME             CREATED AT
+cis-benchmark    2022-01-08T16:32:34Z
+inventory        2022-01-08T16:32:33Z
+network-access   2022-01-08T16:32:33Z
+policy-audit     2022-01-08T16:32:33Z
 
-szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl ipam show
-+----------+---------------+-----------+------------+--------------+
-| GROUPING |     CIDR      | IPS TOTAL | IPS IN USE |   IPS FREE   |
-+----------+---------------+-----------+------------+--------------+
-| IP Pool  | 10.244.0.0/16 |     65536 | 52 (0%)    | 65484 (100%) |
-+----------+---------------+-----------+------------+--------------+
+szabos@calico:~$ calicoctl get ippool default-ipv4-ippool -o wide
+NAME                  CIDR          NAT    IPIPMODE   VXLANMODE     DISABLED   DISABLEBGPEXPORT   SELECTOR
+default-ipv4-ippool   10.0.0.0/16   true   Never      CrossSubnet   false      false              all()
 
-szabos@ubuntu:~/src/github/kubernetes/calico$ calicoctl ipam show --show-blocks
-+----------+-----------------+-----------+------------+--------------+
-| GROUPING |      CIDR       | IPS TOTAL | IPS IN USE |   IPS FREE   |
-+----------+-----------------+-----------+------------+--------------+
-| IP Pool  | 10.244.0.0/16   |     65536 | 52 (0%)    | 65484 (100%) |
-| Block    | 10.244.0.0/26   |        64 | 42 (66%)   | 22 (34%)     |
-| Block    | 10.244.0.128/26 |        64 | 0 (0%)     | 64 (100%)    |
-| Block    | 10.244.0.192/26 |        64 | 0 (0%)     | 64 (100%)    |
-| Block    | 10.244.0.64/26  |        64 | 0 (0%)     | 64 (100%)    |
-| Block    | 10.244.1.0/26   |        64 | 10 (16%)   | 54 (84%)     |
-| Block    | 10.244.1.128/26 |        64 | 0 (0%)     | 64 (100%)    |
-| Block    | 10.244.1.192/26 |        64 | 0 (0%)     | 64 (100%)    |
-| Block    | 10.244.1.64/26  |        64 | 0 (0%)     | 64 (100%)    |
-+----------+-----------------+-----------+------------+--------------+
+szabos@calico:~$ calicoctl ipam show
++----------+-------------+-----------+------------+--------------+
+| GROUPING |    CIDR     | IPS TOTAL | IPS IN USE |   IPS FREE   |
++----------+-------------+-----------+------------+--------------+
+| IP Pool  | 10.0.0.0/16 |     65536 | 28 (0%)    | 65508 (100%) |
++----------+-------------+-----------+------------+--------------+
+
+szabos@calico:~$ calicoctl ipam show --show-blocks
++----------+----------------+-----------+------------+--------------+
+| GROUPING |      CIDR      | IPS TOTAL | IPS IN USE |   IPS FREE   |
++----------+----------------+-----------+------------+--------------+
+| IP Pool  | 10.0.0.0/16    |     65536 | 28 (0%)    | 65508 (100%) |
+| Block    | 10.0.15.192/26 |        64 | 28 (44%)   | 36 (56%)     |
++----------+----------------+-----------+------------+--------------+
 ```
