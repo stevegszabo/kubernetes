@@ -3,6 +3,8 @@ apiVersion: projectcalico.org/v3
 kind: GlobalReport
 metadata:
   name: inventory
+  labels:
+    deployment: eng-cluster
 spec:
   reportType: inventory
   schedule: 0 * * * *
