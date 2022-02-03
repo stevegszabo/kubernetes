@@ -1,0 +1,17 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned
+  namespace: app-webapp-demo
+spec:
+  isCA: false
+  commonName: www.webapp.ca
+  secretName: webapp-demo
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned
+    kind: Issuer
+    group: cert-manager.io
