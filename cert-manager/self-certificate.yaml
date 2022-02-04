@@ -5,7 +5,8 @@ metadata:
   name: webapp-demo
   namespace: app-webapp-demo
 spec:
-  selfSigned: {}
+  ca:
+    secretName: webapp-demo-ca
 
 ---
 apiVersion: cert-manager.io/v1
@@ -14,7 +15,6 @@ metadata:
   name: webapp-demo
   namespace: app-webapp-demo
 spec:
-  isCA: false
   commonName: www.webapp.com
   secretName: webapp-demo
   dnsNames:
