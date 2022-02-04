@@ -1,6 +1,26 @@
 # cert-manager
 
 ```
+$ kc get clusterissuer
+NAME          READY   AGE
+eng-cluster   True    10m
+
+$ kc get issuer
+NAME          READY   AGE
+webapp-demo   True    9m50s
+
+$ kc get cert
+NAME             READY   SECRET           AGE
+webapp-demo      True    webapp-demo      9m52s
+webapp-demo-ca   True    webapp-demo-ca   10m
+
+$ kc get crs
+NAME                   APPROVED   DENIED   READY   ISSUER        REQUESTOR                                         AGE
+webapp-demo-ca-rvxk5   True                True    eng-cluster   system:serviceaccount:cert-manager:cert-manager   10m
+webapp-demo-ngcqx      True                True    webapp-demo   system:serviceaccount:cert-manager:cert-manager   9m57s
+```
+
+```
 CERT_NAMESPACE=app-webapp-demo
 CERT_SECRET=webapp-demo
 
