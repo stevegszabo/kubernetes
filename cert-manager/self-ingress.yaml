@@ -5,6 +5,7 @@ metadata:
   name: webapp-demo
   annotations:
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     cert-manager.io/issuer: "webapp-demo"
 spec:
   tls:
@@ -15,7 +16,7 @@ spec:
   - host: www.quatrale.ca
     http:
       paths:
-      - path: /
+      - path: /webapp-demo(/|$)(.*)
         pathType: Prefix
         backend:
           service:
