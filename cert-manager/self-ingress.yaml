@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webapp-demo
+  annotations:
+    kubernetes.io/ingress.class: "nginx"    
+    cert-manager.io/issuer: "webapp-demo"
+spec:
+  tls:
+  - hosts:
+    - www.quatrale.ca
+    secretName: webapp-demo-ingress
+  rules:
+  - host: www.quatrale.ca
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: releasev1-webapp
+            port:
+              number: 8080
