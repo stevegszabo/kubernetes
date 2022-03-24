@@ -18,7 +18,6 @@ CONSUL_POD=$(kc -n $CONSUL_NAMESPACE get po -o json -l $CONSUL_LABEL | jq -r $CO
 kc -n $CONSUL_NAMESPACE port-forward --address 0.0.0.0 $CONSUL_POD 8500:8500
 
 CONSUL_HTTP_ADDR=http://localhost:8500
-export CONSUL_HTTP_ADDR
 
 curl --request PUT --data @config-external.json --insecure $CONSUL_HTTP_ADDR/v1/catalog/register
 ```
