@@ -2049,10 +2049,10 @@ meshGateway:
   # See https://www.consul.io/docs/connect/mesh_gateway.html
   # Requirements: consul 1.6.0+ if using
   # global.acls.manageSystemACLs.
-  enabled: false
+  enabled: true
 
   # Number of replicas for the Deployment.
-  replicas: 2
+  replicas: 1
 
   # What gets registered as WAN address for the gateway.
   wanAddress:
@@ -2099,7 +2099,7 @@ meshGateway:
     enabled: true
 
     # Type of service, ex. LoadBalancer, ClusterIP.
-    type: LoadBalancer
+    type: ClusterIP
 
     # Port that the service will be exposed on.
     # The targetPort will be set to meshGateway.containerPort.
@@ -2205,15 +2205,15 @@ meshGateway:
   # By default, we set an anti-affinity so that two gateway pods won't be
   # on the same node. NOTE: Gateways require that Consul client agents are
   # also running on the nodes alongside each gateway pod.
-  affinity: |
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app: {{ template "consul.name" . }}
-              release: "{{ .Release.Name }}"
-              component: mesh-gateway
-          topologyKey: kubernetes.io/hostname
+  affinity: {}
+#    podAntiAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        - labelSelector:
+#            matchLabels:
+#              app: {{ template "consul.name" . }}
+#              release: "{{ .Release.Name }}"
+#              component: mesh-gateway
+#          topologyKey: kubernetes.io/hostname
 
   # Optional YAML string to specify tolerations.
   # @type: string
@@ -2396,7 +2396,7 @@ ingressGateways:
 terminatingGateways:
   # Enable terminating gateway deployment. Requires `connectInject.enabled=true`
   # and `client.enabled=true`.
-  enabled: false
+  enabled: true
 
   # Defaults sets default values for all gateway fields. With the exception
   # of annotations, defining any of these values in the `gateways` list
@@ -2405,7 +2405,7 @@ terminatingGateways:
   # for a specific gateway.
   defaults:
     # Number of replicas for each terminating gateway defined.
-    replicas: 2
+    replicas: 1
 
     # A list of extra volumes to mount. These will be exposed to Consul in the path `/consul/userconfig/<name>/`.
     #
@@ -2448,15 +2448,15 @@ terminatingGateways:
     # By default, we set an anti-affinity so that two of the same gateway pods
     # won't be on the same node. NOTE: Gateways require that Consul client agents are
     # also running on the nodes alongside each gateway pod.
-    affinity: |
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: {{ template "consul.name" . }}
-                release: "{{ .Release.Name }}"
-                component: terminating-gateway
-            topologyKey: kubernetes.io/hostname
+    affinity: {}
+#      podAntiAffinity:
+#        requiredDuringSchedulingIgnoredDuringExecution:
+#          - labelSelector:
+#              matchLabels:
+#                app: {{ template "consul.name" . }}
+#                release: "{{ .Release.Name }}"
+#                component: terminating-gateway
+#            topologyKey: kubernetes.io/hostname
 
     # Optional YAML string to specify tolerations.
     # @type: string
