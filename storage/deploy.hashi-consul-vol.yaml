@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hashi-consul-0
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: managed-nfs-storage
+  nfs:
+    path: /srv/shared/hashi-consul/0
+    server: 192.168.56.101
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hashi-consul-1
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: managed-nfs-storage
+  nfs:
+    path: /srv/shared/hashi-consul/1
+    server: 192.168.56.101
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: hashi-consul-2
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: managed-nfs-storage
+  nfs:
+    path: /srv/shared/hashi-consul/2
+    server: 192.168.56.101
