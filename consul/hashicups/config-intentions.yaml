@@ -2,6 +2,17 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
+  name: example-https
+spec:
+  destination:
+    name: example-https
+  sources:
+    - name: frontend
+      action: allow
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
   name: ingress-gateway-to-frontend
 spec:
   destination:
