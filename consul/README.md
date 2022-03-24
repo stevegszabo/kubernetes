@@ -21,6 +21,13 @@ CONSUL_HTTP_ADDR=http://localhost:8500
 export CONSUL_HTTP_ADDR
 
 curl --request PUT --data @config-external.json --insecure $CONSUL_HTTP_ADDR/v1/catalog/register
+```
 
-curl -v -H "Host: ifconfig.me" http://localhost:1234/
+```
+DEMO_NAMESPACE=consul-demo
+DEMO_LABEL="service=frontend"
+DEMO_PATH=.items[0].metadata.name
+DEMO_POD=$(kc -n $DEMO_NAMESPACE get -o json po -l $DEMO_LABEL | jq -r $DEMO_PATH)
+
+kc -n $DEMO_NAMESPACE exec -it -c frontend $DEMO_POD -- curl -s -H "Host: ifconfig.me" http://localhost:1234/
 ```
