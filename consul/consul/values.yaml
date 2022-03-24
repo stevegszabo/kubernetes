@@ -444,12 +444,12 @@ global:
     # to expose Prometheus metrics for the Consul service mesh. By default
     # this includes gateway metrics and sidecar metrics.
     # @type: boolean
-    enabled: false
+    enabled: true
 
     # Configures consul agent metrics. Only applicable if
     # `global.metrics.enabled` is true.
     # @type: boolean
-    enableAgentMetrics: false
+    enableAgentMetrics: true
 
     # Configures the retention time for metrics in Consul clients and
     # servers. This must be greater than 0 for Consul clients and servers
@@ -1433,7 +1433,7 @@ ui:
     # will inherit from `global.metrics.enabled` value.
     # @type: boolean
     # @default: global.metrics.enabled
-    enabled: "-"
+    enabled: true
     # Provider for metrics. See
     # https://www.consul.io/docs/agent/options#ui_config_metrics_provider
     # This value is only used if `ui.enabled` is set to true.
@@ -1443,7 +1443,7 @@ ui:
     # baseURL is the URL of the prometheus server, usually the service URL.
     # This value is only used if `ui.enabled` is set to true.
     # @type: string
-    baseURL: http://prometheus-server
+    baseURL: http://prometheus.istio-system.svc.cluster.local:9090
 
   # Corresponds to https://www.consul.io/docs/agent/options#ui_config_dashboard_url_templates configuration.
   dashboardURLTemplates:
@@ -1723,11 +1723,11 @@ connectInject:
     #   - If metrics merging is disabled:
     #     the listener will just expose Envoy sidecar metrics.
     # This will inherit from `global.metrics.enabled`.
-    defaultEnabled: "-"
+    defaultEnabled: true
     # Configures the Consul sidecar to run a merged metrics server
     # to combine and serve both Envoy and Connect service metrics.
     # This feature is available only in Consul v1.10.0 or greater.
-    defaultEnableMerging: false
+    defaultEnableMerging: true
     # Configures the port at which the Consul sidecar will listen on to return
     # combined metrics. This port only needs to be changed if it conflicts with
     # the application's ports.
