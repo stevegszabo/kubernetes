@@ -6,7 +6,6 @@
     "external-probe": "true"
   },
   "Service": {
-    "Address": "13.226.139.126",
     "ID": "datadog",
     "Service": "datadog",
     "Port": 443
