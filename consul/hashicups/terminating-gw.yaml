@@ -9,3 +9,5 @@ spec:
       caFile: /etc/ssl/cert.pem
     - name: google
       caFile: /etc/ssl/cert.pem
+    - name: datadog
+      caFile: /etc/ssl/cert.pem

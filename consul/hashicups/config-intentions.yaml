@@ -2,6 +2,17 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
+  name: datadog
+spec:
+  destination:
+    name: datadog
+  sources:
+    - name: frontend
+      action: allow
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
   name: google
 spec:
   destination:

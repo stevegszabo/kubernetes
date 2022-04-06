@@ -28,5 +28,5 @@ DEMO_LABEL="service=frontend"
 DEMO_PATH=.items[0].metadata.name
 DEMO_POD=$(kc -n $DEMO_NAMESPACE get -o json po -l $DEMO_LABEL | jq -r $DEMO_PATH)
 
-kc -n $DEMO_NAMESPACE exec -it -c frontend $DEMO_POD -- curl -s -H "Host: ifconfig.me" http://localhost:1234/
+kc -n $DEMO_NAMESPACE exec -it -c frontend $DEMO_POD -- curl -v http://localhost:2000/
 ```
