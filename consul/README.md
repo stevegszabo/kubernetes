@@ -19,7 +19,7 @@ kc -n $CONSUL_NAMESPACE port-forward --address 0.0.0.0 $CONSUL_POD 8500:8500
 
 CONSUL_HTTP_ADDR=http://localhost:8500
 
-curl --request PUT --data @config-external.json --insecure $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -XPUT -d @config-terminating-gw.json $CONSUL_HTTP_ADDR/v1/catalog/register
 ```
 
 ```
