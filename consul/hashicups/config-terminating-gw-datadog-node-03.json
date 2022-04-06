@@ -6,8 +6,8 @@
     "external-probe": "true"
   },
   "Service": {
-    "ID": "datadog",
+    "ID": "datadog-03",
     "Service": "datadog",
-    "Port": 443
+    "Port": 80
   }
 }
