@@ -1,0 +1,14 @@
+{
+  "Node": "datadog-node-02",
+  "Address": "13.226.139.39",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "Address": "13.226.139.39",
+    "ID": "datadog",
+    "Service": "datadog",
+    "Port": 443
+  }
+}
