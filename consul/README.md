@@ -25,8 +25,12 @@ curl -v -k -XPUT -d @config-terminating-gw-datadog-node-03.json $CONSUL_HTTP_ADD
 curl -v -k -XPUT -d @config-terminating-gw-datadog-node-04.json $CONSUL_HTTP_ADDR/v1/catalog/register
 
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/datadog | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-01 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-02 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-03 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-04 | jq -r .
 
-curl -v -k -XPUT -d @config-delete.json $CONSUL_HTTP_ADDR/v1/catalog/deregister
+curl -v -k -XPUT -d @config-delete-node.json $CONSUL_HTTP_ADDR/v1/catalog/deregister
 ```
 
 ```
