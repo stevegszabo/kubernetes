@@ -7,3 +7,5 @@ spec:
   services:
     - name: example-https
       caFile: /etc/ssl/cert.pem
+    - name: google
+      caFile: /etc/ssl/cert.pem
