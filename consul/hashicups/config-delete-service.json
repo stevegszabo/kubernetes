@@ -1,5 +1,5 @@
 {
   "Datacenter": "dc1",
   "Node": "datadog-node-01",
-  "ServiceID": "datadog-01"
+  "ServiceID": "datadog"
 }

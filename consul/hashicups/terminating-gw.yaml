@@ -5,9 +5,9 @@ metadata:
   name: terminating-gateway
 spec:
   services:
-    - name: example-https
-      caFile: /etc/ssl/cert.pem
     - name: google
       caFile: /etc/ssl/cert.pem
-    - name: datadog
+    - name: demo
+      caFile: /etc/ssl/cert.pem
+    - name: elastic
       caFile: /etc/ssl/cert.pem
