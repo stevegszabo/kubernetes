@@ -7,7 +7,5 @@ spec:
   services:
     - name: google
       caFile: /etc/ssl/cert.pem
-    - name: demo
-      caFile: /etc/ssl/cert.pem
     - name: elastic
       caFile: /etc/ssl/cert.pem

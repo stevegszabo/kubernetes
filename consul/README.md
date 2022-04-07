@@ -19,16 +19,16 @@ kc -n $CONSUL_NAMESPACE port-forward --address 0.0.0.0 $CONSUL_POD 8500:8500
 
 CONSUL_HTTP_ADDR=http://localhost:8500
 
-curl -v -k -XPUT -d @config-terminating-gw-datadog-node-01.json $CONSUL_HTTP_ADDR/v1/catalog/register
-curl -v -k -XPUT -d @config-terminating-gw-datadog-node-02.json $CONSUL_HTTP_ADDR/v1/catalog/register
-curl -v -k -XPUT -d @config-terminating-gw-datadog-node-03.json $CONSUL_HTTP_ADDR/v1/catalog/register
-curl -v -k -XPUT -d @config-terminating-gw-datadog-node-04.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -XPUT -d @config-terminating-gw-elastic-node-01.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -XPUT -d @config-terminating-gw-elastic-node-02.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -XPUT -d @config-terminating-gw-elastic-node-03.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -XPUT -d @config-terminating-gw-elastic-node-04.json $CONSUL_HTTP_ADDR/v1/catalog/register
 
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/datadog | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-01 | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-02 | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-03 | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/datadog-node-04 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/elastic | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-01 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-02 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-03 | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-04 | jq -r .
 
 curl -v -k -XPUT -d @config-delete-node.json $CONSUL_HTTP_ADDR/v1/catalog/deregister
 ```
