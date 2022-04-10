@@ -2,6 +2,7 @@
 
 ```
 aws eks list-clusters | jq -r .
+aws eks describe-cluster --name=eks-cluster-01 | jq -r .
 aws eks list-nodegroups --cluster-name=eng-cluster-01 | jq -r .
 
 aws eks update-kubeconfig --region ca-central-1 --name eng-cluster-01
