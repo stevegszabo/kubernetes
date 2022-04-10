@@ -3,22 +3,21 @@
 ```
 aws eks list-clusters | jq -r .
 aws eks describe-cluster --name=eks-cluster-01 | jq -r .
-aws eks list-nodegroups --cluster-name=eng-cluster-01 | jq -r .
+aws eks list-nodegroups --cluster-name=eks-cluster-01 | jq -r .
 
-aws eks update-kubeconfig --region ca-central-1 --name eng-cluster-01
+aws eks update-kubeconfig --region ca-central-1 --name eks-cluster-01
 
-NODE_GROUP=$(aws eks list-nodegroups --cluster-name=eng-cluster-01 | jq -r .nodegroups[0])
-aws eks describe-nodegroup --cluster-name eng-cluster-01 --nodegroup-name $NODE_GROUP
+NODE_GROUP=$(aws eks list-nodegroups --cluster-name=eks-cluster-01 | jq -r .nodegroups[0])
+aws eks describe-nodegroup --cluster-name eks-cluster-01 --nodegroup-name $NODE_GROUP | jq -r .
 
-eksctl get cluster --name=eng-cluster-01
-eksctl get cluster --name=eng-cluster-01 -o json | jq -r .
+eksctl get cluster --name=eks-cluster-01
+eksctl get cluster --name=eks-cluster-01 -o json | jq -r .
 
-eksctl get nodegroup --cluster=eng-cluster-01 --name=eng-group-01
-eksctl get nodegroup --cluster=eng-cluster-01 --name=eng-group-01 -o json | jq -r .
+eksctl get nodegroup --cluster=eks-cluster-01 --name=$NODE_GROUP
+eksctl get nodegroup --cluster=eks-cluster-01 --name=$NODE_GROUP -o json | jq -r .
 
 eksctl create cluster --dry-run -f eng-cluster-01.yaml
 eksctl delete cluster --force --region=ca-central-1 --name=eng-cluster-01
-
 eksctl utils describe-stacks --region=ca-central-1 --cluster=eng-cluster-01
 ```
 
