@@ -34,6 +34,19 @@ curl -v -k -XPUT -d @config-delete-node.json $CONSUL_HTTP_ADDR/v1/catalog/deregi
 ```
 
 ```
+consul members
+
+consul catalog nodes
+consul catalog services
+
+consul config list -kind proxy-defaults
+consul config read -kind proxy-defaults -name global
+
+consul config list -kind service-defaults
+consul config read -kind service-defaults -name frontend
+```
+
+```
 DEMO_NAMESPACE=consul-demo
 DEMO_LABEL="service=frontend"
 DEMO_PATH=.items[0].metadata.name
