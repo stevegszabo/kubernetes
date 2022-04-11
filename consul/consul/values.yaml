@@ -367,7 +367,7 @@ global:
     # If true, the Helm chart will automatically manage ACL tokens and policies
     # for all Consul and consul-k8s-control-plane components.
     # This requires Consul >= 1.4.
-    manageSystemACLs: false
+    manageSystemACLs: true
 
     # A Kubernetes secret containing the bootstrap token to use for
     # creating policies and tokens for all Consul and consul-k8s-control-plane components.

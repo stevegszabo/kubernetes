@@ -15,6 +15,8 @@ CONSUL_LABEL="component=server"
 CONSUL_PATH=.items[0].metadata.name
 CONSUL_POD=$(kc -n $CONSUL_NAMESPACE get po -o json -l $CONSUL_LABEL | jq -r $CONSUL_PATH)
 
+kc -n $CONSUL_NAMESPACE get -o json secret r1-consul-bootstrap-acl-token | jq -r .data.token | base64 -d
+
 kc -n $CONSUL_NAMESPACE port-forward --address 0.0.0.0 $CONSUL_POD 8500:8500
 
 CONSUL_HTTP_ADDR=http://localhost:8500
