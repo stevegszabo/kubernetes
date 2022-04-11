@@ -35,6 +35,7 @@ curl -v -k -XPUT -d @config-delete-node.json $CONSUL_HTTP_ADDR/v1/catalog/deregi
 
 ```
 consul members
+consul operator raft list-peers
 
 consul catalog nodes
 consul catalog services
