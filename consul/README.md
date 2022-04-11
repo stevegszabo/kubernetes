@@ -24,7 +24,10 @@ curl -v -k -XPUT -d @config-terminating-gw-elastic-node-02.json $CONSUL_HTTP_ADD
 curl -v -k -XPUT -d @config-terminating-gw-elastic-node-03.json $CONSUL_HTTP_ADDR/v1/catalog/register
 curl -v -k -XPUT -d @config-terminating-gw-elastic-node-04.json $CONSUL_HTTP_ADDR/v1/catalog/register
 
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/services | jq -r .
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/elastic | jq -r .
+
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/nodes | jq -r .
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-01 | jq -r .
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-02 | jq -r .
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-03 | jq -r .
