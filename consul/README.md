@@ -26,6 +26,7 @@ curl -v -k -XPUT -d @config-terminating-gw-elastic-node-04.json $CONSUL_HTTP_ADD
 
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/services | jq -r .
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/elastic | jq -r .
+curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/ingress-gateway | jq -r .[].ServiceID
 
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/nodes | jq -r .
 curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-01 | jq -r .
@@ -50,6 +51,8 @@ consul config read -kind proxy-defaults -name global
 
 consul config list -kind service-defaults
 consul config read -kind service-defaults -name frontend
+
+consul services deregister -id=r1-consul-ingress-gateway-7775f8456c-k2s2g
 ```
 
 ```
