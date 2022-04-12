@@ -20,23 +20,25 @@ kc -n $CONSUL_NAMESPACE get -o json secret r1-consul-bootstrap-acl-token | jq -r
 kc -n $CONSUL_NAMESPACE port-forward --address 0.0.0.0 $CONSUL_POD 8500:8500
 
 CONSUL_HTTP_ADDR=http://localhost:8500
+CONSUL_HTTP_TOKEN=aaaaaaaaaaaaaaaaaaaa
+CONSUL_HEADER="X-Consul-Token: $CONSUL_HTTP_TOKEN"
 
-curl -v -k -XPUT -d @config-terminating-gw-elastic-node-01.json $CONSUL_HTTP_ADDR/v1/catalog/register
-curl -v -k -XPUT -d @config-terminating-gw-elastic-node-02.json $CONSUL_HTTP_ADDR/v1/catalog/register
-curl -v -k -XPUT -d @config-terminating-gw-elastic-node-03.json $CONSUL_HTTP_ADDR/v1/catalog/register
-curl -v -k -XPUT -d @config-terminating-gw-elastic-node-04.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-01.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-02.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-03.json $CONSUL_HTTP_ADDR/v1/catalog/register
+curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-04.json $CONSUL_HTTP_ADDR/v1/catalog/register
 
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/services | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/elastic | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/service/ingress-gateway | jq -r .[].ServiceID
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/services | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/service/elastic | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/service/ingress-gateway | jq -r .[].ServiceID
 
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/nodes | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-01 | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-02 | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-03 | jq -r .
-curl -s -k $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-04 | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/nodes | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-01 | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-02 | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-03 | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-04 | jq -r .
 
-curl -v -k -XPUT -d @config-delete-node.json $CONSUL_HTTP_ADDR/v1/catalog/deregister
+curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-delete-node.json $CONSUL_HTTP_ADDR/v1/catalog/deregister
 ```
 
 ```
