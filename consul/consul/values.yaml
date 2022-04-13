@@ -1461,7 +1461,7 @@ ui:
 syncCatalog:
   # True if you want to enable the catalog sync. Set to "-" to inherit from
   # global.enabled.
-  enabled: false
+  enabled: true
 
   # The name of the Docker image (including any tag) for consul-k8s-control-plane
   # to run the sync program.
@@ -1489,7 +1489,7 @@ syncCatalog:
   # with Kubernetes. For example "consul-" will register all services
   # prepended with "consul-". (Consul -> Kubernetes sync)
   # @type: string
-  k8sPrefix: null
+  k8sPrefix: consul-
 
   # List of k8s namespaces to sync the k8s services from.
   # If a k8s namespace is not included in this list or is listed in `k8sDenyNamespaces`,
@@ -1504,7 +1504,7 @@ syncCatalog:
   #
   # Note: `k8sDenyNamespaces` takes precedence over values defined here.
   # @type: array<string>
-  k8sAllowNamespaces: ["*"]
+  k8sAllowNamespaces: ["consul-demo"]
 
   # List of k8s namespaces that should not have their
   # services synced. This list takes precedence over `k8sAllowNamespaces`.
@@ -1514,7 +1514,7 @@ syncCatalog:
   # `["namespace1", "namespace2"]`, then all k8s namespaces besides `namespace1`
   # and `namespace2` will be synced.
   # @type: array<string>
-  k8sDenyNamespaces: ["kube-system", "kube-public"]
+  k8sDenyNamespaces: ["*"]
 
   # [DEPRECATED] Use k8sAllowNamespaces and k8sDenyNamespaces instead. For
   # backwards compatibility, if both this and the allow/deny lists are set,
@@ -1565,7 +1565,7 @@ syncCatalog:
   # NOTE: Updating this property to a non-null value for an existing installation will result in deregistering
   # of existing services in Consul and registering them with a new name.
   # @type: string
-  consulPrefix: null
+  consulPrefix: k8s-
 
   # Optional tag that is applied to all of the Kubernetes services
   # that are synced into Consul. If nothing is set, defaults to "k8s".
@@ -1680,7 +1680,7 @@ connectInject:
   enabled: "-"
 
   # The number of deployment replicas.
-  replicas: 2
+  replicas: 1
 
   # Image for consul-k8s-control-plane that contains the injector.
   # @type: string
@@ -2049,7 +2049,7 @@ meshGateway:
   # See https://www.consul.io/docs/connect/mesh_gateway.html
   # Requirements: consul 1.6.0+ if using
   # global.acls.manageSystemACLs.
-  enabled: true
+  enabled: false
 
   # Number of replicas for the Deployment.
   replicas: 1
