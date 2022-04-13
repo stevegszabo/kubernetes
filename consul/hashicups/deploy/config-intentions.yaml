@@ -2,76 +2,58 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: elastic
+  name: hashicups-ingress-to-frontend
 spec:
   destination:
-    name: elastic
-  sources:
-    - name: frontend
-      action: allow
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: google
-spec:
-  destination:
-    name: google
-  sources:
-    - name: frontend
-      action: allow
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: example-https
-spec:
-  destination:
-    name: example-https
-  sources:
-    - name: frontend
-      action: allow
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: ingress-gateway-to-frontend
-spec:
-  destination:
-    name: frontend
+    name: hashicups-frontend
   sources:
     - name: ingress-gateway
       action: allow
+
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: frontend-to-public-api
+  name: hashicups-frontend-to-google
 spec:
   destination:
-    name: public-api
+    name: external-google
   sources:
-    - name: frontend
+    - name: hashicups-frontend
       action: allow
+
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: public-api-to-product-api
+  name: hashicups-frontend-to-public
 spec:
   destination:
-    name: product-api
+    name: hashicups-public-api
   sources:
-    - name: public-api
+    - name: hashicups-frontend
       action: allow
+
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: product-api-to-postgres
+  name: hashicups-public-to-product
 spec:
   destination:
-    name: postgres
+    name: hashicups-product-api
   sources:
-    - name: product-api
+    - name: hashicups-public-api
+      action: allow
+
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: hashicups-product-to-postgres
+spec:
+  destination:
+    name: hashicups-postgres
+  sources:
+    - name: hashicups-product-api
       action: allow

@@ -2,47 +2,47 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: hashicups-postgres
   labels:
-    app: postgres
+    app: hashicups-postgres
 spec:
   type: ClusterIP
   ports:
     - port: 5432
       targetPort: 5432
   selector:
-    app: postgres
+    app: hashicups-postgres
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: postgres
+  name: hashicups-postgres
 automountServiceAccountToken: true
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: hashicups-postgres
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: postgres
-      app: postgres
+      service: hashicups-postgres
+      app: hashicups-postgres
   template:
     metadata:
       labels:
-        service: postgres
-        app: postgres
+        service: hashicups-postgres
+        app: hashicups-postgres
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9102"
         consul.hashicorp.com/connect-inject: "true"
         consul.hashicorp.com/enable-metrics-merging: "false"
     spec:
-      serviceAccountName: postgres
+      serviceAccountName: hashicups-postgres
       containers:
-        - name: postgres
+        - name: hashicups-postgres
           image: hashicorpdemoapp/product-api-db:v0.0.16
           ports:
             - containerPort: 5432

@@ -2,7 +2,7 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceSplitter
 metadata:
-  name: coffee-service
+  name: hashicups-coffee-service
 spec:
   splits:
     - weight: 90

@@ -5,7 +5,5 @@ metadata:
   name: terminating-gateway
 spec:
   services:
-    - name: google
-      caFile: /etc/ssl/cert.pem
-    - name: elastic
+    - name: external-google
       caFile: /etc/ssl/cert.pem

@@ -2,7 +2,7 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: postgres
+  name: hashicups-postgres
 spec:
   protocol: tcp
 
@@ -10,7 +10,7 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: frontend
+  name: hashicups-frontend
 spec:
   protocol: http
 
@@ -18,7 +18,7 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: public-api
+  name: hashicups-public-api
 spec:
   protocol: http
 
@@ -26,6 +26,6 @@ spec:
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceDefaults
 metadata:
-  name: product-api
+  name: hashicups-product-api
 spec:
   protocol: http

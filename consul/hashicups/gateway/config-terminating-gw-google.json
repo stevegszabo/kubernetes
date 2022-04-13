@@ -1,5 +1,5 @@
 {
-  "Node": "google",
+  "Node": "external-google",
   "Address": "google.ca",
   "NodeMeta": {
     "external-node": "true",
@@ -7,8 +7,8 @@
   },
   "Service": {
     "Address": "google.ca",
-    "ID": "google",
-    "Service": "google",
+    "ID": "external-google",
+    "Service": "external-google",
     "Port": 443
   }
 }

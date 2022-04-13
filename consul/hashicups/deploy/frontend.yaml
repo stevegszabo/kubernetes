@@ -2,21 +2,21 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
+  name: hashicups-frontend
   labels:
-    app: frontend
+    app: hashicups-frontend
 spec:
   type: ClusterIP
   ports:
     - port: 80
       targetPort: 80
   selector:
-    app: frontend
+    app: hashicups-frontend
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: frontend
+  name: hashicups-frontend
 automountServiceAccountToken: true
 ---
 apiVersion: v1
@@ -58,24 +58,24 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: hashicups-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      service: frontend
-      app: frontend
+      service: hashicups-frontend
+      app: hashicups-frontend
   template:
     metadata:
       labels:
-        service: frontend
-        app: frontend
+        service: hashicups-frontend
+        app: hashicups-frontend
       annotations:
         consul.hashicorp.com/connect-inject: "true"
-        consul.hashicorp.com/connect-service-upstreams: "public-api:8080,google:2000,elastic:3000"
+        consul.hashicorp.com/connect-service-upstreams: "hashicups-public-api:8080,external-google:9090"
         consul.hashicorp.com/enable-metrics-merging: "false"
     spec:
-      serviceAccountName: frontend
+      serviceAccountName: hashicups-frontend
       volumes:
       - name: config
         configMap:
@@ -84,7 +84,7 @@ spec:
           - key: config
             path: default.conf
       containers:
-        - name: frontend
+        - name: hashicups-frontend
           image: hashicorpdemoapp/frontend:v0.0.5
           ports:
             - containerPort: 80
