@@ -309,6 +309,21 @@ Sets the injector node selector for pod placement
 {{- end -}}
 
 {{/*
+Sets the injector deployment update strategy
+*/}}
+{{- define "injector.strategy" -}}
+  {{- if .Values.injector.strategy }}
+  strategy:
+  {{- $tp := typeOf .Values.injector.strategy }}
+  {{- if eq $tp "string" }}
+    {{ tpl .Values.injector.strategy . | nindent 4 | trim }}
+  {{- else }}
+    {{- toYaml .Values.injector.strategy | nindent 4 }}
+  {{- end }}
+  {{- end }}
+{{- end -}}
+
+{{/*
 Sets extra pod annotations
 */}}
 {{- define "vault.annotations" -}}
@@ -654,4 +669,39 @@ imagePullSecrets:
 {{- end }}
 {{- end -}}
 {{- end -}}
+{{- end -}}
+
+{{/*
+externalTrafficPolicy sets a Service's externalTrafficPolicy if applicable.
+Supported inputs are Values.server.service and Values.ui
+*/}}
+{{- define "service.externalTrafficPolicy" -}}
+{{- $type := "" -}}
+{{- if .serviceType -}}
+{{- $type = .serviceType -}}
+{{- else if .type -}}
+{{- $type = .type -}}
+{{- end -}}
+{{- if and .externalTrafficPolicy (or (eq $type "LoadBalancer") (eq $type "NodePort")) }}
+  externalTrafficPolicy: {{ .externalTrafficPolicy }}
+{{- else }}
+{{- end }}
+{{- end -}}
+
+{{/*
+loadBalancer configuration for the the UI service.
+Supported inputs are Values.ui
+*/}}
+{{- define "service.loadBalancer" -}}
+{{- if  eq (.serviceType | toString) "LoadBalancer" }}
+{{- if .loadBalancerIP }}
+  loadBalancerIP: {{ .loadBalancerIP }}
+{{- end }}
+{{- with .loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+{{- range . }}
+  - {{ . }}
+{{- end }}
+{{- end -}}
+{{- end }}
 {{- end -}}

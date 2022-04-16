@@ -37,16 +37,6 @@ injector:
   # so that only one injector attempts to create TLS certificates.
   leaderElector:
     enabled: true
-    # Note: The deployment of the leader-elector container will soon be removed
-    # from this chart since vault-k8s now uses an internal mechanism to
-    # determine leadership.
-    # To enable the deployment of the leader-elector container for use with
-    # vault-k8s 0.12.0 and earlier, set `useContainer=true`
-    useContainer: false
-    image:
-      repository: "gcr.io/google_containers/leader-elector"
-      tag: "0.4"
-    ttl: 60s
 
   # If true, will enable a node exporter metrics endpoint at /metrics.
   metrics:
@@ -59,7 +49,7 @@ injector:
   # image sets the repo and tag of the vault-k8s image to use for the injector.
   image:
     repository: "hashicorp/vault-k8s"
-    tag: "0.13.1"
+    tag: "0.14.2"
     pullPolicy: IfNotPresent
 
   # agentImage sets the repo and tag of the Vault image to use for the Vault Agent
@@ -67,7 +57,7 @@ injector:
   # required.
   agentImage:
     repository: "hashicorp/vault"
-    tag: "1.8.3"
+    tag: "1.9.2"
 
   # The default values for the injected Vault Agent containers.
   agentDefaults:
@@ -85,6 +75,7 @@ injector:
     # Default values within Agent's template_config stanza.
     templateConfig:
       exitOnRetryFailure: true
+      staticSecretRenderInterval: ""
 
   # Mount Path of the Vault Kubernetes Auth Method.
   authPath: "auth/kubernetes"
@@ -165,15 +156,15 @@ injector:
   # This can either be multi-line string or YAML matching the PodSpec's affinity field.
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment of multiple replicas to single node services such as Minikube.
-#  affinity: |
-#    podAntiAffinity:
-#      requiredDuringSchedulingIgnoredDuringExecution:
-#        - labelSelector:
-#            matchLabels:
-#              app.kubernetes.io/name: {{ template "vault.name" . }}-agent-injector
-#              app.kubernetes.io/instance: "{{ .Release.Name }}"
-#              component: webhook
-#          topologyKey: kubernetes.io/hostname
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ template "vault.name" . }}-agent-injector
+              app.kubernetes.io/instance: "{{ .Release.Name }}"
+              component: webhook
+          topologyKey: kubernetes.io/hostname
 
   # Toleration Settings for injector pods
   # This should be either a multi-line string or YAML matching the Toleration array
@@ -208,6 +199,21 @@ injector:
     # Extra annotations to attach to the injector service
     annotations: {}
 
+  # A disruption budget limits the number of pods of a replicated application
+  # that are down simultaneously from voluntary disruptions
+  podDisruptionBudget: {}
+  # podDisruptionBudget:
+  #   maxUnavailable: 1
+
+  # strategy for updating the deployment. This can be a multi-line string or a
+  # YAML map.
+  strategy: {}
+  # strategy: |
+  #   rollingUpdate:
+  #     maxSurge: 25%
+  #     maxUnavailable: 25%
+  #   type: RollingUpdate
+
 server:
   # If not set to true, Vault server will not be installed. See vault.mode in _helpers.tpl for implementation details
   enabled: true
@@ -230,7 +236,7 @@ server:
 
   image:
     repository: "hashicorp/vault"
-    tag: "1.8.3"
+    tag: "1.9.2"
     # Overrides the default Image Pull Policy
     pullPolicy: IfNotPresent
 
@@ -271,6 +277,14 @@ server:
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
 
+    # Optionally use ingressClassName instead of deprecated annotation.
+    # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#deprecated-annotation
+    ingressClassName: ""
+
+    # As of Kubernetes 1.19, all Ingress Paths must have a pathType configured. The default value below should be sufficient in most cases.
+    # See: https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types for other possible values.
+    pathType: Prefix
+
     # When HA mode is enabled and K8s service registration is being used,
     # configure the ingress to point to the Vault active service.
     activeService: true
@@ -281,15 +295,17 @@ server:
     extraPaths: []
     # - path: /*
     #   backend:
-    #     serviceName: ssl-redirect
-    #     servicePort: use-annotation
+    #     service:
+    #       name: ssl-redirect
+    #       port:
+    #         number: use-annotation
     tls: []
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
 
   # OpenShift only - create a route to expose the service
-  # The created route will be of type passthrough
+  # By default the created route will be of type passthrough
   route:
     enabled: false
 
@@ -300,6 +316,11 @@ server:
     labels: {}
     annotations: {}
     host: chart-example.local
+    # tls will be passed directly to the route's TLS config, which
+    # can be used to configure other termination methods that terminate
+    # TLS at the router
+    tls:
+      termination: passthrough
 
   # authDelegator enables a cluster role binding to be attached to the service
   # account.  This cluster role binding can be used to setup Kubernetes auth
@@ -367,6 +388,10 @@ server:
     # Number of seconds after which the probe times out.
     timeoutSeconds: 3
 
+  # Optional duration in seconds the pod needs to terminate gracefully.
+  # See: https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/
+  terminationGracePeriodSeconds: 10
+
   # Used to set the sleep time during the preStop step
   preStopSleepSeconds: 5
 
@@ -420,15 +445,15 @@ server:
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment to single node services such as Minikube
   # This should be either a multi-line string or YAML matching the PodSpec's affinity field.
-#  affinity: |
-#    podAntiAffinity:
-#      requiredDuringSchedulingIgnoredDuringExecution:
-#        - labelSelector:
-#            matchLabels:
-#              app.kubernetes.io/name: {{ template "vault.name" . }}
-#              app.kubernetes.io/instance: "{{ .Release.Name }}"
-#              component: server
-#          topologyKey: kubernetes.io/hostname
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ template "vault.name" . }}
+              app.kubernetes.io/instance: "{{ .Release.Name }}"
+              component: server
+          topologyKey: kubernetes.io/hostname
 
   # Toleration Settings for server pods
   # This should be either a multi-line string or YAML matching the Toleration array
@@ -481,6 +506,12 @@ server:
     # or NodePort.
     #type: ClusterIP
 
+    # The externalTrafficPolicy can be set to either Cluster or Local
+    # and is only valid for LoadBalancer and NodePort service types.
+    # The default value is Cluster.
+    # ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy
+    externalTrafficPolicy: Cluster
+
     # If type is set to "NodePort", a specific nodePort value can be configured,
     # will be random if left blank.
     #nodePort: 30000
@@ -505,26 +536,26 @@ server:
     mountPath: "/vault/data"
     # Name of the storage class to use.  If null it will use the
     # configured default Storage Class.
-    storageClass: managed-nfs-storage
+    storageClass: null
     # Access Mode of the storage device being used for the PVC
     accessMode: ReadWriteOnce
     # Annotations to apply to the PVC
     annotations: {}
 
   # This configures the Vault Statefulset to create a PVC for audit
-  # logs.  Once Vault is deployed, initialized and unseal, Vault must
+  # logs.  Once Vault is deployed, initialized and unsealed, Vault must
   # be configured to use this for audit logs.  This will be mounted to
   # /vault/audit
   # See https://www.vaultproject.io/docs/audit/index.html to know more
   auditStorage:
-    enabled: true
+    enabled: false
     # Size of the PVC created
     size: 10Gi
     # Location where the PVC will be mounted.
     mountPath: "/vault/audit"
     # Name of the storage class to use.  If null it will use the
     # configured default Storage Class.
-    storageClass: managed-nfs-storage
+    storageClass: null
     # Access Mode of the storage device being used for the PVC
     accessMode: ReadWriteOnce
     # Annotations to apply to the PVC
@@ -702,7 +733,13 @@ ui:
   externalPort: 8200
   targetPort: 8200
 
-  # loadBalancerSourceRanges:
+  # The externalTrafficPolicy can be set to either Cluster or Local
+  # and is only valid for LoadBalancer and NodePort service types.
+  # The default value is Cluster.
+  # ref: https://kubernetes.io/docs/concepts/services-networking/service/#external-traffic-policy
+  externalTrafficPolicy: Cluster
+
+  #loadBalancerSourceRanges:
   #   - 10.0.0.0/16
   #   - 1.78.23.3/32
 
@@ -727,7 +764,7 @@ csi:
 
   image:
     repository: "hashicorp/vault-csi-provider"
-    tag: "0.3.0"
+    tag: "0.4.0"
     pullPolicy: IfNotPresent
 
   # volumes is a list of volumes made available to all containers. These are rendered
@@ -779,6 +816,9 @@ csi:
     # This should be either a multi-line string or YAML matching the Toleration array
     # in a PodSpec.
     tolerations: []
+
+  # Priority class for csi pods
+  priorityClassName: ""
 
   serviceAccount:
     # Extra annotations for the serviceAccount definition. This can either be

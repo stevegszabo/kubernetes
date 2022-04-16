@@ -3,14 +3,14 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: nfs-client-provisioner
-  namespace: default
+  namespace: storage
 
 ---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: nfs-client-provisioner
-  namespace: default
+  namespace: storage
 spec:
   selector:
     matchLabels:
@@ -32,13 +32,13 @@ spec:
           mountPath: /persistentvolumes
         env:
         - name: PROVISIONER_NAME
-          value: notebook.local/nfs
+          value: storage/nfs
         - name: NFS_SERVER
-          value: notebook.local
+          value: storage
         - name: NFS_PATH
           value: /srv/shared
       volumes:
       - name: nfs-client-root
         nfs:
-          server: notebook.local
+          server: storage
           path: /srv/shared

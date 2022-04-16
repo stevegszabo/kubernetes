@@ -5,6 +5,6 @@ metadata:
   name: managed-nfs-storage
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
-provisioner: notebook.local/nfs
+provisioner: storage/nfs
 parameters:
   archiveOnDelete: "false"
