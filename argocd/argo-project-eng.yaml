@@ -1,0 +1,15 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argo-boot
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Argo demo project
+  sourceRepos:
+  - https://github.com/stevegszabo/argocd-example-apps.git
+  destinations:
+  - namespace: argocd
+    server: https://192.168.2.32:6443
