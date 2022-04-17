@@ -33,6 +33,7 @@ curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-02 | jq
 curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-03 | jq -r .
 curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/node/elastic-04 | jq -r .
 
+curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-google.json $CONSUL_HTTP_ADDR/v1/catalog/register
 curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-01.json $CONSUL_HTTP_ADDR/v1/catalog/register
 curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-02.json $CONSUL_HTTP_ADDR/v1/catalog/register
 curl -v -k -H "$CONSUL_HEADER" -XPUT -d @config-terminating-gw-elastic-node-03.json $CONSUL_HTTP_ADDR/v1/catalog/register
