@@ -2,33 +2,33 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: webapp
+  name: webapp-csi
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp-demo
+  name: webapp-csi
   annotations:
-    secret.reloader.stakater.com/reload: "webapp-demo"
+    secret.reloader.stakater.com/reload: "webapp-csi"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapp-demo
+      app: webapp-csi
   template:
     metadata:
       labels:
-        app: webapp-demo
+        app: webapp-csi
     spec:
       volumes:
-      - name: webapp-demo
+      - name: webapp-csi
         csi:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: webapp-demo
-      serviceAccountName: webapp
+            secretProviderClass: webapp-csi
+      serviceAccountName: webapp-csi
       containers:
       - name: webapp
         image: docker.io/steveszabo/webapp:289cf46
@@ -36,14 +36,14 @@ spec:
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
-              name: webapp-demo
+              name: webapp-csi
               key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: webapp-demo
+              name: webapp-csi
               key: POSTGRES_PASSWORD
         volumeMounts:
-        - name: webapp-demo
+        - name: webapp-csi
           mountPath: /csi/secrets
           readOnly: true
