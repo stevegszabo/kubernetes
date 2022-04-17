@@ -13,3 +13,19 @@ spec:
   destinations:
   - server: https://192.168.2.32:6443
     namespace: webapp-demo
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: consul-demo
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: ArgoCD consul-demo project
+  sourceRepos:
+  - https://github.com/stevegszabo/argocd-example-apps.git
+  destinations:
+  - server: https://192.168.2.32:6443
+    namespace: consul-demo
