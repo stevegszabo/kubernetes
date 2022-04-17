@@ -30,8 +30,6 @@ kc -n vault exec -it vault-0 -- vault operator unseal HJxoTs5qtErZbwCOIKFVesxFcw
 ```
 
 ```
-kc apply -f vault.config.yaml
-
 VAULT_APPLICATION_NS=argo-demo
 VAULT_APPLICATION_SA=vault-auth
 
