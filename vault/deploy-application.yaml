@@ -8,16 +8,16 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: application
+  name: webapp-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: application
+      app: webapp-demo
   template:
     metadata:
       labels:
-        app: application
+        app: webapp-demo
       annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/agent-inject-secret-config: "webapp-demo/webapp/config"
