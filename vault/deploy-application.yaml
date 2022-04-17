@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: webapp
+  name: webapp-demo
 
 ---
 apiVersion: apps/v1
@@ -31,7 +31,7 @@ spec:
         vault.hashicorp.com/role: "webapp"
         vault.hashicorp.com/tls-skip-verify: "true"
     spec:
-      serviceAccountName: webapp
+      serviceAccountName: webapp-demo
       containers:
       - name: webapp
         image: docker.io/steveszabo/webapp:5744671
