@@ -72,7 +72,7 @@ spec:
         app: hashicups-frontend
       annotations:
         consul.hashicorp.com/connect-inject: "true"
-        consul.hashicorp.com/connect-service-upstreams: "hashicups-public-api:8080,external-google:9090"
+        consul.hashicorp.com/connect-service-upstreams: "hashicups-public-api:8080,external-google:9090,consul:8500"
         consul.hashicorp.com/enable-metrics-merging: "false"
     spec:
       serviceAccountName: hashicups-frontend

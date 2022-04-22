@@ -2,6 +2,18 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
+  name: hashicups-frontend-to-consul
+spec:
+  destination:
+    name: consul
+  sources:
+    - name: hashicups-frontend
+      action: allow
+
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
   name: hashicups-ingress-to-frontend
 spec:
   destination:
