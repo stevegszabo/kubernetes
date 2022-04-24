@@ -2,7 +2,7 @@
 
 ```
 kc -n argocd get secret -o json argocd-initial-admin-secret | jq -r .data.password | base64 -d
-kc -n argocd port-forward --address 0.0.0.0 svc/argocd-server 8080:443
+kc -n argocd port-forward --address 0.0.0.0 svc/argocd-server 8443:443
 
 kc -n argocd get cm argocd-image-updater-config
 kc -n argocd patch cm argocd-image-updater-config --patch "$(cat argo-image-updater-config-map.yaml)"
@@ -21,7 +21,7 @@ data:
       api_url: http://192.168.56.101:5000
       ping: yes
 
-argocd login --insecure --username admin localhost:8080
+argocd login --insecure --username admin localhost:8443
 argocd account update-password
 
 argocd cluster list
