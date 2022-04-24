@@ -5,13 +5,10 @@ set -o errexit
 LOG_FILE=/tmp/kubectl.stdout.log
 
 (cat <<EOF
-istio-system         svc/prometheus           9090:9090
-istio-system         svc/grafana              3000:3000
-istio-system         svc/kiali                20001:20001
-istio-system         svc/istio-ingressgateway 8443:443
-vault                svc/vault                8200:8200
-argocd               svc/argocd-server        8080:443
-kubernetes-dashboard svc/kubernetes-dashboard 8001:443
+argocd                     svc/argocd-server           8443:443
+hashi-vault                svc/r1-vault                8200:8200
+hashi-consul               svc/r1-consul-server        8500:8500
+hashi-consul               svc/r1-consul-ui            8080:80
 EOF
 ) | while read NAMESPACE SERVICE PORTS
 do
