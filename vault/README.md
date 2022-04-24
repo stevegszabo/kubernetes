@@ -61,6 +61,7 @@ vault write auth/dev-cluster/config \
 
 vault secrets list
 vault secrets enable -path=secret kv-v2
+vault secrets enable -path=webapp-demo kv-v2
 
 vault kv list secret
 vault kv list secret/webapp
