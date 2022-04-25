@@ -23,6 +23,12 @@ CONSUL_HTTP_ADDR=http://localhost:8500
 CONSUL_HTTP_TOKEN=aaaaaaaaaaaaaaaaaaaa
 CONSUL_HEADER="X-Consul-Token: $CONSUL_HTTP_TOKEN"
 
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/agent/host | jq -r .
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/agent/members | jq -r .
+
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/agent/self | jq -r .DebugConfig.UseStreamingBackend
+curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/agent/self | jq -r .DebugConfig.RPCConfig.EnableStreaming
+
 curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/services | jq -r .
 curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/service/elastic | jq -r .
 curl -s -k -H "$CONSUL_HEADER" $CONSUL_HTTP_ADDR/v1/catalog/service/ingress-gateway | jq -r .[].ServiceID
