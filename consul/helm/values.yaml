@@ -723,7 +723,7 @@ server:
   # --set 'server.extraConfig="{"log_level": "DEBUG"}"'
   # ```
   extraConfig: |
-    {}
+    {"log_level": "DEBUG", "rpc": {"enable_streaming": false}}
 
   # A list of extra volumes to mount for server agents. This
   # is useful for bringing in extra data that can be referenced by other configurations
@@ -1066,7 +1066,7 @@ client:
   # --set 'client.extraConfig="{"log_level": "DEBUG"}"'
   # ```
   extraConfig: |
-    {}
+    {"log_level": "DEBUG", "use_streaming_backend": false}
 
   # A list of extra volumes to mount for client agents. This
   # is useful for bringing in extra data that can be referenced by other configurations
