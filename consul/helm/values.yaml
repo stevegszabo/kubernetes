@@ -723,7 +723,7 @@ server:
   # --set 'server.extraConfig="{"log_level": "DEBUG"}"'
   # ```
   extraConfig: |
-    {"log_level": "DEBUG", "rpc": {"enable_streaming": false}}
+    {"log_level": "DEBUG", "rpc": {"enable_streaming": false}, "skip_leave_on_interrupt": true, "leave_on_terminate": false}
 
   # A list of extra volumes to mount for server agents. This
   # is useful for bringing in extra data that can be referenced by other configurations
