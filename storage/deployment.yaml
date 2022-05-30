@@ -3,14 +3,14 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: nfs-client-provisioner
-  namespace: storage
+  namespace: tools-storage
 
 ---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: nfs-client-provisioner
-  namespace: storage
+  namespace: tools-storage
 spec:
   selector:
     matchLabels:

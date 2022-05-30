@@ -25,7 +25,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: nfs-client-provisioner
-  namespace: storage
+  namespace: tools-storage
 roleRef:
   kind: ClusterRole
   name: nfs-client-provisioner-runner
@@ -36,7 +36,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: leader-locking-nfs-client-provisioner
-  namespace: storage
+  namespace: tools-storage
 rules:
 - apiGroups: [""]
   resources: ["endpoints"]
@@ -47,11 +47,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: leader-locking-nfs-client-provisioner
-  namespace: storage
+  namespace: tools-storage
 subjects:
 - kind: ServiceAccount
   name: nfs-client-provisioner
-  namespace: storage
+  namespace: tools-storage
 roleRef:
   kind: Role
   name: leader-locking-nfs-client-provisioner
