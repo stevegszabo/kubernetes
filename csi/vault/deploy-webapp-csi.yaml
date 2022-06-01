@@ -1,4 +1,31 @@
 ---
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: webapp-csi
+spec:
+  provider: vault
+  parameters:
+    vaultAddress: http://r1-vault.tools-hashi-vault:8200
+    vaultKubernetesMountPath: eng-cluster
+    roleName: webapp
+    objects: |
+      - objectName: POSTGRES_USER
+        secretPath: webapp-demo/data/webapp/config
+        secretKey: username
+      - objectName: POSTGRES_PASSWORD
+        secretPath: webapp-demo/data/webapp/config
+        secretKey: password
+  secretObjects:
+  - data:
+    - key: POSTGRES_USER
+      objectName: POSTGRES_USER
+    - key: POSTGRES_PASSWORD
+      objectName: POSTGRES_PASSWORD
+    secretName: webapp-csi
+    type: Opaque
+
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
