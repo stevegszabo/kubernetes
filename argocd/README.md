@@ -12,8 +12,9 @@ kc -n argocd delete pod/argocd-image-updater-8fdb94b77-rmxxh
 
 kc config get-contexts -o name
 
-kc -n argocd create secret docker-registry repo-docker-token --docker-username user --docker-password pass
-kc -n argocd create secret generic repo-private-ssh --from-literal=username=$LOGNAME --from-file=sshPrivateKey=$HOME/.ssh/id_rsa
+kc -n argocd create secret docker-registry repo-docker-token --docker-username=user --docker-password=pass
+kc -n argocd create secret generic repo-private-ssh --from-file=sshPrivateKey=$HOME/.ssh/id_rsa
+kc -n argocd create secret generic repo-private-http --from-literal=username=$LOGNAME --from-literal=password=pass
 
 # patch argocd-image-updater-config
 data:
