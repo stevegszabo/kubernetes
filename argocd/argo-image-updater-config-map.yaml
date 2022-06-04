@@ -5,5 +5,5 @@ data:
       prefix: docker.io
       api_url: https://index.docker.io
       ping: yes
-      credentials: pullsecret:argocd/repo-docker-token
+      credentials: pullsecret:tools-argocd/repo-docker-token
       defaultns: library
