@@ -26,7 +26,7 @@ global:
 
 injector:
   # True if you want to enable vault agent injection.
-  enabled: false
+  enabled: true
 
   replicas: 1
 
