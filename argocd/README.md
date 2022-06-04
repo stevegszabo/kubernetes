@@ -16,6 +16,11 @@ kc -n argocd create secret docker-registry repo-docker-token --docker-username=u
 kc -n argocd create secret generic repo-private-ssh --from-file=sshPrivateKey=$HOME/.ssh/id_rsa
 kc -n argocd create secret generic repo-private-http --from-literal=username=$LOGNAME --from-literal=password=pass
 
+kc -n argocd create secret generic repo-argocd-example-apps \
+--from-literal=url=https://github.com/stevegszabo/argocd-example-apps.git \
+--from-literal=username=user \
+--from-literal=password=pass
+
 # patch argocd-image-updater-config
 data:
   registries.conf: |
