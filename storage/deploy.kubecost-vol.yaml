@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kubecost-prometheus
+spec:
+  capacity:
+    storage: 35Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: managed-nfs-storage
+  nfs:
+    path: /srv/shared/kubecost-prometheus
+    server: 192.168.56.201
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kubecost
+spec:
+  capacity:
+    storage: 35Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: managed-nfs-storage
+  nfs:
+    path: /srv/shared/kubecost
+    server: 192.168.56.201
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kubecost
+  namespace: tools-kubecost
+spec:
+  storageClassName: managed-nfs-storage
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 35Gi
