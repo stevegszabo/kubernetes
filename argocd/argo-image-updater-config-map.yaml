@@ -7,3 +7,4 @@ data:
       ping: yes
       credentials: pullsecret:tools-argocd/repo-docker-token
       defaultns: library
+      limit: 1
