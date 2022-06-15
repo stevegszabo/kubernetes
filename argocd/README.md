@@ -31,6 +31,7 @@ data:
       ping: yes
 
 argocd login --insecure --username admin localhost:8443
+argocd login --insecure --username admin ingress-grpc.local:30096
 argocd account update-password
 
 argocd cluster list
