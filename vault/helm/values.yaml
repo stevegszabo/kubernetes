@@ -28,7 +28,7 @@ injector:
   # True if you want to enable vault agent injection.
   enabled: true
 
-  replicas: 1
+  replicas: 3
 
   # Configures the port the injector should listen on
   port: 8080
@@ -157,6 +157,14 @@ injector:
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment of multiple replicas to single node services such as Minikube.
   affinity: |
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-type
+            operator: In
+            values:
+            - worker
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
