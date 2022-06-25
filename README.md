@@ -4,8 +4,8 @@
 eksctl get cluster --name=cluster01
 eksctl get cluster --name=cluster01 -o json | jq -r .
 
-eksctl get nodegroup --cluster=cluster01 --name=cluster01
-eksctl get nodegroup --cluster=cluster01 --name=cluster01 -o json | jq -r .
+eksctl get nodegroup --cluster=cluster01 --name=cluster01-group01
+eksctl get nodegroup --cluster=cluster01 --name=cluster01-group01 -o json | jq -r .
 ```
 
 ```
