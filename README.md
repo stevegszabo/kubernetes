@@ -1,20 +1,25 @@
 # kubernetes playground
 
 ```
-aws eks list-clusters | jq -r .
-aws eks describe-cluster --name=eks-cluster-01 | jq -r .
-aws eks list-nodegroups --cluster-name=eks-cluster-01 | jq -r .
+eksctl get cluster --name=cluster01
+eksctl get cluster --name=cluster01 -o json | jq -r .
 
-aws eks update-kubeconfig --region ca-central-1 --name eks-cluster-01
+eksctl get nodegroup --cluster=cluster01 --name=cluster01
+eksctl get nodegroup --cluster=cluster01 --name=cluster01 -o json | jq -r .
+```
 
-NODE_GROUP=$(aws eks list-nodegroups --cluster-name=eks-cluster-01 | jq -r .nodegroups[0])
-aws eks describe-nodegroup --cluster-name eks-cluster-01 --nodegroup-name $NODE_GROUP | jq -r .
+```
+aws ec2 describe-instances | jq -r '.Reservations[].Instances[]|.InstanceId + ":" + .State.Name + ":" + .PublicDnsName'
+aws ec2 stop-instances --instance-ids i-0609ebe60c7431156
+aws ec2 start-instances --instance-ids i-0609ebe60c7431156
 
-eksctl get cluster --name=eks-cluster-01
-eksctl get cluster --name=eks-cluster-01 -o json | jq -r .
+aws eks list-clusters | jq -r .clusters[]
+aws eks describe-cluster --name cluster01
 
-eksctl get nodegroup --cluster=eks-cluster-01 --name=$NODE_GROUP
-eksctl get nodegroup --cluster=eks-cluster-01 --name=$NODE_GROUP -o json | jq -r .
+aws eks list-nodegroups --cluster-name cluster01 | jq -r .nodegroups[]
+aws eks describe-nodegroup --cluster-name cluster01 --nodegroup-name cluster01
+
+aws eks update-kubeconfig --region ca-central-1 --name cluster01
 ```
 
 ```
