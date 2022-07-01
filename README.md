@@ -10,6 +10,10 @@ eksctl get nodegroup --cluster=cluster01 --name=cluster01-group01 -o json | jq -
 ```
 
 ```
+aws iam list-roles | jq -r .Roles[].RoleName
+aws iam get-role --role-name eks-cluster
+aws iam get-role --role-name eks-node
+
 aws ec2 describe-instances | jq -r '.Reservations[].Instances[]|.InstanceId + ":" + .State.Name + ":" + .PublicDnsName'
 aws ec2 stop-instances --instance-ids i-0609ebe60c7431156
 aws ec2 start-instances --instance-ids i-0609ebe60c7431156
