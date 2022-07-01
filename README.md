@@ -1,6 +1,7 @@
 # kubernetes playground
 
 ```
+eksctl get cluster
 eksctl get cluster --name=cluster01
 eksctl get cluster --name=cluster01 -o json | jq -r .
 
