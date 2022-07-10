@@ -34,4 +34,4 @@ spec:
       serviceAccountName: webapp-demo
       containers:
       - name: webapp
-        image: docker.io/steveszabo/webapp:5744671
+        image: docker.io/steveszabo/webapp:e45ad1f
